@@ -12,6 +12,18 @@ Comunidad de Madrid, con tres niveles:
 Avisa cuando un aviso **es nuevo** (hoy, mañana o pasado), **sube** o **baja** de nivel, **entra en vigor**,
 se **cancela**, o cambia su confirmación en Rivas.
 
+## Ríos (SAIH Tajo)
+
+Nivel de las estaciones de aforo de la Confederación Hidrográfica del Tajo con sus umbrales oficiales
+(amarillo / naranja / rojo):
+
+- **RIVAS**: Manzanares en Rivas-Vaciamadrid (AR18), Jarama en Mejorada–San Fernando (AR17), Jarama en San Fernando (MC02).
+  Amarillo = notificación fija; naranja o rojo = alarma.
+- **CORREDOR**: Jarama en Algete, Henares en Espinillo y Humanes, Jarama en Puente Titulcia.
+- **MADRID**: Manzanares en Puente de San Fernando y Colmenar Viejo, Jarama en Valdepeñas, Tajuña en Armuña.
+
+Avisa al cruzar un umbral, al bajar y al volver a normalidad (con 3 cm de margen para no repetir avisos).
+
 ## Cómo funciona
 
 - `monitor/monitor.py` se ejecuta cada 10 minutos en GitHub Actions (`.github/workflows/vigilante.yml`).

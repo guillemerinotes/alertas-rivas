@@ -26,6 +26,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import rios
+
 TZ = ZoneInfo("Europe/Madrid")
 RSS_URL = "https://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAC72_RSS.xml"
 AEMET_AVISOS_WEB = "https://www.aemet.es/es/eltiempo/prediccion/avisos?k=mad"
@@ -423,7 +425,7 @@ def agrupar(mensajes: list[dict]) -> list[dict]:
         prioridad = max(m["priority"] for m in lista)
         top = max(lista, key=lambda m: m["priority"])
         res.append({
-            "title": f"{etiqueta} · {len(lista)} novedades en avisos AEMET",
+            "title": f"{etiqueta} · {len(lista)} novedades (avisos y ríos)",
             "message": cuerpo,
             "priority": prioridad,
             "tags": [top["tags"][0], f"nivel-{nivel}", "evento-varios"],
@@ -499,7 +501,27 @@ def main() -> int:
     eventos = calcular_eventos(prev, act, ahora)
     orden = {"madrid": 0, "corredor": 1, "rivas": 2}
     eventos.sort(key=lambda e: orden[nivel_alerta(e["aviso"])])
-    mensajes = agrupar([construir_mensaje(ev, ahora) for ev in eventos])
+    mensajes = [construir_mensaje(ev, ahora) for ev in eventos]
+
+    # --- Ríos (SAIH Tajo) ---
+    try:
+        st["rios"], msgs_rios = rios.evaluar(rios.descargar(http_get), st.get("rios", {}))
+        if st.get("rios_fallos", 0) >= 3:
+            msgs_rios.append({"title": "Alertas Rivas · SAIH Tajo vuelve a responder", "priority": 2,
+                              "message": "Vuelvo a leer los niveles de los ríos con normalidad.",
+                              "tags": ["white_check_mark", "nivel-madrid", "evento-sistema"], "click": rios.SAIH_WEB})
+        st["rios_fallos"] = 0
+        mensajes += msgs_rios
+    except Exception as e:  # noqa: BLE001
+        st["rios_fallos"] = st.get("rios_fallos", 0) + 1
+        print(f"[aviso] SAIH Tajo no disponible: {e}", file=sys.stderr)
+        if st["rios_fallos"] == 3:
+            mensajes.append({"title": "Alertas Rivas · No puedo leer los ríos (SAIH Tajo)", "priority": 3,
+                             "message": "Llevo 3 comprobaciones sin poder leer el SAIH Tajo. Los avisos de AEMET siguen "
+                                        "funcionando, pero vigila los ríos a mano en saihtajo.chtajo.es.",
+                             "tags": ["warning", "nivel-madrid", "evento-sistema"], "click": rios.SAIH_WEB})
+
+    mensajes = agrupar(mensajes)
     fallos = 0
     for msg in mensajes:
         print(f"-> {msg['title']}")
@@ -514,7 +536,7 @@ def main() -> int:
     if not hb or datetime.fromisoformat(hb) < ahora - timedelta(days=20):
         st["heartbeat"] = ahora.isoformat()  # mantiene el repo "activo" para que GitHub no pare el cron
     guardar_estado(st)
-    print(f"{len(act)} avisos activos, {len(eventos)} notificaciones.")
+    print(f"{len(act)} avisos activos, {len(mensajes)} notificaciones.")
     return 1 if fallos and fallos == len(mensajes) else 0
 
 
