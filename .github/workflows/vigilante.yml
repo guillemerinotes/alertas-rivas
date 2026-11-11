@@ -2,7 +2,7 @@ name: Vigilante AEMET
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # cada 10 min (GitHub puede retrasarlo unos minutos)
+    - cron: "3-59/10 * * * *"   # cada 10 min, en minutos :03 :13 :23... (evita el pico de :00 de GitHub)
   workflow_dispatch:
     inputs:
       prueba:
