@@ -536,12 +536,13 @@ def main() -> int:
     hb = st.get("heartbeat") or ""
     if not hb or datetime.fromisoformat(hb) < ahora - timedelta(days=20):
         st["heartbeat"] = ahora.isoformat()  # mantiene el repo "activo" para que GitHub no pare el cron
-    guardar_estado(st)
     try:
         import panel
-        panel.generar(st, horas, key, ahora, http_get)
+        st["panel"] = panel.generar(st, horas, key, ahora, http_get)
     except Exception as e:  # noqa: BLE001 - el panel nunca debe tumbar las alertas
+        st["panel"] = f"error: {e}"
         print(f"[aviso] No se pudo generar el panel: {e}", file=sys.stderr)
+    guardar_estado(st)
     print(f"{len(act)} avisos activos, {len(mensajes)} notificaciones.")
     return 1 if fallos and fallos == len(mensajes) else 0
 

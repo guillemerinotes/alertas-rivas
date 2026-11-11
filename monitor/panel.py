@@ -91,3 +91,4 @@ def generar(st: dict, horas, key: str, ahora: datetime, http_get) -> None:
     }
     (SITE / "datos.json").write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
     print(f"Panel generado: {len(datos['avisos'])} avisos, {len(radar)} imágenes de radar.", file=sys.stderr)
+    return f"radar {estado_radar}; {len(radar)} imágenes; previsión {len(datos['prevision_rivas'])} h"
