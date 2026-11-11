@@ -73,7 +73,7 @@
    "nivel": "amarillo",
    "onset": "2026-11-11T12:00:00+01:00",
    "probabilidad": "40%-70%",
-   "rivas": "no",
+   "rivas": "si",
    "rivas_motivo": "lluvia prevista en Rivas 17.8 mm (máx. 4.0 mm/h)",
    "valor": "40 mm",
    "zona": "722802",
@@ -90,7 +90,7 @@
    "nivel": "amarillo",
    "onset": "2026-11-11T18:00:00+01:00",
    "probabilidad": "40%-70%",
-   "rivas": "no",
+   "rivas": "si",
    "rivas_motivo": "racha máx. prevista en Rivas 56 km/h",
    "valor": "80 km/h",
    "zona": "722802",
@@ -142,5 +142,74 @@
    "zona_nombre": "Sur, Vegas y Oeste"
   }
  },
- "heartbeat": "2026-11-11T12:01:41.087780+00:00"
+ "heartbeat": "2026-11-11T12:01:41.087780+00:00",
+ "rios": {
+  "AR13": {
+   "nivel": 0,
+   "nombre": "HENARES EN ESPINILLO",
+   "tendencia": "Descendente",
+   "valor": 0.632
+  },
+  "AR15": {
+   "nivel": 0,
+   "nombre": "TAJUÑA EN ARMUÑA",
+   "tendencia": "Estable",
+   "valor": 0.857
+  },
+  "AR16": {
+   "nivel": 0,
+   "nombre": "JARAMA EN VALDEPEÐAS",
+   "tendencia": "Estable",
+   "valor": 0.664
+  },
+  "AR17": {
+   "nivel": 0,
+   "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
+   "tendencia": "Descendente",
+   "valor": 1.036
+  },
+  "AR18": {
+   "nivel": 1,
+   "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
+   "tendencia": "Ascendente",
+   "valor": 2.329
+  },
+  "MC02": {
+   "nivel": 0,
+   "nombre": "JARAMA EN SAN FERNANDO",
+   "tendencia": "Descendente",
+   "valor": 559.26
+  },
+  "MC03": {
+   "nivel": 0,
+   "nombre": "MANZANARES EN PTE. SAN FERNANDO",
+   "tendencia": "Descendente",
+   "valor": 587.36
+  },
+  "R018": {
+   "nivel": 0,
+   "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
+   "tendencia": "Estable",
+   "valor": 0.25
+  },
+  "R051": {
+   "nivel": 0,
+   "nombre": "JARAMA EN ALGETE",
+   "tendencia": "Estable",
+   "valor": 0.581
+  },
+  "R061": {
+   "nivel": 0,
+   "nombre": "HENARES EN HUMANES",
+   "tendencia": "Descendente",
+   "valor": 0.676
+  },
+  "R174": {
+   "nivel": 0,
+   "nombre": "JARAMA EN CIEMPOZUELOS - PUENTE TITULCIA",
+   "tendencia": "Descendente",
+   "valor": 1.591
+  }
+ },
+ "rios_fallos": 0
 }
