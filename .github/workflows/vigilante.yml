@@ -12,6 +12,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: vigilante
@@ -20,7 +22,10 @@ concurrency:
 jobs:
   vigilar:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -28,7 +33,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Comprobar avisos
+      - name: Recuperar imágenes de radar anteriores
+        uses: actions/cache/restore@v4
+        with:
+          path: site/radar
+          key: radar-${{ github.run_id }}
+          restore-keys: radar-
+
+      - name: Comprobar avisos y ríos
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
@@ -47,3 +59,21 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}" || true
             git push
           fi
+
+      - name: Guardar imágenes de radar
+        if: ${{ !inputs.prueba && always() }}
+        uses: actions/cache/save@v4
+        with:
+          path: site/radar
+          key: radar-${{ github.run_id }}
+
+      - name: Preparar panel
+        if: ${{ !inputs.prueba }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publicar panel
+        id: deploy
+        if: ${{ !inputs.prueba }}
+        uses: actions/deploy-pages@v4

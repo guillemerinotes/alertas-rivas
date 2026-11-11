@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alertas Rivas · Panel</title>
+<meta name="theme-color" content="#1B3A8C">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root{
+    --azul:#1B3A8C; --azul2:#122a66; --naranja:#F07D00;
+    --bg:#0d1424; --card:#16203a; --linea:#26345a; --txt:#e8ecf6; --sub:#9aa7c7;
+    --am:#f5c518; --na:#F07D00; --ro:#e0263a; --ok:#2fb36d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{background:linear-gradient(90deg,var(--azul2),var(--azul));border-bottom:4px solid var(--naranja);padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
+  header h1{margin:0;font-size:19px;letter-spacing:.3px}
+  header h1 span{color:var(--naranja)}
+  .meta{font-size:13px;color:#cdd6ef}
+  .estado{font-weight:700;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1f}
+  .estado.rivas{background:var(--ro);animation:lat 1.4s infinite}
+  .estado.corredor{background:var(--na)}
+  .estado.madrid{background:var(--am);color:#222}
+  .estado.normal{background:var(--ok)}
+  @keyframes lat{50%{filter:brightness(1.35)}}
+  main{max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px;grid-template-columns:1fr}
+  @media(min-width:980px){main{grid-template-columns:1.35fr 1fr}.ancho{grid-column:1/-1}}
+  .card{background:var(--card);border:1px solid var(--linea);border-radius:12px;overflow:hidden}
+  .card h2{margin:0;font-size:15px;text-transform:uppercase;letter-spacing:.8px;padding:11px 14px;border-bottom:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .card h2 small{text-transform:none;letter-spacing:0;color:var(--sub);font-weight:400}
+  .pad{padding:12px 14px}
+  .tabs{display:flex;gap:6px}
+  .tabs button{background:#ffffff12;color:var(--txt);border:1px solid var(--linea);border-radius:8px;padding:5px 10px;font-size:13px;cursor:pointer}
+  .tabs button.on{background:var(--azul);border-color:var(--naranja)}
+  #mapa{height:420px}
+  .ctrl{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--linea)}
+  .ctrl button{background:var(--naranja);color:#111;border:0;border-radius:8px;font-weight:700;padding:6px 12px;cursor:pointer}
+  .ctrl input{flex:1}
+  .ctrl .hora{min-width:110px;text-align:right;font-variant-numeric:tabular-nums}
+  #aemetRadar{display:none;text-align:center;background:#000}
+  #aemetRadar img{max-width:100%;max-height:420px}
+  .nota{font-size:12px;color:var(--sub);padding:8px 14px}
+  .aviso{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--linea)}
+  .aviso:last-child{border-bottom:0}
+  .barra{width:6px;border-radius:4px;flex:none}
+  .b-amarillo{background:var(--am)} .b-naranja{background:var(--na)} .b-rojo{background:var(--ro)}
+  .tit{font-weight:700}
+  .peq{font-size:13px;color:var(--sub)}
+  .chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;margin-right:6px;vertical-align:1px}
+  .c-rivas{background:var(--ro)} .c-corredor{background:var(--na);color:#111} .c-madrid{background:#3b4f86}
+  .vacio{padding:16px 14px;color:var(--sub)}
+  .rio{padding:9px 14px;border-bottom:1px solid var(--linea)}
+  .rio:last-child{border-bottom:0}
+  .rio .fila{display:flex;justify-content:space-between;gap:8px}
+  .medidor{position:relative;height:10px;border-radius:5px;background:#0b1222;margin-top:6px;overflow:hidden}
+  .medidor .nivel{position:absolute;left:0;top:0;bottom:0;background:#4f8cff}
+  .medidor .u{position:absolute;top:-2px;bottom:-2px;width:2px}
+  .n1 .nivel{background:var(--am)} .n2 .nivel{background:var(--na)} .n3 .nivel{background:var(--ro)}
+  table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+  th,td{padding:5px 8px;text-align:right;border-bottom:1px solid var(--linea)}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--sub);font-weight:600;position:sticky;top:0;background:var(--card)}
+  .tabla{max-height:420px;overflow:auto}
+  td.alto{background:#F07D0033;color:#ffb46b;font-weight:700}
+  td.muyalto{background:#e0263a44;color:#ff8b97;font-weight:700}
+  .enlaces a{display:inline-block;margin:4px 8px 4px 0;color:#9cc0ff}
+  footer{max-width:1200px;margin:0 auto;padding:4px 16px 24px;font-size:12px;color:var(--sub)}
+  .error{background:#e0263a33;border:1px solid var(--ro);color:#ffd0d5;border-radius:8px;padding:8px 12px;margin:0 16px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>ALERTAS <span>RIVAS</span> · Panel meteorológico</h1>
+    <div class="meta" id="meta">Cargando…</div>
+  </div>
+  <div class="estado" id="estado">—</div>
+</header>
+<div id="errores"></div>
+<main>
+  <section class="card">
+    <h2>Radar de precipitación
+      <span class="tabs"><button id="tMapa" class="on">Mapa animado</button><button id="tAemet">Radar AEMET Madrid</button></span>
+    </h2>
+    <div id="mapa"></div>
+    <div id="aemetRadar"><img id="aemetImg" alt="Radar regional de Madrid (AEMET)"></div>
+    <div class="ctrl">
+      <button id="play">❚❚</button>
+      <input type="range" id="slider" min="0" max="0" value="0">
+      <span class="hora" id="hora">—</span>
+    </div>
+    <div class="nota" id="notaRadar">Últimas 2 h, cada 10 min. Círculo: 10 km alrededor de Rivas.</div>
+  </section>
+
+  <section class="card">
+    <h2>Avisos AEMET activos <small>amarillo o superior</small></h2>
+    <div id="avisos"><div class="vacio">Cargando…</div></div>
+  </section>
+
+  <section class="card">
+    <h2>Ríos · SAIH Tajo <small>umbrales oficiales CHT</small></h2>
+    <div id="rios"><div class="vacio">Cargando…</div></div>
+  </section>
+
+  <section class="card">
+    <h2>Previsión horaria Rivas <small>AEMET · municipio 28123</small></h2>
+    <div class="tabla" id="prevision"><div class="vacio">Cargando…</div></div>
+  </section>
+
+  <section class="card ancho">
+    <h2>Fuentes oficiales</h2>
+    <div class="pad enlaces">
+      <a href="https://www.aemet.es/es/eltiempo/prediccion/avisos?k=mad" target="_blank" rel="noopener">AEMET · Avisos Madrid</a>
+      <a href="https://www.aemet.es/es/eltiempo/observacion/radar" target="_blank" rel="noopener">AEMET · Radar</a>
+      <a href="https://www.aemet.es/es/eltiempo/observacion/rayos" target="_blank" rel="noopener">AEMET · Rayos</a>
+      <a href="https://www.aemet.es/es/eltiempo/prediccion/municipios/rivas-vaciamadrid-id28123" target="_blank" rel="noopener">AEMET · Previsión Rivas</a>
+      <a href="https://saihtajo.chtajo.es" target="_blank" rel="noopener">SAIH Tajo · Ríos</a>
+    </div>
+  </section>
+</main>
+<footer>
+  Datos: © AEMET · SAIH Tajo (Confederación Hidrográfica del Tajo, datos provisionales) ·
+  Mapa animado: <a href="https://www.rainviewer.com" target="_blank" rel="noopener" style="color:#9cc0ff">Weather data by RainViewer</a> (no oficial) ·
+  Base cartográfica © OpenStreetMap, © CARTO.<br>
+  Herramienta de apoyo personal. No sustituye a los canales oficiales (AEMET, 112, ES-Alert).
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const RIVAS = [40.3283, -3.5158];
+const NIV = {amarillo:1, naranja:2, rojo:3};
+const fmtH = iso => { const d = new Date(iso); return d.toLocaleString('es-ES',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); };
+const hh = iso => new Date(iso).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// ---------- Mapa + radar RainViewer ----------
+const mapa = L.map('mapa', {zoomControl:true, attributionControl:true}).setView(RIVAS, 8);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 12, subdomains:'abcd', attribution:'© OpenStreetMap © CARTO'}).addTo(mapa);
+L.circle(RIVAS, {radius:10000, color:'#F07D00', weight:2, fill:false}).addTo(mapa);
+L.circleMarker(RIVAS, {radius:6, color:'#fff', weight:2, fillColor:'#F07D00', fillOpacity:1}).addTo(mapa).bindTooltip('Rivas-Vaciamadrid');
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {maxZoom:12, subdomains:'abcd', pane:'shadowPane'}).addTo(mapa);
+
+let frames = [], capas = [], idx = 0, timer = null, modo = 'mapa', aemetFrames = [];
+async function cargarRainViewer(){
+  try{
+    const r = await fetch('https://api.rainviewer.com/public/weather-maps.json', {cache:'no-store'});
+    const j = await r.json();
+    capas.forEach(c => mapa.removeLayer(c));
+    frames = (j.radar && j.radar.past) || [];
+    capas = frames.map(f => L.tileLayer(`${j.host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`, {
+      opacity:0, maxNativeZoom:7, maxZoom:12, zIndex:5}).addTo(mapa));
+    if (modo === 'mapa') { idx = frames.length - 1; prepararSlider(frames.length); mostrar(idx); }
+  }catch(e){ document.getElementById('notaRadar').textContent = 'No se pudo cargar el mapa animado (RainViewer). Usa la pestaña Radar AEMET.'; }
+}
+function prepararSlider(n){ const s = document.getElementById('slider'); s.max = Math.max(0, n-1); s.value = idx; }
+function mostrar(i){
+  idx = i; document.getElementById('slider').value = i;
+  if (modo === 'mapa'){
+    capas.forEach((c,k) => c.setOpacity(k === i ? 0.75 : 0));
+    if (frames[i]) document.getElementById('hora').textContent = hh(frames[i].time*1000);
+  } else if (aemetFrames[i]) {
+    document.getElementById('aemetImg').src = aemetFrames[i].archivo;
+    document.getElementById('hora').textContent = hh(aemetFrames[i].hora);
+  }
+}
+function total(){ return modo === 'mapa' ? frames.length : aemetFrames.length; }
+function paso(){ const n = total(); if(!n) return; mostrar((idx + 1) % n); clearTimeout(timer); timer = setTimeout(paso, idx === n-1 ? 2000 : 600); }
+document.getElementById('slider').oninput = e => { pausar(); mostrar(+e.target.value); };
+const playBtn = document.getElementById('play');
+function pausar(){ clearTimeout(timer); timer = null; playBtn.textContent = '▶'; }
+playBtn.onclick = () => { if (timer) pausar(); else { playBtn.textContent = '❚❚'; paso(); } };
+function cambiar(m){
+  modo = m; pausar();
+  document.getElementById('tMapa').classList.toggle('on', m==='mapa');
+  document.getElementById('tAemet').classList.toggle('on', m==='aemet');
+  document.getElementById('mapa').style.display = m==='mapa' ? '' : 'none';
+  document.getElementById('aemetRadar').style.display = m==='aemet' ? 'block' : 'none';
+  idx = total() - 1; prepararSlider(total()); mostrar(Math.max(0, idx));
+  document.getElementById('notaRadar').textContent = m==='mapa'
+    ? 'Mapa animado (RainViewer, no oficial). Últimas 2 h, cada 10 min. Círculo: 10 km alrededor de Rivas.'
+    : (aemetFrames.length ? `Radar regional de Madrid de AEMET (oficial). ${aemetFrames.length} imágenes guardadas.` : 'Aún no hay imágenes del radar de AEMET guardadas.');
+  if (m==='mapa') setTimeout(() => mapa.invalidateSize(), 50);
+  playBtn.textContent = '▶';
+}
+document.getElementById('tMapa').onclick = () => cambiar('mapa');
+document.getElementById('tAemet').onclick = () => cambiar('aemet');
+
+// ---------- Datos del vigilante ----------
+function nivelAlerta(a){ if (a.zona !== '722802') return 'madrid'; return a.rivas === 'no' ? 'corredor' : 'rivas'; }
+const ETQ = {rivas:'RIVAS', corredor:'CORREDOR', madrid:'MADRID'};
+
+function pintarAvisos(avisos){
+  const el = document.getElementById('avisos');
+  if (!avisos.length){ el.innerHTML = '<div class="vacio">✅ Sin avisos amarillos o superiores en la Comunidad de Madrid.</div>'; return; }
+  const orden = {rivas:0, corredor:1, madrid:2};
+  avisos.sort((a,b) => orden[nivelAlerta(a)] - orden[nivelAlerta(b)] || NIV[b.nivel]-NIV[a.nivel] || a.onset.localeCompare(b.onset));
+  el.innerHTML = avisos.map(a => {
+    const n = nivelAlerta(a);
+    const rv = a.zona === '722802' ? `<div class="peq">Rivas: ${esc(a.rivas_motivo || a.rivas || '')}</div>` : '';
+    return `<div class="aviso"><div class="barra b-${esc(a.nivel)}"></div><div>
+      <div class="tit"><span class="chip c-${n}">${ETQ[n]}</span>${esc(a.fenomeno)} · ${esc(a.nivel.toUpperCase())}</div>
+      <div class="peq">${esc(a.zona_nombre)} · ${esc(a.valor)} · prob. ${esc(a.probabilidad || '?')}</div>
+      <div class="peq">${fmtH(a.onset)} → ${fmtH(a.expires)}</div>${rv}</div></div>`;
+  }).join('');
+}
+
+function pintarRios(rios, fallos){
+  const el = document.getElementById('rios');
+  const lista = Object.entries(rios).map(([cod, r]) => ({cod, ...r}));
+  if (!lista.length){ el.innerHTML = '<div class="vacio">Sin datos de ríos todavía.</div>'; return; }
+  const orden = {rivas:0, corredor:1, madrid:2};
+  lista.sort((a,b) => (orden[a.grupo] ?? 3) - (orden[b.grupo] ?? 3) || b.nivel - a.nivel);
+  const est = ['Normalidad','Umbral amarillo','Umbral naranja','Umbral rojo'];
+  el.innerHTML = (fallos >= 3 ? '<div class="vacio">⚠️ El SAIH Tajo no responde: datos posiblemente antiguos.</div>' : '') + lista.map(r => {
+    const u = (r.umbrales || []).filter(x => x != null);
+    let pct = 50, marcas = '';
+    if (u.length === 3){
+      const min = u[0] - (u[2]-u[0]) * 1.2, max = u[2] + (u[2]-u[0]) * 0.25;
+      const p = v => Math.max(0, Math.min(100, (v - min) / (max - min) * 100));
+      pct = p(r.valor);
+      marcas = [['#f5c518',u[0]],['#F07D00',u[1]],['#e0263a',u[2]]].map(([c,v]) => `<div class="u" style="left:${p(v)}%;background:${c}"></div>`).join('');
+    }
+    const tend = /asc/i.test(r.tendencia) ? '↗' : /desc/i.test(r.tendencia) ? '↘' : '→';
+    return `<div class="rio"><div class="fila"><div><span class="chip c-${esc(r.grupo)}">${ETQ[r.grupo] || ''}</span><b>${esc(r.desc || r.nombre)}</b></div>
+      <div><b>${Number(r.valor).toFixed(2)} ${esc(r.unidad || 'm')}</b> ${tend}</div></div>
+      <div class="peq">${est[r.nivel] || ''}${u.length===3 ? ` · amarillo ${u[0].toFixed(2)} · naranja ${u[1].toFixed(2)} · rojo ${u[2].toFixed(2)}` : ''} · ${esc(r.cod)}</div>
+      <div class="medidor n${r.nivel}"><div class="nivel" style="width:${pct}%"></div>${marcas}</div></div>`;
+  }).join('');
+}
+
+function pintarPrevision(p){
+  const el = document.getElementById('prevision');
+  if (!p.length){ el.innerHTML = '<div class="vacio">Sin previsión (falta la clave de AEMET o no respondió).</div>'; return; }
+  const c = (v, a, b) => v == null ? '' : v >= b ? 'muyalto' : v >= a ? 'alto' : '';
+  el.innerHTML = `<table><thead><tr><th>Hora</th><th>Lluvia mm</th><th>Racha km/h</th><th>Tormenta %</th><th>Temp ºC</th></tr></thead><tbody>${
+    p.map(h => `<tr><td>${fmtH(h.hora)}</td>
+      <td class="${c(h.lluvia, 4, 10)}">${h.lluvia ?? ''}</td>
+      <td class="${c(h.racha, 50, 70)}">${h.racha ?? ''}</td>
+      <td class="${c(h.tormenta, 20, 50)}">${h.tormenta ?? ''}</td>
+      <td>${h.temp ?? ''}</td></tr>`).join('')}</tbody></table>`;
+}
+
+function estadoGeneral(d){
+  let max = 'normal';
+  const sube = n => { const o = {normal:0, madrid:1, corredor:2, rivas:3}; if (o[n] > o[max]) max = n; };
+  d.avisos.forEach(a => sube(nivelAlerta(a)));
+  Object.values(d.rios).forEach(r => { if (r.nivel > 0) sube(r.grupo); });
+  const el = document.getElementById('estado');
+  el.className = 'estado ' + max;
+  el.textContent = {normal:'✅ Sin alertas', madrid:'Alerta Madrid', corredor:'Alerta Corredor', rivas:'⚠️ ALERTA RIVAS'}[max];
+  document.title = (max === 'rivas' ? '⚠️ ' : '') + 'Alertas Rivas · Panel';
+}
+
+async function cargarDatos(){
+  try{
+    const r = await fetch('datos.json?t=' + Date.now(), {cache:'no-store'});
+    const d = await r.json();
+    const mins = Math.round((Date.now() - new Date(d.actualizado)) / 60000);
+    document.getElementById('meta').textContent = `Actualizado ${fmtH(d.actualizado)} (hace ${mins} min) · se refresca solo`;
+    document.getElementById('errores').innerHTML = mins > 40 ? '<p class="error">⚠️ Los datos tienen más de 40 minutos: el vigilante puede estar parado. Consulta las fuentes oficiales.</p>' : '';
+    pintarAvisos(d.avisos || []);
+    pintarRios(d.rios || {}, d.rios_fallos || 0);
+    pintarPrevision(d.prevision_rivas || []);
+    estadoGeneral(d);
+    aemetFrames = d.radar_aemet || [];
+    if (modo === 'aemet') cambiar('aemet');
+    document.getElementById('tAemet').style.display = aemetFrames.length ? '' : 'none';
+  }catch(e){
+    document.getElementById('errores').innerHTML = '<p class="error">No se pudieron cargar los datos del vigilante.</p>';
+  }
+}
+
+cargarDatos(); cargarRainViewer().then(() => { playBtn.textContent = '❚❚'; paso(); });
+setInterval(cargarDatos, 2*60*1000);
+setInterval(cargarRainViewer, 10*60*1000);
+</script>
+</body>
+</html>

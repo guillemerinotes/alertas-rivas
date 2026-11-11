@@ -78,7 +78,8 @@ def evaluar(aforos: list[dict], prev: dict) -> tuple[dict, list[dict]]:
         n_prev = int(p.get("nivel", 0))
         n = nivel_de(v, umbrales, n_prev)
         unidad = a.get("unidad", "m")
-        estado[cod] = {"nivel": n, "valor": v, "tendencia": a.get("tendencia", ""), "nombre": a.get("nombre", desc)}
+        estado[cod] = {"nivel": n, "valor": v, "tendencia": a.get("tendencia", ""), "nombre": a.get("nombre", desc),
+                       "desc": desc, "grupo": nivel_alerta, "umbrales": umbrales, "unidad": a.get("unidad", "m")}
         if n == n_prev:
             continue
         sube = n > n_prev
@@ -104,6 +105,6 @@ def evaluar(aforos: list[dict], prev: dict) -> tuple[dict, list[dict]]:
                         f"Estación {cod} · {a.get('nombre', '')} · Fuente: SAIH Tajo (datos provisionales)"),
             "priority": prioridad,
             "tags": [EMOJI[n], f"nivel-{nivel_alerta}", "evento-rio", "ocean"],
-            "click": SAIH_WEB,
+            "click": "https://guillemerinotes.github.io/alertas-rivas/",
         })
     return estado, mensajes

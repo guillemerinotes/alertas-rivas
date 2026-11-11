@@ -31,6 +31,7 @@ import rios
 TZ = ZoneInfo("Europe/Madrid")
 RSS_URL = "https://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAC72_RSS.xml"
 AEMET_AVISOS_WEB = "https://www.aemet.es/es/eltiempo/prediccion/avisos?k=mad"
+PANEL_URL = "https://guillemerinotes.github.io/alertas-rivas/"
 RIVAS_MUNICIPIO = "28123"
 OPENDATA_HORARIA = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/" + RIVAS_MUNICIPIO
 UA = {"User-Agent": "alertas-rivas/1.0 (+https://github.com/guillemerinotes/alertas-rivas)"}
@@ -402,7 +403,7 @@ def construir_mensaje(ev: dict, ahora: datetime) -> dict:
         "message": "\n".join(lineas),
         "priority": prioridad,
         "tags": tags,
-        "click": os.environ.get("PANEL_URL") or AEMET_AVISOS_WEB,
+        "click": os.environ.get("PANEL_URL") or PANEL_URL,
     }
 
 
@@ -487,9 +488,9 @@ def main() -> int:
     act = avisos_activos(caps, ahora)
 
     prev = st.get("avisos", {})
+    key = os.environ.get("AEMET_API_KEY", "").strip()
+    horas = descargar_prevision_rivas(key) if key else None
     if any(a["zona"] == ZONA_CORREDOR for a in act.values()):
-        key = os.environ.get("AEMET_API_KEY", "").strip()
-        horas = descargar_prevision_rivas(key) if key else None
         for k, a in act.items():
             if a["zona"] == ZONA_CORREDOR:
                 a["rivas"], a["rivas_motivo"] = confirmar_en_rivas(a, horas)
@@ -536,6 +537,11 @@ def main() -> int:
     if not hb or datetime.fromisoformat(hb) < ahora - timedelta(days=20):
         st["heartbeat"] = ahora.isoformat()  # mantiene el repo "activo" para que GitHub no pare el cron
     guardar_estado(st)
+    try:
+        import panel
+        panel.generar(st, horas, key, ahora, http_get)
+    except Exception as e:  # noqa: BLE001 - el panel nunca debe tumbar las alertas
+        print(f"[aviso] No se pudo generar el panel: {e}", file=sys.stderr)
     print(f"{len(act)} avisos activos, {len(mensajes)} notificaciones.")
     return 1 if fallos and fallos == len(mensajes) else 0
 
