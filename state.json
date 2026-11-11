@@ -56,8 +56,8 @@
    "nivel": "amarillo",
    "onset": "2026-11-11T15:00:00+01:00",
    "probabilidad": "40%-70%",
-   "rivas": "desconocido",
-   "rivas_motivo": "sin previsión de Rivas (falta la clave de AEMET o no respondió)",
+   "rivas": "no",
+   "rivas_motivo": "lluvia prevista en Rivas 17.2 mm (máx. 4.0 mm/h)",
    "valor": "15 mm",
    "zona": "722802",
    "zona_nombre": "Metropolitana y Henares"
@@ -73,8 +73,8 @@
    "nivel": "amarillo",
    "onset": "2026-11-11T12:00:00+01:00",
    "probabilidad": "40%-70%",
-   "rivas": "desconocido",
-   "rivas_motivo": "sin previsión de Rivas (falta la clave de AEMET o no respondió)",
+   "rivas": "no",
+   "rivas_motivo": "lluvia prevista en Rivas 17.8 mm (máx. 4.0 mm/h)",
    "valor": "40 mm",
    "zona": "722802",
    "zona_nombre": "Metropolitana y Henares"
@@ -90,8 +90,8 @@
    "nivel": "amarillo",
    "onset": "2026-11-11T18:00:00+01:00",
    "probabilidad": "40%-70%",
-   "rivas": "desconocido",
-   "rivas_motivo": "sin previsión de Rivas (falta la clave de AEMET o no respondió)",
+   "rivas": "no",
+   "rivas_motivo": "racha máx. prevista en Rivas 56 km/h",
    "valor": "80 km/h",
    "zona": "722802",
    "zona_nombre": "Metropolitana y Henares"
