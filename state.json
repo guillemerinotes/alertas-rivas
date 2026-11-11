@@ -145,70 +145,158 @@
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
  "rios": {
   "AR13": {
+   "desc": "Henares en Espinillo (Alcalá)",
+   "grupo": "corredor",
    "nivel": 0,
    "nombre": "HENARES EN ESPINILLO",
    "tendencia": "Descendente",
-   "valor": 0.632
+   "umbrales": [
+    1.3,
+    1.8,
+    2.3
+   ],
+   "unidad": "m",
+   "valor": 0.602
   },
   "AR15": {
+   "desc": "Tajuña en Armuña",
+   "grupo": "madrid",
    "nivel": 0,
    "nombre": "TAJUÑA EN ARMUÑA",
-   "tendencia": "Estable",
-   "valor": 0.857
+   "tendencia": "Descendente",
+   "umbrales": [
+    1.2,
+    1.7,
+    1.9
+   ],
+   "unidad": "m",
+   "valor": 0.852
   },
   "AR16": {
+   "desc": "Jarama en Valdepeñas de la Sierra",
+   "grupo": "madrid",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
    "tendencia": "Estable",
+   "umbrales": [
+    2.11,
+    3.11,
+    3.5
+   ],
+   "unidad": "m",
    "valor": 0.664
   },
   "AR17": {
+   "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
+   "grupo": "rivas",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
    "tendencia": "Descendente",
-   "valor": 1.036
+   "umbrales": [
+    1.27,
+    1.53,
+    1.75
+   ],
+   "unidad": "m",
+   "valor": 0.977
   },
   "AR18": {
+   "desc": "Manzanares en Rivas-Vaciamadrid",
+   "grupo": "rivas",
    "nivel": 1,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Ascendente",
-   "valor": 2.329
+   "tendencia": "Descendente",
+   "umbrales": [
+    1.92,
+    2.35,
+    2.66
+   ],
+   "unidad": "m",
+   "valor": 2.347
   },
   "MC02": {
+   "desc": "Jarama en San Fernando (aguas arriba de Rivas)",
+   "grupo": "rivas",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
    "tendencia": "Descendente",
-   "valor": 559.26
+   "umbrales": [
+    559.55,
+    560.34,
+    560.7
+   ],
+   "unidad": "m",
+   "valor": 559.14
   },
   "MC03": {
+   "desc": "Manzanares en Puente de San Fernando (Madrid)",
+   "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
    "tendencia": "Descendente",
-   "valor": 587.36
+   "umbrales": [
+    588.44,
+    588.9,
+    589.24
+   ],
+   "unidad": "m",
+   "valor": 587.341
   },
   "R018": {
+   "desc": "Manzanares en Colmenar Viejo",
+   "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
    "tendencia": "Estable",
+   "umbrales": [
+    1.0,
+    1.67,
+    2.23
+   ],
+   "unidad": "m",
    "valor": 0.25
   },
   "R051": {
+   "desc": "Jarama en Algete",
+   "grupo": "corredor",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
-   "valor": 0.581
+   "tendencia": "Descendente",
+   "umbrales": [
+    1.45,
+    1.82,
+    2.15
+   ],
+   "unidad": "m",
+   "valor": 0.579
   },
   "R061": {
+   "desc": "Henares en Humanes",
+   "grupo": "corredor",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
    "tendencia": "Descendente",
-   "valor": 0.676
+   "umbrales": [
+    1.71,
+    1.99,
+    2.23
+   ],
+   "unidad": "m",
+   "valor": 0.651
   },
   "R174": {
+   "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
+   "grupo": "corredor",
    "nivel": 0,
    "nombre": "JARAMA EN CIEMPOZUELOS - PUENTE TITULCIA",
    "tendencia": "Descendente",
-   "valor": 1.591
+   "umbrales": [
+    1.9,
+    2.3,
+    2.6
+   ],
+   "unidad": "m",
+   "valor": 1.583
   }
  },
  "rios_fallos": 0
