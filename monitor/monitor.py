@@ -242,6 +242,8 @@ def confirmar_en_rivas(aviso: dict, horas: list[dict] | None) -> tuple[str, str]
       'no'          -> la previsión de Rivas NO lo muestra (queda como Corredor)
       'desconocido' -> no hay datos para comprobarlo (se trata como Rivas por seguridad)
     """
+    if NIVELES.get(aviso["nivel"], 0) >= NIVELES["naranja"]:
+        return "si", f"aviso {aviso['nivel']} en la zona: se trata siempre como alerta de Rivas"
     if horas is None:
         return "desconocido", "sin previsión de Rivas (falta la clave de AEMET o no respondió)"
     ini = datetime.fromisoformat(aviso["onset"]) if aviso["onset"] else None
@@ -256,11 +258,11 @@ def confirmar_en_rivas(aviso: dict, horas: list[dict] | None) -> tuple[str, str]
 
     if "racha" in fen or "viento" in fen:
         m = max((d.get("racha") or 0) for d in ventana)
-        u = (umbral or 70) * 0.8
+        u = (umbral or 70) * 0.65
         return ("si" if m >= u else "no"), f"racha máx. prevista en Rivas {m:.0f} km/h"
     if "tormenta" in fen:
         m = max((d.get("prob_tormenta") or 0) for d in ventana)
-        return ("si" if m >= 30 else "no"), f"prob. de tormenta en Rivas {m:.0f} %"
+        return ("si" if m >= 20 else "no"), f"prob. de tormenta en Rivas {m:.0f} %"
     if "nieve" in fen or "nevada" in fen:
         m = sum((d.get("nieve") or 0) for d in ventana)
         return ("si" if m > 0 else "no"), f"nieve prevista en Rivas {m:.1f} mm"
@@ -270,9 +272,9 @@ def confirmar_en_rivas(aviso: dict, horas: list[dict] | None) -> tuple[str, str]
         u = umbral or 15
         texto = (aviso["fenomeno"] + " " + aviso["valor"]).lower()
         if "una hora" in texto or "1 hora" in texto or "1h" in texto or aviso["fen_cod"].upper() == "P1":
-            ok = m1 >= u * 0.5
+            ok = m1 >= u * 0.3
         else:
-            ok = total >= u * 0.5
+            ok = total >= u * 0.35
         return ("si" if ok else "no"), f"lluvia prevista en Rivas {total:.1f} mm (máx. {m1:.1f} mm/h)"
     if "máxima" in fen or "maxima" in fen:
         m = max((d.get("temp") or -99) for d in ventana)

@@ -71,7 +71,12 @@ class Pruebas(unittest.TestCase):
         metro["rivas"], _ = m.confirmar_en_rivas(metro, horas(racha=75))
         self.assertEqual(m.nivel_alerta(metro), "rivas")
         metro["rivas"], _ = m.confirmar_en_rivas(metro, horas(racha=30))
+        self.assertEqual(m.nivel_alerta(metro), "rivas")  # naranja en la zona -> siempre Rivas
+        metro["nivel"] = "amarillo"
+        metro["rivas"], _ = m.confirmar_en_rivas(metro, horas(racha=30))
         self.assertEqual(m.nivel_alerta(metro), "corredor")
+        metro["rivas"], _ = m.confirmar_en_rivas(metro, horas(racha=55))
+        self.assertEqual(m.nivel_alerta(metro), "rivas")
         metro["rivas"], _ = m.confirmar_en_rivas(metro, None)
         self.assertEqual(m.nivel_alerta(metro), "rivas")  # sin datos -> por seguridad, Rivas
 

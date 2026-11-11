@@ -7,7 +7,7 @@ Comunidad de Madrid, con tres niveles:
 |---|---|---|---|
 | **MADRID** | Aviso amarillo o superior en *Sierra de Madrid* o *Sur, Vegas y Oeste* | prioridad normal | notificación normal |
 | **CORREDOR** | Aviso en *Metropolitana y Henares* que la previsión de Rivas **no** confirma | prioridad alta | notificación fija hasta cerrarla |
-| **RIVAS** | Aviso en *Metropolitana y Henares* confirmado con la previsión horaria de AEMET para Rivas (28123), o sin datos para comprobarlo | prioridad máxima | ventana roja con alarma hasta pulsar ENTENDIDO |
+| **RIVAS** | Aviso NARANJA o ROJO en *Metropolitana y Henares* (siempre), o AMARILLO confirmado con la previsión horaria de AEMET para Rivas (28123), o sin datos para comprobarlo | prioridad máxima | ventana roja con alarma hasta pulsar ENTENDIDO |
 
 Avisa cuando un aviso **es nuevo** (hoy, mañana o pasado), **sube** o **baja** de nivel, **entra en vigor**,
 se **cancela**, o cambia su confirmación en Rivas.
