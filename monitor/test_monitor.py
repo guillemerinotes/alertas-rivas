@@ -136,5 +136,18 @@ class Pruebas(unittest.TestCase):
         self.assertEqual(m.confirmar_en_rivas(a, h)[0], "si")
 
 
+class PruebasAgrupar(unittest.TestCase):
+    def test_agrupa_por_nivel(self):
+        caps = [cap(zona=z, cod=c, fen=f) for z in ("722801", "722802", "722803")
+                for c, f in (("RM", "Rachas máximas"), ("P1", "Precipitación acumulada en una hora"))]
+        act = m.avisos_activos(caps, AHORA)
+        for a in act.values():
+            if a["zona"] == "722802":
+                a["rivas"], a["rivas_motivo"] = "desconocido", ""
+        msgs = m.agrupar([m.construir_mensaje(e, AHORA) for e in m.calcular_eventos({}, act, AHORA)])
+        self.assertEqual(len(msgs), 2)  # uno MADRID (4 avisos) y uno RIVAS (2 avisos)
+        self.assertEqual(sorted(x["priority"] for x in msgs), [3, 5])
+
+
 if __name__ == "__main__":
     unittest.main()

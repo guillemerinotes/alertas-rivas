@@ -268,7 +268,8 @@ def confirmar_en_rivas(aviso: dict, horas: list[dict] | None) -> tuple[str, str]
         total = sum((d.get("lluvia") or 0) for d in ventana)
         m1 = max((d.get("lluvia") or 0) for d in ventana)
         u = umbral or 15
-        if "1 hora" in aviso["valor"].lower() or "1h" in aviso["valor"].lower():
+        texto = (aviso["fenomeno"] + " " + aviso["valor"]).lower()
+        if "una hora" in texto or "1 hora" in texto or "1h" in texto or aviso["fen_cod"].upper() == "P1":
             ok = m1 >= u * 0.5
         else:
             ok = total >= u * 0.5
@@ -401,6 +402,34 @@ def construir_mensaje(ev: dict, ahora: datetime) -> dict:
     }
 
 
+def agrupar(mensajes: list[dict]) -> list[dict]:
+    """Si en una misma comprobación hay varias novedades del mismo nivel, las junta en una sola notificación."""
+    por_nivel: dict[str, list[dict]] = {}
+    for m in mensajes:
+        nivel = next((t[6:] for t in m["tags"] if t.startswith("nivel-")), "madrid")
+        por_nivel.setdefault(nivel, []).append(m)
+    res = []
+    for nivel in ("madrid", "corredor", "rivas"):
+        lista = por_nivel.get(nivel, [])
+        if len(lista) <= 1:
+            res.extend(lista)
+            continue
+        etiqueta = {"madrid": "MADRID", "corredor": "CORREDOR DEL HENARES", "rivas": "⚠️ RIVAS"}[nivel]
+        cuerpo = "\n\n".join(f"• {m['title']}\n{m['message']}" for m in lista)
+        if len(cuerpo) > 3800:
+            cuerpo = cuerpo[:3800] + "\n…"
+        prioridad = max(m["priority"] for m in lista)
+        top = max(lista, key=lambda m: m["priority"])
+        res.append({
+            "title": f"{etiqueta} · {len(lista)} novedades en avisos AEMET",
+            "message": cuerpo,
+            "priority": prioridad,
+            "tags": [top["tags"][0], f"nivel-{nivel}", "evento-varios"],
+            "click": top["click"],
+        })
+    return res
+
+
 def enviar_ntfy(topic: str, msg: dict, server: str = "https://ntfy.sh") -> None:
     body = json.dumps({"topic": topic, **msg}).encode("utf-8")
     req = urllib.request.Request(server, data=body, method="POST",
@@ -468,9 +497,9 @@ def main() -> int:
     eventos = calcular_eventos(prev, act, ahora)
     orden = {"madrid": 0, "corredor": 1, "rivas": 2}
     eventos.sort(key=lambda e: orden[nivel_alerta(e["aviso"])])
+    mensajes = agrupar([construir_mensaje(ev, ahora) for ev in eventos])
     fallos = 0
-    for ev in eventos:
-        msg = construir_mensaje(ev, ahora)
+    for msg in mensajes:
         print(f"-> {msg['title']}")
         try:
             enviar_ntfy(topic, msg)
@@ -484,7 +513,7 @@ def main() -> int:
         st["heartbeat"] = ahora.isoformat()  # mantiene el repo "activo" para que GitHub no pare el cron
     guardar_estado(st)
     print(f"{len(act)} avisos activos, {len(eventos)} notificaciones.")
-    return 1 if fallos and fallos == len(eventos) else 0
+    return 1 if fallos and fallos == len(mensajes) else 0
 
 
 if __name__ == "__main__":
