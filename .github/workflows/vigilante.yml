@@ -1,0 +1,49 @@
+name: Vigilante AEMET
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # cada 10 min (GitHub puede retrasarlo unos minutos)
+  workflow_dispatch:
+    inputs:
+      prueba:
+        description: "Enviar 3 notificaciones de prueba (Madrid, Corredor, Rivas)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vigilante
+  cancel-in-progress: false
+
+jobs:
+  vigilar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Comprobar avisos
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
+          PANEL_URL: ${{ vars.PANEL_URL }}
+          MODO_PRUEBA: ${{ inputs.prueba && '1' || '0' }}
+        run: python monitor/monitor.py
+
+      - name: Guardar estado
+        if: ${{ !inputs.prueba }}
+        run: |
+          if [ -n "$(git status --porcelain state.json)" ]; then
+            git config user.name "vigilante-aemet"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state.json
+            git commit -m "Actualizar estado de avisos"
+            git pull --rebase origin "${GITHUB_REF_NAME}" || true
+            git push
+          fi
