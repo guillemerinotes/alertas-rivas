@@ -6,6 +6,8 @@ New-Item -ItemType Directory -Force -Path $Dir | Out-Null
 Write-Host ''
 Write-Host '=== Instalación de Alertas Rivas ===' -ForegroundColor Cyan
 $topic = $args[0]
+$archivoCanal = Join-Path $PSScriptRoot 'canal.txt'
+if (-not $topic -and (Test-Path $archivoCanal)) { $topic = (Get-Content $archivoCanal -Raw).Trim() }
 if (-not $topic) { $topic = Read-Host 'Pega el nombre del canal de ntfy (el mismo que en el móvil)' }
 $topic = $topic.Trim()
 if ($topic -notmatch '^[A-Za-z0-9_-]{6,64}$') { throw 'El nombre del canal no es válido.' }
