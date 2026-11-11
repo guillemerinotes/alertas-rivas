@@ -9,6 +9,10 @@ on:
         description: "Enviar 3 notificaciones de prueba (Madrid, Corredor, Rivas)"
         type: boolean
         default: false
+      resumen:
+        description: "Enviar además un resumen de la situación actual"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -46,6 +50,7 @@ jobs:
           AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
           PANEL_URL: ${{ vars.PANEL_URL }}
           MODO_PRUEBA: ${{ inputs.prueba && '1' || '0' }}
+          MODO_RESUMEN: ${{ inputs.resumen && '1' || '0' }}
         run: python monitor/monitor.py
 
       - name: Guardar estado

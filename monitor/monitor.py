@@ -435,6 +435,53 @@ def agrupar(mensajes: list[dict]) -> list[dict]:
     return res
 
 
+def resumen(act: dict, rios_st: dict, horas, ahora: datetime) -> dict:
+    """Notificación con la situación actual completa (se pide a mano)."""
+    orden = {"rivas": 0, "corredor": 1, "madrid": 2}
+    peor = "normal"
+    lineas = [f"Situación a las {ahora.astimezone(TZ):%H:%M} del {ahora.astimezone(TZ):%d/%m}"]
+    lineas.append("")
+    lineas.append("AVISOS AEMET:")
+    if not act:
+        lineas.append("• Sin avisos amarillos o superiores en la Comunidad de Madrid")
+    for a in sorted(act.values(), key=lambda a: (orden[nivel_alerta(a)], -NIVELES[a["nivel"]])):
+        n = nivel_alerta(a)
+        if orden[n] < orden.get(peor, 3):
+            peor = n
+        extra = f" — Rivas: {a.get('rivas_motivo', '')}" if a["zona"] == ZONA_CORREDOR else ""
+        lineas.append(f"• [{n.upper()}] {a['nivel'].upper()} {a['fenomeno']} {a['valor']} · {a['zona_nombre']} · "
+                      f"{_hora(a['onset'])}–{_hora(a['expires'])}{extra}")
+    lineas.append("")
+    lineas.append("RÍOS (SAIH Tajo):")
+    nombres = {0: "normal", 1: "AMARILLO", 2: "NARANJA", 3: "ROJO"}
+    rl = sorted(rios_st.items(), key=lambda kv: (orden.get(kv[1].get("grupo"), 3), -kv[1].get("nivel", 0)))
+    for cod, r in rl:
+        if r.get("grupo") == "madrid" and r.get("nivel", 0) == 0:
+            continue
+        if r.get("nivel", 0) > 0 and orden.get(r.get("grupo"), 3) < orden.get(peor, 3):
+            peor = r.get("grupo")
+        u = r.get("umbrales") or []
+        ut = f" (amar. {u[0]:.2f} / nar. {u[1]:.2f})" if len(u) >= 2 and u[0] and u[1] else ""
+        lineas.append(f"• {r.get('desc', cod)}: {r['valor']:.2f} m {nombres.get(r.get('nivel', 0))}, "
+                      f"{(r.get('tendencia') or '').lower()}{ut}")
+    if horas:
+        prox = [h for h in horas if ahora <= h["hora"] <= ahora + timedelta(hours=12)]
+        if prox:
+            lluvia = sum(h.get("lluvia") or 0 for h in prox)
+            racha = max((h.get("racha") or 0) for h in prox)
+            torm = max((h.get("prob_tormenta") or 0) for h in prox)
+            lineas += ["", f"RIVAS próximas 12 h (AEMET): lluvia {lluvia:.1f} mm · racha máx. {racha:.0f} km/h · "
+                           f"tormenta {torm:.0f} %"]
+    etiqueta = {"rivas": "⚠️ RIVAS", "corredor": "CORREDOR", "madrid": "MADRID", "normal": "SIN ALERTAS"}[peor]
+    return {
+        "title": f"RESUMEN · {etiqueta} · situación actual",
+        "message": "\n".join(lineas)[:3900],
+        "priority": 3,
+        "tags": ["clipboard", f"nivel-{'madrid' if peor == 'normal' else peor}", "evento-resumen"],
+        "click": PANEL_URL,
+    }
+
+
 def enviar_ntfy(topic: str, msg: dict, server: str = "https://ntfy.sh") -> None:
     body = json.dumps({"topic": topic, **msg}).encode("utf-8")
     req = urllib.request.Request(server, data=body, method="POST",
@@ -523,6 +570,8 @@ def main() -> int:
                              "tags": ["warning", "nivel-madrid", "evento-sistema"], "click": rios.SAIH_WEB})
 
     mensajes = agrupar(mensajes)
+    if os.environ.get("MODO_RESUMEN") == "1":
+        mensajes.append(resumen(act, st.get("rios", {}), horas, ahora))
     fallos = 0
     for msg in mensajes:
         print(f"-> {msg['title']}")
