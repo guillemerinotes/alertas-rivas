@@ -130,7 +130,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.77
+   "valor": 0.765
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -158,13 +158,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.741
+   "valor": 0.737
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -186,7 +186,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.367
+   "valor": 587.36
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -214,13 +214,13 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.855
+   "valor": 0.856
   },
   "R061": {
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -228,7 +228,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.713
+   "valor": 0.711
   }
  },
  "rios_fallos": 0,
