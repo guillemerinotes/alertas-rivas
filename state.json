@@ -130,7 +130,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.754
+   "valor": 0.752
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -158,7 +158,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.726
+   "valor": 0.727
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -172,13 +172,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.918
+   "valor": 558.92
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -186,13 +186,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.357
+   "valor": 587.351
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -206,7 +206,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -228,7 +228,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.709
+   "valor": 0.708
   }
  },
  "rios_fallos": 0,
