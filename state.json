@@ -8,7 +8,7 @@
    "grupo": "corredor",
    "nivel": 0,
    "nombre": "HENARES EN ESPINILLO",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.3,
     1.8,
@@ -43,14 +43,14 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 1.403
+   "valor": 1.376
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
    "grupo": "rivas",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.27,
     1.53,
@@ -62,16 +62,16 @@
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "grupo": "rivas",
-   "nivel": 3,
+   "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "umbrales": [
     1.92,
     2.35,
     2.66
    ],
    "unidad": "m",
-   "valor": 4.295
+   "valor": 0.916
   },
   "MC02": {
    "desc": "Jarama en San Fernando (aguas arriba de Rivas)",
@@ -85,7 +85,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.942
+   "valor": 558.929
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -99,7 +99,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.525
+   "valor": 587.521
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -127,7 +127,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.71
+   "valor": 0.713
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -141,7 +141,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.712
+   "valor": 0.721
   },
   "R174": {
    "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
@@ -155,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 2.119
+   "valor": 2.113
   }
  },
  "rios_fallos": 0
