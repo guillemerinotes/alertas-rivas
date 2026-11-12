@@ -1,6 +1,31 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
+ "incendios": {
+  "archivos": [
+   "down_20261111_peligro_c_D00.qml",
+   "down_20261111_peligro_c_D00.sld",
+   "down_20261111_peligro_c_D00.tif",
+   "down_20261111_peligro_c_D01.qml",
+   "down_20261111_peligro_c_D01.sld",
+   "down_20261111_peligro_c_D01.tif",
+   "down_20261111_peligro_c_D02.qml",
+   "down_20261111_peligro_c_D02.sld",
+   "down_20261111_peligro_c_D02.tif",
+   "down_20261111_peligro_c_D03.qml",
+   "down_20261111_peligro_c_D03.sld",
+   "down_20261111_peligro_c_D03.tif"
+  ],
+  "clase": 0,
+  "dias": {
+   "2026-11-11": "bajo"
+  },
+  "fecha": "2026-11-12",
+  "hoy": "",
+  "manana": "",
+  "nivel": 0,
+  "nivel_manana": 0
+ },
  "noticias": {
   "recientes": [
    {
@@ -193,8 +218,7 @@
  "rios_fallos": 0,
  "salud": {
   "AEMET avisos": 0,
-  "AEMET incendios": 2,
-  "AEMET incendios · último error": "ValueError: unconverted data remains: 1",
+  "AEMET incendios": 0,
   "IGN terremotos": 0,
   "Noticias": 0,
   "SAIH Tajo": 0
