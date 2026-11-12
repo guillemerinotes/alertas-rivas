@@ -1,16 +1,12 @@
 """
-Vigilante de avisos AEMET para la Comunidad de Madrid, el Corredor del Henares y Rivas-Vaciamadrid.
+RIV-Alert · Vigilante de emergencias que pueden afectar a Rivas-Vaciamadrid.
 
-Se ejecuta cada pocos minutos en GitHub Actions:
-  1. Descarga el estado completo de avisos de AEMET para la Comunidad de Madrid (CAP, sin clave).
-  2. Clasifica cada aviso en tres niveles:
-       - MADRID   -> zonas Sierra de Madrid y Sur, Vegas y Oeste
-       - CORREDOR -> zona Metropolitana y Henares, sin confirmar en Rivas
-       - RIVAS    -> zona Metropolitana y Henares y confirmado con la previsión horaria de AEMET
-                     para Rivas (municipio 28123). Si no hay clave o datos, se trata como RIVAS
-                     por seguridad ("sin confirmar").
-  3. Compara con el estado anterior (state.json) y envía a ntfy:
-       nuevo, sube de nivel, baja de nivel, entra en vigor, cancelado, cambio de confirmación en Rivas.
+Cada ejecución (cron-job.org la lanza cada 10 min en GitHub Actions):
+  1. AEMET Meteoalerta: avisos de la zona Metropolitana y Henares (722802), la de Rivas. Todos los fenómenos.
+  2. SAIH Tajo: ríos en Rivas y aguas arriba (rios.py).
+  3. IGN: terremotos cerca de Rivas (sismos.py).
+  4. AEMET: riesgo meteorológico de incendio forestal en Rivas (incendios.py).
+El nivel de RIV-Alert es el color oficial: amarillo = notificación, naranja = alerta media, rojo = alerta máxima.
 """
 from __future__ import annotations
 
@@ -24,89 +20,63 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
-import rios
+import comun
+from comun import NIVELES, TZ, http_get, hora, cuando, mensaje
 
-TZ = ZoneInfo("Europe/Madrid")
 RSS_URL = "https://www.aemet.es/documentos_d/eltiempo/prediccion/avisos/rss/CAP_AFAC72_RSS.xml"
-AEMET_AVISOS_WEB = "https://www.aemet.es/es/eltiempo/prediccion/avisos?k=mad"
-PANEL_URL = "https://guillemerinotes.github.io/alertas-rivas/"
-RIVAS_MUNICIPIO = "28123"
-OPENDATA_HORARIA = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/" + RIVAS_MUNICIPIO
-UA = {"User-Agent": "alertas-rivas/1.0 (+https://github.com/guillemerinotes/alertas-rivas)"}
-
-ZONA_CORREDOR = "722802"
-ZONAS = {
-    "722801": "Sierra de Madrid",
-    "722802": "Metropolitana y Henares",
-    "722803": "Sur, Vegas y Oeste",
-}
-NIVELES = {"amarillo": 1, "naranja": 2, "rojo": 3}
-NIVEL_EMOJI = {"amarillo": "yellow_circle", "naranja": "orange_circle", "rojo": "red_circle"}
+OPENDATA_HORARIA = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/28123"
+ZONA_RIVAS = "722802"
+ZONA_NOMBRE = "Metropolitana y Henares"
 CAP_NS = {"cap": "urn:oasis:names:tc:emergency:cap:1.2"}
+PANEL_URL = comun.PANEL_URL
 
 ROOT = Path(__file__).resolve().parent.parent
 STATE_FILE = ROOT / "state.json"
 
 
-# ---------------------------------------------------------------- descarga
-
-def http_get(url: str, headers: dict | None = None, timeout: int = 30) -> bytes:
-    req = urllib.request.Request(url, headers={**UA, **(headers or {})})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read()
-
+# ======================================================================= AEMET avisos
 
 def descargar_caps() -> list[bytes]:
-    """Devuelve el contenido XML de todos los avisos CAP activos de la Comunidad de Madrid."""
     rss = ET.fromstring(http_get(RSS_URL))
     links = [(i.findtext("link") or "").strip() for i in rss.iter("item")]
     tar_links = [l for l in links if l.endswith(".tar.gz")]
     if tar_links:
-        data = http_get(tar_links[0])
         caps = []
-        with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as tar:
+        with tarfile.open(fileobj=io.BytesIO(http_get(tar_links[0])), mode="r:gz") as tar:
             for m in tar.getmembers():
                 if m.isfile() and m.name.lower().endswith(".xml"):
                     f = tar.extractfile(m)
                     if f:
                         caps.append(f.read())
         return caps
-    # Plan B: descargar cada CAP por separado
     return [http_get(l) for l in links if l.endswith(".xml")]
 
 
-# ---------------------------------------------------------------- parseo CAP
-
-def _param(info: ET.Element, name: str) -> str:
+def _param(info, name):
     for p in info.findall("cap:parameter", CAP_NS):
         if (p.findtext("cap:valueName", "", CAP_NS) or "").strip() == name:
             return (p.findtext("cap:value", "", CAP_NS) or "").strip()
     return ""
 
 
-def _dt(s: str | None) -> datetime | None:
-    if not s:
-        return None
+def _dt(s):
     try:
-        return datetime.fromisoformat(s.strip())
+        return datetime.fromisoformat(s.strip()) if s else None
     except ValueError:
         return None
 
 
 def parse_cap(xml: bytes) -> list[dict]:
-    """Un CAP de AEMET -> lista de avisos (uno por zona) con la info en español."""
     root = ET.fromstring(xml)
-    msg_type = root.findtext("cap:msgType", "", CAP_NS).strip()
+    msg_type = (root.findtext("cap:msgType", "", CAP_NS) or "").strip()
     infos = root.findall("cap:info", CAP_NS)
     info = next((i for i in infos if (i.findtext("cap:language", "", CAP_NS) or "").lower().startswith("es")),
                 infos[0] if infos else None)
     if info is None:
         return []
     nivel = _param(info, "AEMET-Meteoalerta nivel").lower()
-    parametro = _param(info, "AEMET-Meteoalerta parametro")  # p.ej. "TA;Temperatura máxima;36 ºC"
-    partes = [p.strip() for p in parametro.split(";")]
+    partes = [p.strip() for p in _param(info, "AEMET-Meteoalerta parametro").split(";")]
     fen_cod = partes[0] if partes and partes[0] else ""
     fen_nombre = partes[1] if len(partes) > 1 else (info.findtext("cap:event", "", CAP_NS) or "").strip()
     valor = partes[2] if len(partes) > 2 else ""
@@ -121,29 +91,21 @@ def parse_cap(xml: bytes) -> list[dict]:
             if "zona" in (g.findtext("cap:valueName", "", CAP_NS) or "").lower():
                 zona = (g.findtext("cap:value", "", CAP_NS) or "").strip()
         desc = (area.findtext("cap:areaDesc", "", CAP_NS) or "").strip()
-        if not zona:
-            zona = next((k for k, v in ZONAS.items() if v.lower() == desc.lower()), "")
-        if zona not in ZONAS:
+        if not zona and desc.lower() == ZONA_NOMBRE.lower():
+            zona = ZONA_RIVAS
+        if zona != ZONA_RIVAS:
             continue
         out.append({
-            "zona": zona,
-            "zona_nombre": ZONAS[zona],
-            "nivel": nivel,
-            "msg_type": msg_type,
-            "fen_cod": fen_cod,
-            "fenomeno": fen_nombre,
-            "valor": valor,
+            "zona": zona, "zona_nombre": ZONA_NOMBRE, "nivel": nivel, "msg_type": msg_type,
+            "fen_cod": fen_cod, "fenomeno": fen_nombre, "valor": valor,
             "probabilidad": _param(info, "AEMET-Meteoalerta probabilidad"),
-            "headline": (info.findtext("cap:headline", "", CAP_NS) or "").strip(),
             "descripcion": (info.findtext("cap:description", "", CAP_NS) or "").strip(),
-            "onset": onset.isoformat() if onset else "",
-            "expires": expires.isoformat() if expires else "",
+            "onset": onset.isoformat() if onset else "", "expires": expires.isoformat() if expires else "",
         })
     return out
 
 
 def clave_aviso(a: dict) -> str:
-    """Mismo fenómeno, misma zona y mismo día de inicio = mismo aviso (aunque AEMET lo actualice)."""
     dia = datetime.fromisoformat(a["onset"]).astimezone(TZ).date().isoformat() if a["onset"] else "?"
     return f"{a['zona']}|{a['fen_cod']}|{dia}"
 
@@ -161,58 +123,51 @@ def avisos_activos(caps: list[bytes], ahora: datetime) -> dict[str, dict]:
             if a["expires"] and datetime.fromisoformat(a["expires"]) <= ahora:
                 continue
             k = clave_aviso(a)
-            # si hay varios tramos del mismo aviso ese día, nos quedamos con el nivel más alto
-            # y con la ventana completa
             if k in res:
-                prev = res[k]
-                if NIVELES[a["nivel"]] > NIVELES[prev["nivel"]]:
-                    prev.update({x: a[x] for x in ("nivel", "valor", "headline", "descripcion", "probabilidad")})
-                prev["onset"] = min(prev["onset"], a["onset"]) if prev["onset"] and a["onset"] else prev["onset"] or a["onset"]
-                prev["expires"] = max(prev["expires"], a["expires"])
+                p = res[k]
+                if NIVELES[a["nivel"]] > NIVELES[p["nivel"]]:
+                    p.update({x: a[x] for x in ("nivel", "valor", "descripcion", "probabilidad")})
+                p["onset"] = min(p["onset"], a["onset"]) if p["onset"] and a["onset"] else p["onset"] or a["onset"]
+                p["expires"] = max(p["expires"], a["expires"])
             else:
                 res[k] = a
     return res
 
 
-# ---------------------------------------------------------------- confirmación en Rivas
+# ======================================================================= previsión de Rivas (dato informativo)
 
-def _num(s) -> float | None:
-    if s is None:
-        return None
-    m = re.search(r"-?\d+(?:[.,]\d+)?", str(s))
+def _num(s):
+    m = re.search(r"-?\d+(?:[.,]\d+)?", str(s)) if s is not None else None
     return float(m.group().replace(",", ".")) if m else None
 
 
-def descargar_prevision_rivas(api_key: str) -> list[dict] | None:
-    """Previsión horaria de AEMET OpenData para Rivas. Devuelve lista de horas o None si falla."""
+def descargar_prevision_rivas(api_key: str):
     try:
         meta = json.loads(http_get(OPENDATA_HORARIA, headers={"api_key": api_key}))
-        url = meta.get("datos")
-        if not url:
+        if not meta.get("datos"):
             return None
-        raw = http_get(url)
+        raw = http_get(meta["datos"])
         try:
             datos = json.loads(raw.decode("utf-8"))
         except UnicodeDecodeError:
             datos = json.loads(raw.decode("latin-1"))
         return horas_desde_prevision(datos)
-    except Exception as e:  # noqa: BLE001 - la confirmación nunca debe tumbar el vigilante
-        print(f"[aviso] No se pudo descargar la previsión de Rivas: {e}", file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        print(f"[aviso] previsión de Rivas: {e}", file=sys.stderr)
         return None
 
 
 def horas_desde_prevision(datos) -> list[dict]:
-    """Aplana la previsión horaria de AEMET a una lista {hora, lluvia, racha, nieve, temp, prob_tormenta}."""
     horas: dict[datetime, dict] = {}
-    tormentas: list[tuple[datetime, datetime, float]] = []
+    tormentas = []
     pred = datos[0]["prediccion"]["dia"] if isinstance(datos, list) else datos["prediccion"]["dia"]
     for dia in pred:
         fecha = datetime.fromisoformat(dia["fecha"][:10]).replace(tzinfo=TZ)
 
-        def h(periodo: str) -> datetime:
-            return fecha + timedelta(hours=int(periodo[:2]))
+        def h(p):
+            return fecha + timedelta(hours=int(p[:2]))
 
-        def slot(t: datetime) -> dict:
+        def slot(t):
             return horas.setdefault(t, {"hora": t})
 
         for x in dia.get("precipitacion", []):
@@ -222,15 +177,13 @@ def horas_desde_prevision(datos) -> list[dict]:
         for x in dia.get("temperatura", []):
             slot(h(x["periodo"]))["temp"] = _num(x.get("value"))
         for x in dia.get("vientoAndRachaMax", []):
-            if "value" in x and "periodo" in x:  # las entradas con 'value' son las rachas máximas
-                v = _num(x.get("value"))
-                if v is not None:
-                    slot(h(x["periodo"]))["racha"] = v
+            if "value" in x and "periodo" in x and _num(x.get("value")) is not None:
+                slot(h(x["periodo"]))["racha"] = _num(x.get("value"))
         for x in dia.get("probTormenta", []):
             p = str(x.get("periodo", ""))
             if len(p) == 4:
-                ini = h(p[:2])
-                fin = fecha + timedelta(hours=int(p[2:])) if int(p[2:]) > int(p[:2]) else fecha + timedelta(days=1, hours=int(p[2:]))
+                ini, fin_h = h(p[:2]), int(p[2:])
+                fin = fecha + timedelta(hours=fin_h) if fin_h > int(p[:2]) else fecha + timedelta(days=1, hours=fin_h)
                 tormentas.append((ini, fin, _num(x.get("value")) or 0.0))
     lista = sorted(horas.values(), key=lambda d: d["hora"])
     for d in lista:
@@ -238,282 +191,159 @@ def horas_desde_prevision(datos) -> list[dict]:
     return lista
 
 
-def confirmar_en_rivas(aviso: dict, horas: list[dict] | None) -> tuple[str, str]:
-    """
-    Devuelve (estado, motivo) con estado:
-      'si'          -> la previsión de Rivas muestra el fenómeno
-      'no'          -> la previsión de Rivas NO lo muestra (queda como Corredor)
-      'desconocido' -> no hay datos para comprobarlo (se trata como Rivas por seguridad)
-    """
-    if NIVELES.get(aviso["nivel"], 0) >= NIVELES["naranja"]:
-        return "si", f"aviso {aviso['nivel']} en la zona: se trata siempre como alerta de Rivas"
-    if horas is None:
-        return "desconocido", "sin previsión de Rivas (falta la clave de AEMET o no respondió)"
+def prevision_en_rivas(aviso: dict, horas) -> str:
+    """Texto informativo: qué prevé AEMET para el municipio de Rivas en la ventana del aviso."""
+    if not horas:
+        return ""
     ini = datetime.fromisoformat(aviso["onset"]) if aviso["onset"] else None
     fin = datetime.fromisoformat(aviso["expires"]) if aviso["expires"] else None
-    ventana = [d for d in horas if (ini is None or d["hora"] >= ini - timedelta(hours=1))
-               and (fin is None or d["hora"] <= fin)]
-    if not ventana:
-        return "desconocido", "la previsión horaria de Rivas aún no llega a esas horas"
-
+    v = [d for d in horas if (ini is None or d["hora"] >= ini - timedelta(hours=1)) and (fin is None or d["hora"] <= fin)]
+    if not v:
+        return ""
     fen = (aviso["fenomeno"] + " " + aviso["fen_cod"]).lower()
-    umbral = _num(aviso["valor"])
-
     if "racha" in fen or "viento" in fen:
-        m = max((d.get("racha") or 0) for d in ventana)
-        u = (umbral or 70) * 0.65
-        return ("si" if m >= u else "no"), f"racha máx. prevista en Rivas {m:.0f} km/h"
+        return f"racha máx. {max((d.get('racha') or 0) for d in v):.0f} km/h"
     if "tormenta" in fen:
-        m = max((d.get("prob_tormenta") or 0) for d in ventana)
-        return ("si" if m >= 20 else "no"), f"prob. de tormenta en Rivas {m:.0f} %"
+        return f"prob. de tormenta {max((d.get('prob_tormenta') or 0) for d in v):.0f} %"
     if "nieve" in fen or "nevada" in fen:
-        m = sum((d.get("nieve") or 0) for d in ventana)
-        return ("si" if m > 0 else "no"), f"nieve prevista en Rivas {m:.1f} mm"
+        return f"nieve {sum((d.get('nieve') or 0) for d in v):.1f} cm"
     if "lluvia" in fen or "precipit" in fen:
-        total = sum((d.get("lluvia") or 0) for d in ventana)
-        m1 = max((d.get("lluvia") or 0) for d in ventana)
-        u = umbral or 15
-        texto = (aviso["fenomeno"] + " " + aviso["valor"]).lower()
-        if "una hora" in texto or "1 hora" in texto or "1h" in texto or aviso["fen_cod"].upper() == "P1":
-            ok = m1 >= u * 0.3
-        else:
-            ok = total >= u * 0.35
-        return ("si" if ok else "no"), f"lluvia prevista en Rivas {total:.1f} mm (máx. {m1:.1f} mm/h)"
+        tot = sum((d.get("lluvia") or 0) for d in v)
+        return f"lluvia {tot:.1f} mm en total, máx. {max((d.get('lluvia') or 0) for d in v):.1f} mm/h"
     if "máxima" in fen or "maxima" in fen:
-        m = max((d.get("temp") or -99) for d in ventana)
-        u = (umbral or 36) - 1
-        return ("si" if m >= u else "no"), f"temp. máx. prevista en Rivas {m:.0f} ºC"
+        return f"temp. máx. {max((d.get('temp') or -99) for d in v):.0f} ºC"
     if "mínima" in fen or "minima" in fen:
-        m = min((d.get("temp") if d.get("temp") is not None else 99) for d in ventana)
-        u = (umbral if umbral is not None else -4) + 1
-        return ("si" if m <= u else "no"), f"temp. mín. prevista en Rivas {m:.0f} ºC"
-    # niebla, polvo, deshielo, etc.: la previsión municipal no lo permite comprobar
-    return "desconocido", "este fenómeno no se puede comprobar con la previsión municipal"
+        return f"temp. mín. {min((d['temp'] if d.get('temp') is not None else 99) for d in v):.0f} ºC"
+    return ""
 
 
-def nivel_alerta(aviso: dict) -> str:
-    if aviso["zona"] != ZONA_CORREDOR:
-        return "madrid"
-    return "corredor" if aviso.get("rivas") == "no" else "rivas"
+# ======================================================================= eventos AEMET
 
+def eventos_aemet(prev: dict, act: dict, ahora: datetime) -> list[dict]:
+    msgs = []
 
-# ---------------------------------------------------------------- eventos
+    def cuerpo(a):
+        l = [f"Zona AEMET: {a['zona_nombre']} (la de Rivas)"]
+        if a["valor"]:
+            l.append(f"Umbral del aviso: {a['valor']}")
+        l.append(f"Desde {hora(a['onset'])} hasta {hora(a['expires'])}")
+        if a.get("probabilidad"):
+            l.append(f"Probabilidad: {a['probabilidad']}")
+        if a.get("rivas"):
+            l.append(f"Previsión AEMET para Rivas: {a['rivas']}")
+        if a.get("descripcion"):
+            l.append(a["descripcion"])
+        return "\n".join(l)
 
-def calcular_eventos(prev: dict, act: dict, ahora: datetime) -> list[dict]:
-    eventos = []
     for k, a in act.items():
         p = prev.get(k)
+        n = NIVELES[a["nivel"]]
+        fen = a["fenomeno"] or "Fenómeno adverso"
         en_vigor = bool(a["onset"]) and datetime.fromisoformat(a["onset"]) <= ahora
         a["en_vigor_notificado"] = p.get("en_vigor_notificado", False) if p else False
         if p is None:
-            eventos.append({"tipo": "nuevo", "aviso": a})
-            if en_vigor:
-                a["en_vigor_notificado"] = True
+            msgs.append(mensaje(n, f"{fen} · {cuando(a['onset'], ahora)}", cuerpo(a), extra_tags=["evento-nuevo"]))
+            a["en_vigor_notificado"] = en_vigor
             continue
-        dn = NIVELES[a["nivel"]] - NIVELES[p["nivel"]]
+        dn = n - NIVELES[p["nivel"]]
         if dn > 0:
-            eventos.append({"tipo": "sube", "aviso": a, "antes": p["nivel"]})
+            msgs.append(mensaje(n, f"SUBE · {fen} · {cuando(a['onset'], ahora)}", cuerpo(a), extra_tags=["evento-sube"]))
         elif dn < 0:
-            eventos.append({"tipo": "baja", "aviso": a, "antes": p["nivel"]})
-        elif a["zona"] == ZONA_CORREDOR and nivel_alerta(a) != nivel_alerta(p):
-            eventos.append({"tipo": "confirmacion", "aviso": a, "antes_nivel_alerta": nivel_alerta(p)})
+            msgs.append(mensaje(n, f"Baja · {fen} · {cuando(a['onset'], ahora)}", cuerpo(a), sube=False,
+                                extra_tags=["evento-baja"]))
         if en_vigor and not a["en_vigor_notificado"]:
-            eventos.append({"tipo": "en_vigor", "aviso": a})
+            msgs.append(mensaje(n, f"EN VIGOR AHORA · {fen}", cuerpo(a), extra_tags=["evento-en-vigor"]))
             a["en_vigor_notificado"] = True
     for k, p in prev.items():
         if k in act:
             continue
         exp = datetime.fromisoformat(p["expires"]) if p.get("expires") else None
         if exp is None or exp > ahora:
-            eventos.append({"tipo": "cancelado", "aviso": p})
-        # si simplemente ha caducado, no molestamos
-    return eventos
+            msgs.append(mensaje(0, f"AEMET retira el aviso · {p['fenomeno']} {p['nivel']}",
+                                f"El aviso {p['nivel']} de {p['fenomeno']} ({p['valor']}) ya no está activo.",
+                                extra_tags=["evento-cancelado"]))
+    return msgs
 
 
-# ---------------------------------------------------------------- mensajes
-
-def _hora(iso: str) -> str:
-    if not iso:
-        return "?"
-    d = datetime.fromisoformat(iso).astimezone(TZ)
-    dias = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
-    return f"{dias[d.weekday()]} {d:%d/%m %H:%M}"
-
-
-def _cuando(a: dict, ahora: datetime) -> str:
-    if not a["onset"]:
-        return ""
-    d = datetime.fromisoformat(a["onset"]).astimezone(TZ).date()
-    hoy = ahora.astimezone(TZ).date()
-    if d == hoy:
-        return "HOY"
-    if d == hoy + timedelta(days=1):
-        return "MAÑANA"
-    if d == hoy + timedelta(days=2):
-        return "PASADO MAÑANA"
-    return d.strftime("%d/%m")
-
-
-def construir_mensaje(ev: dict, ahora: datetime) -> dict:
-    a = ev["aviso"]
-    nivel_al = nivel_alerta(a)
-    nivel = a["nivel"].upper()
-    fen = a["fenomeno"] or "Fenómeno adverso"
-    cuando = _cuando(a, ahora)
-    etiqueta = {"madrid": "MADRID", "corredor": "CORREDOR DEL HENARES", "rivas": "⚠️ RIVAS"}[nivel_al]
-    t = ev["tipo"]
-    if t == "nuevo":
-        titulo = f"{etiqueta} · Aviso {nivel} · {fen} ({cuando})"
-    elif t == "sube":
-        titulo = f"{etiqueta} · SUBE a {nivel} · {fen} ({cuando})"
-    elif t == "baja":
-        titulo = f"{etiqueta} · Baja a {nivel} · {fen} ({cuando})"
-    elif t == "en_vigor":
-        titulo = f"{etiqueta} · EN VIGOR AHORA · {fen} {nivel}"
-    elif t == "confirmacion":
-        titulo = (f"⚠️ RIVAS · Confirmado en Rivas · {fen} {nivel}" if nivel_al == "rivas"
-                  else f"CORREDOR · Ya no se prevé en Rivas · {fen} {nivel}")
-    else:  # cancelado
-        titulo = f"{etiqueta} · CANCELADO · {fen} ({cuando})"
-
-    lineas = [f"Zona AEMET: {a['zona_nombre']}"]
-    if a["valor"]:
-        lineas.append(f"Valor: {a['valor']}")
-    lineas.append(f"Desde {_hora(a['onset'])} hasta {_hora(a['expires'])}")
-    if a.get("probabilidad"):
-        lineas.append(f"Probabilidad: {a['probabilidad']}")
-    if a["zona"] == ZONA_CORREDOR:
-        estado = {"si": "confirmado en la previsión de Rivas", "no": "no se prevé en Rivas",
-                  "desconocido": "sin confirmar en Rivas"}.get(a.get("rivas", ""), "")
-        if estado:
-            lineas.append(f"Rivas: {estado} ({a.get('rivas_motivo', '')})")
-    if a.get("descripcion") and t != "cancelado":
-        lineas.append(a["descripcion"])
-
-    prioridad = {"madrid": 3, "corredor": 4, "rivas": 5}[nivel_al]
-    if t == "cancelado":
-        prioridad = min(prioridad, 3)
-    if t == "baja":
-        prioridad = max(prioridad - 1, 2)
-    tags = [NIVEL_EMOJI.get(a["nivel"], "warning"), f"nivel-{nivel_al}", f"evento-{t}"]
-    if t == "cancelado":
-        tags[0] = "white_check_mark"
-    return {
-        "title": titulo,
-        "message": "\n".join(lineas),
-        "priority": prioridad,
-        "tags": tags,
-        "click": os.environ.get("PANEL_URL") or PANEL_URL,
-    }
-
+# ======================================================================= agrupado, envío, estado
 
 def agrupar(mensajes: list[dict]) -> list[dict]:
-    """Si en una misma comprobación hay varias novedades del mismo nivel, las junta en una sola notificación."""
+    """Varias novedades del mismo nivel en una comprobación -> una sola notificación."""
     por_nivel: dict[str, list[dict]] = {}
     for m in mensajes:
-        nivel = next((t[6:] for t in m["tags"] if t.startswith("nivel-")), "madrid")
-        por_nivel.setdefault(nivel, []).append(m)
+        n = next((t[6:] for t in m["tags"] if t.startswith("nivel-")), "amarillo")
+        por_nivel.setdefault(n, []).append(m)
     res = []
-    for nivel in ("madrid", "corredor", "rivas"):
-        lista = por_nivel.get(nivel, [])
+    for n in ("normalidad", "amarillo", "naranja", "rojo"):
+        lista = por_nivel.get(n, [])
         if len(lista) <= 1:
             res.extend(lista)
             continue
-        etiqueta = {"madrid": "MADRID", "corredor": "CORREDOR DEL HENARES", "rivas": "⚠️ RIVAS"}[nivel]
-        cuerpo = "\n\n".join(f"• {m['title']}\n{m['message']}" for m in lista)
-        if len(cuerpo) > 3800:
-            cuerpo = cuerpo[:3800] + "\n…"
-        prioridad = max(m["priority"] for m in lista)
+        cuerpo = "\n\n".join(f"• {m['title']}\n{m['message'].split(chr(10) + chr(10) + 'RIV-Alert')[0]}" for m in lista)
+        cuerpo = cuerpo[:3600] + "\n\nRIV-Alert · aviso interno PC Rivas (no oficial). Confirma por canales oficiales."
         top = max(lista, key=lambda m: m["priority"])
-        res.append({
-            "title": f"{etiqueta} · {len(lista)} novedades (avisos y ríos)",
-            "message": cuerpo,
-            "priority": prioridad,
-            "tags": [top["tags"][0], f"nivel-{nivel}", "evento-varios"],
-            "click": top["click"],
-        })
+        etq = "FIN" if n == "normalidad" else n.upper()
+        res.append({"title": f"{comun.MARCA} {etq} · {len(lista)} novedades", "message": cuerpo,
+                    "priority": top["priority"], "tags": [top["tags"][0], f"nivel-{n}", "evento-varios"],
+                    "click": PANEL_URL})
     return res
-
-
-def resumen(act: dict, rios_st: dict, horas, ahora: datetime) -> dict:
-    """Notificación con la situación actual completa (se pide a mano)."""
-    orden = {"rivas": 0, "corredor": 1, "madrid": 2}
-    peor = "normal"
-    lineas = [f"Situación a las {ahora.astimezone(TZ):%H:%M} del {ahora.astimezone(TZ):%d/%m}"]
-    lineas.append("")
-    lineas.append("AVISOS AEMET:")
-    if not act:
-        lineas.append("• Sin avisos amarillos o superiores en la Comunidad de Madrid")
-    for a in sorted(act.values(), key=lambda a: (orden[nivel_alerta(a)], -NIVELES[a["nivel"]])):
-        n = nivel_alerta(a)
-        if orden[n] < orden.get(peor, 3):
-            peor = n
-        extra = f" — Rivas: {a.get('rivas_motivo', '')}" if a["zona"] == ZONA_CORREDOR else ""
-        lineas.append(f"• [{n.upper()}] {a['nivel'].upper()} {a['fenomeno']} {a['valor']} · {a['zona_nombre']} · "
-                      f"{_hora(a['onset'])}–{_hora(a['expires'])}{extra}")
-    lineas.append("")
-    lineas.append("RÍOS (SAIH Tajo):")
-    nombres = {0: "normal", 1: "AMARILLO", 2: "NARANJA", 3: "ROJO"}
-    rl = sorted(rios_st.items(), key=lambda kv: (orden.get(kv[1].get("grupo"), 3), -kv[1].get("nivel", 0)))
-    for cod, r in rl:
-        if r.get("grupo") == "madrid" and r.get("nivel", 0) == 0:
-            continue
-        if r.get("nivel", 0) > 0 and orden.get(r.get("grupo"), 3) < orden.get(peor, 3):
-            peor = r.get("grupo")
-        u = r.get("umbrales") or []
-        ut = f" (amar. {u[0]:.2f} / nar. {u[1]:.2f})" if len(u) >= 2 and u[0] and u[1] else ""
-        lineas.append(f"• {r.get('desc', cod)}: {r['valor']:.2f} m {nombres.get(r.get('nivel', 0))}, "
-                      f"{(r.get('tendencia') or '').lower()}{ut}")
-    if horas:
-        prox = [h for h in horas if ahora <= h["hora"] <= ahora + timedelta(hours=12)]
-        if prox:
-            lluvia = sum(h.get("lluvia") or 0 for h in prox)
-            racha = max((h.get("racha") or 0) for h in prox)
-            torm = max((h.get("prob_tormenta") or 0) for h in prox)
-            lineas += ["", f"RIVAS próximas 12 h (AEMET): lluvia {lluvia:.1f} mm · racha máx. {racha:.0f} km/h · "
-                           f"tormenta {torm:.0f} %"]
-    etiqueta = {"rivas": "⚠️ RIVAS", "corredor": "CORREDOR", "madrid": "MADRID", "normal": "SIN ALERTAS"}[peor]
-    return {
-        "title": f"RESUMEN · {etiqueta} · situación actual",
-        "message": "\n".join(lineas)[:3900],
-        "priority": 3,
-        "tags": ["clipboard", f"nivel-{'madrid' if peor == 'normal' else peor}", "evento-resumen"],
-        "click": PANEL_URL,
-    }
 
 
 def enviar_ntfy(topic: str, msg: dict, server: str = "https://ntfy.sh") -> None:
     body = json.dumps({"topic": topic, **msg}).encode("utf-8")
     req = urllib.request.Request(server, data=body, method="POST",
-                                 headers={**UA, "Content-Type": "application/json"})
+                                 headers={**comun.UA, "Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=20) as r:
         r.read()
 
 
-# ---------------------------------------------------------------- principal
-
 def cargar_estado() -> dict:
     if STATE_FILE.exists():
-        return json.loads(STATE_FILE.read_text(encoding="utf-8"))
-    return {"avisos": {}, "heartbeat": ""}
+        st = json.loads(STATE_FILE.read_text(encoding="utf-8"))
+    else:
+        st = {}
+    if st.get("version") != 2:  # migración a RIV-Alert: solo la zona de Rivas, sin avisos de golpe
+        st["avisos"] = {k: v for k, v in st.get("avisos", {}).items() if v.get("zona") == ZONA_RIVAS}
+        st["version"] = 2
+    return st
 
 
 def guardar_estado(st: dict) -> None:
-    STATE_FILE.write_text(json.dumps(st, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    STATE_FILE.write_text(json.dumps(st, ensure_ascii=False, indent=1, sort_keys=True, default=str) + "\n",
+                          encoding="utf-8")
+
+
+def resumen(st: dict, ahora: datetime) -> dict:
+    l = [f"Situación a las {ahora.astimezone(TZ):%H:%M} del {ahora.astimezone(TZ):%d/%m}", "", "AEMET (zona de Rivas):"]
+    peor = 0
+    if not st.get("avisos"):
+        l.append("• Sin avisos")
+    for a in sorted(st.get("avisos", {}).values(), key=lambda a: -NIVELES[a["nivel"]]):
+        peor = max(peor, NIVELES[a["nivel"]])
+        l.append(f"• {a['nivel'].upper()} {a['fenomeno']} {a['valor']} · {hora(a['onset'])}–{hora(a['expires'])}")
+    l += ["", "RÍOS (SAIH Tajo):"]
+    for cod, r in sorted(st.get("rios", {}).items(), key=lambda kv: (kv[1].get("tramo") != "rivas", -kv[1].get("nivel", 0))):
+        peor = max(peor, r.get("nivel", 0))
+        l.append(f"• {r.get('desc', cod)}: {r['valor']:.2f} {r.get('unidad', 'm')} {comun.NOMBRE[r.get('nivel', 0)]}, "
+                 f"{(r.get('tendencia') or '').lower()}")
+    inc = st.get("incendios", {})
+    if inc.get("hoy"):
+        l += ["", f"INCENDIOS (AEMET): riesgo hoy {inc['hoy']}" + (f", mañana {inc['manana']}" if inc.get("manana") else "")]
+        peor = max(peor, inc.get("nivel", 0))
+    s = [x for x in st.get("sismos", {}).values() if x.get("nivel", 0) > 0]
+    if s:
+        l += ["", "TERREMOTOS (IGN, últimos 10 días):"] + [f"• M{x['mag']} a {x['dist']:.0f} km · {x['lugar']}" for x in s]
+    m = mensaje(peor, "RESUMEN de la situación", "\n".join(l), sube=False, extra_tags=["evento-resumen"])
+    m["priority"] = 3
+    m["title"] = f"{comun.MARCA} · RESUMEN · peor nivel: {comun.NOMBRE[peor].upper()}"
+    return m
 
 
 def mensajes_de_prueba() -> list[dict]:
-    base = {"click": AEMET_AVISOS_WEB}
     return [
-        {**base, "title": "MADRID · PRUEBA · Aviso AMARILLO · Vientos", "priority": 3,
-         "tags": ["yellow_circle", "nivel-madrid", "evento-prueba"],
-         "message": "Esto es una prueba del nivel MADRID. No hay ningún aviso real."},
-        {**base, "title": "CORREDOR DEL HENARES · PRUEBA · Aviso NARANJA · Lluvias", "priority": 4,
-         "tags": ["orange_circle", "nivel-corredor", "evento-prueba"],
-         "message": "Esto es una prueba del nivel CORREDOR. No hay ningún aviso real."},
-        {**base, "title": "⚠️ RIVAS · PRUEBA · Aviso ROJO · Tormentas", "priority": 5,
-         "tags": ["red_circle", "nivel-rivas", "evento-prueba"],
-         "message": "Esto es una prueba de la ALERTA DE RIVAS. No hay ningún aviso real."},
+        mensaje(1, "PRUEBA · Lluvia 15 mm en 1 h", "Prueba de RIV-Alert AMARILLO (notificación). No es un aviso real."),
+        mensaje(2, "PRUEBA · Rachas 90 km/h", "Prueba de RIV-Alert NARANJA (alerta media). No es un aviso real."),
+        mensaje(3, "PRUEBA · Río Manzanares en Rivas", "Prueba de RIV-Alert ROJO (alerta máxima). No es un aviso real."),
     ]
 
 
@@ -523,7 +353,6 @@ def main() -> int:
         print("Falta el secreto NTFY_TOPIC", file=sys.stderr)
         return 1
     ahora = datetime.now(timezone.utc)
-
     if os.environ.get("MODO_PRUEBA") == "1":
         for m in mensajes_de_prueba():
             enviar_ntfy(topic, m)
@@ -531,47 +360,59 @@ def main() -> int:
         return 0
 
     st = cargar_estado()
-    caps = descargar_caps()
-    act = avisos_activos(caps, ahora)
-
-    prev = st.get("avisos", {})
     key = os.environ.get("AEMET_API_KEY", "").strip()
     horas = descargar_prevision_rivas(key) if key else None
-    if any(a["zona"] == ZONA_CORREDOR for a in act.values()):
-        for k, a in act.items():
-            if a["zona"] == ZONA_CORREDOR:
-                a["rivas"], a["rivas_motivo"] = confirmar_en_rivas(a, horas)
-                # si esta vez no hay datos, mantenemos lo último que sabíamos (evita avisos en bucle)
-                p = prev.get(k)
-                if a["rivas"] == "desconocido" and p and p.get("rivas") in ("si", "no"):
-                    a["rivas"], a["rivas_motivo"] = p["rivas"], p.get("rivas_motivo", "")
+    mensajes: list[dict] = []
+    salud = st.setdefault("salud", {})
 
-    eventos = calcular_eventos(prev, act, ahora)
-    orden = {"madrid": 0, "corredor": 1, "rivas": 2}
-    eventos.sort(key=lambda e: orden[nivel_alerta(e["aviso"])])
-    mensajes = [construir_mensaje(ev, ahora) for ev in eventos]
+    def fuente(nombre, fn):
+        try:
+            fn()
+            if salud.get(nombre, 0) >= 3:
+                mensajes.append({"title": f"{comun.MARCA} · {nombre} vuelve a responder", "priority": 2,
+                                 "message": "La fuente vuelve a funcionar.", "tags": ["white_check_mark", "nivel-normalidad"],
+                                 "click": PANEL_URL})
+            salud[nombre] = 0
+            salud.pop(nombre + " · último error", None)
+        except Exception as e:  # noqa: BLE001 - una fuente caída no tumba las demás
+            salud[nombre] = salud.get(nombre, 0) + 1
+            salud[nombre + " · último error"] = f"{type(e).__name__}: {e}"[:300]
+            print(f"[aviso] {nombre}: {e}", file=sys.stderr)
+            if salud[nombre] == 3:
+                mensajes.append({"title": f"{comun.MARCA} · No puedo leer {nombre}", "priority": 3,
+                                 "message": f"Llevo 3 comprobaciones sin datos de {nombre}. Vigílalo a mano.",
+                                 "tags": ["warning", "nivel-amarillo", "evento-sistema"], "click": PANEL_URL})
 
-    # --- Ríos (SAIH Tajo) ---
-    try:
-        st["rios"], msgs_rios = rios.evaluar(rios.descargar(http_get), st.get("rios", {}))
-        if st.get("rios_fallos", 0) >= 3:
-            msgs_rios.append({"title": "Alertas Rivas · SAIH Tajo vuelve a responder", "priority": 2,
-                              "message": "Vuelvo a leer los niveles de los ríos con normalidad.",
-                              "tags": ["white_check_mark", "nivel-madrid", "evento-sistema"], "click": rios.SAIH_WEB})
-        st["rios_fallos"] = 0
-        mensajes += msgs_rios
-    except Exception as e:  # noqa: BLE001
-        st["rios_fallos"] = st.get("rios_fallos", 0) + 1
-        print(f"[aviso] SAIH Tajo no disponible: {e}", file=sys.stderr)
-        if st["rios_fallos"] == 3:
-            mensajes.append({"title": "Alertas Rivas · No puedo leer los ríos (SAIH Tajo)", "priority": 3,
-                             "message": "Llevo 3 comprobaciones sin poder leer el SAIH Tajo. Los avisos de AEMET siguen "
-                                        "funcionando, pero vigila los ríos a mano en saihtajo.chtajo.es.",
-                             "tags": ["warning", "nivel-madrid", "evento-sistema"], "click": rios.SAIH_WEB})
+    def f_aemet():
+        act = avisos_activos(descargar_caps(), ahora)
+        for a in act.values():
+            a["rivas"] = prevision_en_rivas(a, horas)
+        mensajes.extend(eventos_aemet(st.get("avisos", {}), act, ahora))
+        st["avisos"] = act
+
+    def f_rios():
+        import rios
+        st["rios"], m = rios.evaluar(rios.descargar(http_get), st.get("rios", {}))
+        mensajes.extend(m)
+
+    def f_sismos():
+        import sismos
+        st["sismos"], m = sismos.evaluar(sismos.descargar(http_get), st.get("sismos", {}), ahora)
+        mensajes.extend(m)
+
+    def f_incendios():
+        import incendios
+        st["incendios"], m = incendios.evaluar(incendios.descargar(http_get), st.get("incendios", {}), ahora)
+        mensajes.extend(m)
+
+    fuente("AEMET avisos", f_aemet)
+    fuente("SAIH Tajo", f_rios)
+    fuente("IGN terremotos", f_sismos)
+    fuente("AEMET incendios", f_incendios)
 
     mensajes = agrupar(mensajes)
     if os.environ.get("MODO_RESUMEN") == "1":
-        mensajes.append(resumen(act, st.get("rios", {}), horas, ahora))
+        mensajes.append(resumen(st, ahora))
     fallos = 0
     for msg in mensajes:
         print(f"-> {msg['title']}")
@@ -581,18 +422,16 @@ def main() -> int:
             fallos += 1
             print(f"[error] ntfy: {e}", file=sys.stderr)
 
-    st["avisos"] = act
     hb = st.get("heartbeat") or ""
     if not hb or datetime.fromisoformat(hb) < ahora - timedelta(days=20):
-        st["heartbeat"] = ahora.isoformat()  # mantiene el repo "activo" para que GitHub no pare el cron
+        st["heartbeat"] = ahora.isoformat()
     try:
         import panel
         st["panel"] = panel.generar(st, horas, key, ahora, http_get)
-    except Exception as e:  # noqa: BLE001 - el panel nunca debe tumbar las alertas
+    except Exception as e:  # noqa: BLE001
         st["panel"] = f"error: {e}"
-        print(f"[aviso] No se pudo generar el panel: {e}", file=sys.stderr)
     guardar_estado(st)
-    print(f"{len(act)} avisos activos, {len(mensajes)} notificaciones.")
+    print(f"{len(st.get('avisos', {}))} avisos, {len(mensajes)} notificaciones.")
     return 1 if fallos and fallos == len(mensajes) else 0
 
 

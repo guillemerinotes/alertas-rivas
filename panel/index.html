@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alertas Rivas · Panel</title>
+<title>RIV-Alert · Panel</title>
 <meta name="theme-color" content="#1B3A8C">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
@@ -19,10 +19,11 @@
   header h1 span{color:var(--naranja)}
   .meta{font-size:13px;color:#cdd6ef}
   .estado{font-weight:700;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1f}
-  .estado.rivas{background:var(--ro);animation:lat 1.4s infinite}
-  .estado.corredor{background:var(--na)}
-  .estado.madrid{background:var(--am);color:#222}
+  .estado.rojo{background:var(--ro);animation:lat 1.4s infinite}
+  .estado.naranja{background:var(--na)}
+  .estado.amarillo{background:var(--am);color:#222}
   .estado.normal{background:var(--ok)}
+  .b-normalidad{background:#2a3a5e}
   @keyframes lat{50%{filter:brightness(1.35)}}
   main{max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px;grid-template-columns:1fr}
   @media(min-width:980px){main{grid-template-columns:1.35fr 1fr}.ancho{grid-column:1/-1}}
@@ -48,7 +49,8 @@
   .tit{font-weight:700}
   .peq{font-size:13px;color:var(--sub)}
   .chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;margin-right:6px;vertical-align:1px}
-  .c-rivas{background:var(--ro)} .c-corredor{background:var(--na);color:#111} .c-madrid{background:#3b4f86}
+  .c-rivas{background:#1B3A8C;border:1px solid var(--naranja)} .c-arriba{background:#3b4f86}
+  .c-amarillo{background:var(--am);color:#222} .c-naranja{background:var(--na);color:#111} .c-rojo{background:var(--ro)} .c-normalidad{background:#2a3a5e}
   .vacio{padding:16px 14px;color:var(--sub)}
   .rio{padding:9px 14px;border-bottom:1px solid var(--linea)}
   .rio:last-child{border-bottom:0}
@@ -72,7 +74,7 @@
 <body>
 <header>
   <div>
-    <h1>ALERTAS <span>RIVAS</span> · Panel meteorológico</h1>
+    <h1>RIV<span>-Alert</span> · Rivas-Vaciamadrid</h1>
     <div class="meta" id="meta">Cargando…</div>
   </div>
   <div class="estado" id="estado">—</div>
@@ -94,13 +96,18 @@
   </section>
 
   <section class="card">
-    <h2>Avisos AEMET activos <small>amarillo o superior</small></h2>
+    <h2>Avisos AEMET · zona de Rivas <small>Metropolitana y Henares</small></h2>
     <div id="avisos"><div class="vacio">Cargando…</div></div>
   </section>
 
   <section class="card">
-    <h2>Ríos · SAIH Tajo <small>umbrales oficiales CHT</small></h2>
+    <h2>Ríos · SAIH Tajo <small>en Rivas y aguas arriba</small></h2>
     <div id="rios"><div class="vacio">Cargando…</div></div>
+  </section>
+
+  <section class="card">
+    <h2>Incendios forestales y terremotos <small>AEMET · IGN</small></h2>
+    <div id="otros"><div class="vacio">Cargando…</div></div>
   </section>
 
   <section class="card">
@@ -116,14 +123,16 @@
       <a href="https://www.aemet.es/es/eltiempo/observacion/rayos" target="_blank" rel="noopener">AEMET · Rayos</a>
       <a href="https://www.aemet.es/es/eltiempo/prediccion/municipios/rivas-vaciamadrid-id28123" target="_blank" rel="noopener">AEMET · Previsión Rivas</a>
       <a href="https://saihtajo.chtajo.es" target="_blank" rel="noopener">SAIH Tajo · Ríos</a>
+      <a href="https://www.aemet.es/es/eltiempo/prediccion/incendios" target="_blank" rel="noopener">AEMET · Riesgo de incendios</a>
+      <a href="https://www.ign.es/web/ign/portal/ultimos-terremotos" target="_blank" rel="noopener">IGN · Últimos terremotos</a>
     </div>
   </section>
 </main>
 <footer>
-  Datos: © AEMET · SAIH Tajo (Confederación Hidrográfica del Tajo, datos provisionales) ·
+  Datos: © AEMET · IGN · SAIH Tajo (Confederación Hidrográfica del Tajo, datos provisionales) ·
   Mapa animado: <a href="https://www.rainviewer.com" target="_blank" rel="noopener" style="color:#9cc0ff">Weather data by RainViewer</a> (no oficial) ·
   Base cartográfica © OpenStreetMap, © CARTO.<br>
-  Herramienta de apoyo personal. No sustituye a los canales oficiales (AEMET, 112, ES-Alert).
+  RIV-Alert es un aviso interno de Protección Civil Rivas, no oficial. No sustituye a los canales oficiales (AEMET, 112, ES-Alert).
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -188,32 +197,26 @@ document.getElementById('tMapa').onclick = () => cambiar('mapa');
 document.getElementById('tAemet').onclick = () => cambiar('aemet');
 
 // ---------- Datos del vigilante ----------
-function nivelAlerta(a){ if (a.zona !== '722802') return 'madrid'; return a.rivas === 'no' ? 'corredor' : 'rivas'; }
-const ETQ = {rivas:'RIVAS', corredor:'CORREDOR', madrid:'MADRID'};
+const COLOR = {1:'amarillo', 2:'naranja', 3:'rojo'};
 
 function pintarAvisos(avisos){
   const el = document.getElementById('avisos');
-  if (!avisos.length){ el.innerHTML = '<div class="vacio">✅ Sin avisos amarillos o superiores en la Comunidad de Madrid.</div>'; return; }
-  const orden = {rivas:0, corredor:1, madrid:2};
-  avisos.sort((a,b) => orden[nivelAlerta(a)] - orden[nivelAlerta(b)] || NIV[b.nivel]-NIV[a.nivel] || a.onset.localeCompare(b.onset));
-  el.innerHTML = avisos.map(a => {
-    const n = nivelAlerta(a);
-    const rv = a.zona === '722802' ? `<div class="peq">Rivas: ${esc(a.rivas_motivo || a.rivas || '')}</div>` : '';
-    return `<div class="aviso"><div class="barra b-${esc(a.nivel)}"></div><div>
-      <div class="tit"><span class="chip c-${n}">${ETQ[n]}</span>${esc(a.fenomeno)} · ${esc(a.nivel.toUpperCase())}</div>
-      <div class="peq">${esc(a.zona_nombre)} · ${esc(a.valor)} · prob. ${esc(a.probabilidad || '?')}</div>
-      <div class="peq">${fmtH(a.onset)} → ${fmtH(a.expires)}</div>${rv}</div></div>`;
-  }).join('');
+  if (!avisos.length){ el.innerHTML = '<div class="vacio">✅ Sin avisos de AEMET en la zona de Rivas.</div>'; return; }
+  avisos.sort((a,b) => NIV[b.nivel]-NIV[a.nivel] || a.onset.localeCompare(b.onset));
+  el.innerHTML = avisos.map(a => `<div class="aviso"><div class="barra b-${esc(a.nivel)}"></div><div>
+      <div class="tit"><span class="chip c-${esc(a.nivel)}">${esc(a.nivel.toUpperCase())}</span>${esc(a.fenomeno)}</div>
+      <div class="peq">Umbral ${esc(a.valor || '—')} · prob. ${esc(a.probabilidad || '?')}</div>
+      <div class="peq">${fmtH(a.onset)} → ${fmtH(a.expires)}</div>
+      ${a.rivas ? `<div class="peq">Previsión AEMET para Rivas: ${esc(a.rivas)}</div>` : ''}</div></div>`).join('');
 }
 
-function pintarRios(rios, fallos){
+function pintarRios(rios, salud){
   const el = document.getElementById('rios');
-  const lista = Object.entries(rios).map(([cod, r]) => ({cod, ...r}));
+  const lista = Object.entries(rios).map(([cod, r]) => ({cod, ...r})).filter(r => r.tramo);
   if (!lista.length){ el.innerHTML = '<div class="vacio">Sin datos de ríos todavía.</div>'; return; }
-  const orden = {rivas:0, corredor:1, madrid:2};
-  lista.sort((a,b) => (orden[a.grupo] ?? 3) - (orden[b.grupo] ?? 3) || b.nivel - a.nivel);
+  lista.sort((a,b) => (a.tramo === 'rivas' ? 0 : 1) - (b.tramo === 'rivas' ? 0 : 1) || b.nivel - a.nivel);
   const est = ['Normalidad','Umbral amarillo','Umbral naranja','Umbral rojo'];
-  el.innerHTML = (fallos >= 3 ? '<div class="vacio">⚠️ El SAIH Tajo no responde: datos posiblemente antiguos.</div>' : '') + lista.map(r => {
+  el.innerHTML = ((salud['SAIH Tajo'] || 0) >= 3 ? '<div class="vacio">⚠️ El SAIH Tajo no responde: datos posiblemente antiguos.</div>' : '') + lista.map(r => {
     const u = (r.umbrales || []).filter(x => x != null);
     let pct = 50, marcas = '';
     if (u.length === 3){
@@ -223,11 +226,30 @@ function pintarRios(rios, fallos){
       marcas = [['#f5c518',u[0]],['#F07D00',u[1]],['#e0263a',u[2]]].map(([c,v]) => `<div class="u" style="left:${p(v)}%;background:${c}"></div>`).join('');
     }
     const tend = /asc/i.test(r.tendencia) ? '↗' : /desc/i.test(r.tendencia) ? '↘' : '→';
-    return `<div class="rio"><div class="fila"><div><span class="chip c-${esc(r.grupo)}">${ETQ[r.grupo] || ''}</span><b>${esc(r.desc || r.nombre)}</b></div>
+    return `<div class="rio"><div class="fila"><div><span class="chip c-${r.tramo === 'rivas' ? 'rivas' : 'arriba'}">${r.tramo === 'rivas' ? 'EN RIVAS' : 'AGUAS ARRIBA'}</span><b>${esc(r.desc || r.nombre)}</b></div>
       <div><b>${Number(r.valor).toFixed(2)} ${esc(r.unidad || 'm')}</b> ${tend}</div></div>
       <div class="peq">${est[r.nivel] || ''}${u.length===3 ? ` · amarillo ${u[0].toFixed(2)} · naranja ${u[1].toFixed(2)} · rojo ${u[2].toFixed(2)}` : ''} · ${esc(r.cod)}</div>
       <div class="medidor n${r.nivel}"><div class="nivel" style="width:${pct}%"></div>${marcas}</div></div>`;
   }).join('');
+}
+
+function pintarOtros(inc, sismos, salud){
+  const el = document.getElementById('otros');
+  let h = '';
+  if (inc && inc.hoy){
+    const c = COLOR[inc.nivel] || 'normalidad';
+    h += `<div class="aviso"><div class="barra b-${c}"></div><div><div class="tit"><span class="chip c-${c}">${c === 'normalidad' ? 'SIN ALERTA' : c.toUpperCase()}</span>Riesgo de incendio forestal: ${esc(inc.hoy)}</div>
+      <div class="peq">Mañana: ${esc(inc.manana || '?')} · escala AEMET: bajo, moderado, alto, muy alto, extremo</div></div></div>`;
+  } else {
+    h += `<div class="vacio">Riesgo de incendio: sin datos${salud['AEMET incendios · último error'] ? ' (' + esc(salud['AEMET incendios · último error']).slice(0,120) + ')' : ''}.</div>`;
+  }
+  if (sismos && sismos.length){
+    h += sismos.map(s => `<div class="aviso"><div class="barra b-${COLOR[s.nivel]}"></div><div><div class="tit"><span class="chip c-${COLOR[s.nivel]}">${COLOR[s.nivel].toUpperCase()}</span>Terremoto M${s.mag} a ${Math.round(s.dist)} km</div>
+      <div class="peq">${esc(s.lugar)} · ${esc(s.fecha)}</div></div></div>`).join('');
+  } else {
+    h += '<div class="vacio">✅ Sin terremotos relevantes cerca de Rivas en los últimos 10 días (IGN).</div>';
+  }
+  el.innerHTML = h;
 }
 
 function pintarPrevision(p){
@@ -243,14 +265,15 @@ function pintarPrevision(p){
 }
 
 function estadoGeneral(d){
-  let max = 'normal';
-  const sube = n => { const o = {normal:0, madrid:1, corredor:2, rivas:3}; if (o[n] > o[max]) max = n; };
-  d.avisos.forEach(a => sube(nivelAlerta(a)));
-  Object.values(d.rios).forEach(r => { if (r.nivel > 0) sube(r.grupo); });
+  let max = 0;
+  (d.avisos || []).forEach(a => max = Math.max(max, NIV[a.nivel] || 0));
+  Object.values(d.rios || {}).forEach(r => { if (r.tramo) max = Math.max(max, r.nivel || 0); });
+  if (d.incendios) max = Math.max(max, d.incendios.nivel || 0);
+  (d.sismos || []).forEach(s => max = Math.max(max, s.nivel || 0));
   const el = document.getElementById('estado');
-  el.className = 'estado ' + max;
-  el.textContent = {normal:'✅ Sin alertas', madrid:'Alerta Madrid', corredor:'Alerta Corredor', rivas:'⚠️ ALERTA RIVAS'}[max];
-  document.title = (max === 'rivas' ? '⚠️ ' : '') + 'Alertas Rivas · Panel';
+  el.className = 'estado ' + (COLOR[max] || 'normal');
+  el.textContent = max ? 'RIV-Alert ' + COLOR[max].toUpperCase() : '✅ Sin alertas';
+  document.title = (max === 3 ? '🔴 ' : max === 2 ? '🟠 ' : '') + 'RIV-Alert · Panel';
 }
 
 async function cargarDatos(){
@@ -261,7 +284,8 @@ async function cargarDatos(){
     document.getElementById('meta').textContent = `Actualizado ${fmtH(d.actualizado)} (hace ${mins} min) · se refresca solo`;
     document.getElementById('errores').innerHTML = mins > 40 ? '<p class="error">⚠️ Los datos tienen más de 40 minutos: el vigilante puede estar parado. Consulta las fuentes oficiales.</p>' : '';
     pintarAvisos(d.avisos || []);
-    pintarRios(d.rios || {}, d.rios_fallos || 0);
+    pintarRios(d.rios || {}, d.salud || {});
+    pintarOtros(d.incendios, d.sismos, d.salud || {});
     pintarPrevision(d.prevision_rivas || []);
     estadoGeneral(d);
     aemetFrames = d.radar_aemet || [];

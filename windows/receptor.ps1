@@ -1,8 +1,9 @@
-﻿# Receptor de Alertas Rivas para Windows
+﻿# Receptor RIV-Alert para Windows
 # Escucha el canal de ntfy y muestra:
-#   - MADRID   (prioridad 3): notificación normal
-#   - CORREDOR (prioridad 4): notificación que se queda en pantalla hasta cerrarla
-#   - RIVAS    (prioridad 5): ventana roja encima de todo con alarma que suena hasta pulsar ENTENDIDO
+#   - AMARILLO (prioridad 3): notificación
+#   - NARANJA  (prioridad 4): alerta media -> ventana naranja + un aviso sonoro
+#   - ROJO     (prioridad 5): alerta máxima -> ventana roja + alarma continua hasta pulsar ENTENDIDO
+# Si el volumen de Windows está en silencio, no suena nada (la ventana sí aparece).
 
 $ErrorActionPreference = 'Stop'
 $Dir      = Join-Path $env:LOCALAPPDATA 'AlertasRivas'
@@ -57,22 +58,25 @@ function Mostrar-Toast([string]$titulo, [string]$cuerpo, [int]$prioridad, [strin
     [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppId).Show($toast)
 }
 
-function Mostrar-AlarmaRivas([string]$titulo, [string]$cuerpo, [string]$url) {
+function Mostrar-Alerta([string]$titulo, [string]$cuerpo, [string]$url, [bool]$maxima) {
     $sonido = $null
-    $wav = Join-Path $env:WINDIR 'Media\Alarm01.wav'
+    $wav = if ($maxima) { Join-Path $env:WINDIR 'Media\Alarm01.wav' } else { Join-Path $env:WINDIR 'Media\Windows Notify System Generic.wav' }
+    if (-not (Test-Path $wav)) { $wav = Join-Path $env:WINDIR 'Media\Windows Exclamation.wav' }
     try {
         if (Test-Path $wav) {
             $sonido = New-Object System.Media.SoundPlayer $wav
-            $sonido.PlayLooping()
+            if ($maxima) { $sonido.PlayLooping() } else { $sonido.Play() }
         }
     } catch { $sonido = $null }
+    $c1 = if ($maxima) { [System.Drawing.Color]::FromArgb(176, 0, 32) } else { [System.Drawing.Color]::FromArgb(240, 125, 0) }
+    $c2 = if ($maxima) { [System.Drawing.Color]::FromArgb(240, 125, 0) } else { [System.Drawing.Color]::FromArgb(27, 58, 140) }
 
     $f = New-Object System.Windows.Forms.Form
-    $f.Text = 'ALERTA RIVAS'
+    $f.Text = if ($maxima) { 'RIV-Alert · ALERTA MÁXIMA' } else { 'RIV-Alert · ALERTA MEDIA' }
     $f.TopMost = $true
     $f.StartPosition = 'CenterScreen'
     $f.Size = New-Object System.Drawing.Size(640, 400)
-    $f.BackColor = [System.Drawing.Color]::FromArgb(176, 0, 32)
+    $f.BackColor = $c1
     $f.FormBorderStyle = 'FixedDialog'
     $f.MaximizeBox = $false
     $f.MinimizeBox = $false
@@ -119,7 +123,7 @@ function Mostrar-AlarmaRivas([string]$titulo, [string]$cuerpo, [string]$url) {
     $script:rojo = $true
     $timer.Add_Tick({
         $script:rojo = -not $script:rojo
-        $f.BackColor = if ($script:rojo) { [System.Drawing.Color]::FromArgb(176, 0, 32) } else { [System.Drawing.Color]::FromArgb(240, 125, 0) }
+        $f.BackColor = if ($script:rojo) { $c1 } else { $c2 }
     })
     $timer.Start()
     $f.Add_Shown({ $f.Activate() })
@@ -141,15 +145,15 @@ function Procesar($m) {
         Mostrar-Toast "$titulo" "(Recibido con retraso, enviado el $hora)`n$cuerpo" ([Math]::Min($prio, 4)) $url
         return
     }
-    if ($prio -ge 5) {
+    if ($prio -ge 4) {
         try { Mostrar-Toast $titulo $cuerpo 4 $url } catch { Log "toast: $_" }
-        Mostrar-AlarmaRivas $titulo $cuerpo $url
+        Mostrar-Alerta $titulo $cuerpo $url ($prio -ge 5)
     } else {
         Mostrar-Toast $titulo $cuerpo $prio $url
     }
 }
 
-Log "Receptor iniciado. Canal: $Topic"
+Log "Receptor RIV-Alert iniciado. Canal: $Topic"
 $client = New-Object System.Net.Http.HttpClient
 $client.Timeout = [System.Threading.Timeout]::InfiniteTimeSpan
 

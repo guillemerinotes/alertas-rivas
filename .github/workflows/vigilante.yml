@@ -1,4 +1,4 @@
-name: Vigilante AEMET
+name: RIV-Alert
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       prueba:
-        description: "Enviar 3 notificaciones de prueba (Madrid, Corredor, Rivas)"
+        description: "Enviar 3 notificaciones de prueba (amarillo, naranja, rojo)"
         type: boolean
         default: false
       resumen:
@@ -37,6 +37,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Instalar lector de mapas (riesgo de incendio)
+        run: pip install --quiet tifffile numpy
+
       - name: Recuperar imágenes de radar anteriores
         uses: actions/cache/restore@v4
         with:
@@ -44,7 +47,7 @@ jobs:
           key: radar-${{ github.run_id }}
           restore-keys: radar-
 
-      - name: Comprobar avisos y ríos
+      - name: Comprobar AEMET, ríos, terremotos e incendios
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}

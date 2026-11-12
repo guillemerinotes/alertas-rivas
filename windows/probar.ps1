@@ -1,13 +1,13 @@
-﻿# Envía 3 alertas de prueba (Madrid, Corredor y Rivas) al canal de ntfy.
+﻿# Envía 3 alertas de prueba de RIV-Alert (amarillo, naranja y rojo) al canal de ntfy.
 # Llegan al PC y al móvil a la vez.
 $ErrorActionPreference = 'Stop'
 $Dir = Join-Path $env:LOCALAPPDATA 'AlertasRivas'
 $cfg = Get-Content (Join-Path $Dir 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $server = if ($cfg.server) { $cfg.server.TrimEnd('/') } else { 'https://ntfy.sh' }
 $pruebas = @(
-    @{ title = 'MADRID · PRUEBA · Aviso AMARILLO · Vientos'; priority = 3; tags = @('yellow_circle', 'nivel-madrid', 'evento-prueba'); message = 'Prueba del nivel MADRID. No hay ningún aviso real.' },
-    @{ title = 'CORREDOR DEL HENARES · PRUEBA · Aviso NARANJA · Lluvias'; priority = 4; tags = @('orange_circle', 'nivel-corredor', 'evento-prueba'); message = 'Prueba del nivel CORREDOR. No hay ningún aviso real.' },
-    @{ title = '⚠️ RIVAS · PRUEBA · Aviso ROJO · Tormentas'; priority = 5; tags = @('red_circle', 'nivel-rivas', 'evento-prueba'); message = 'Prueba de la ALERTA DE RIVAS. No hay ningún aviso real.' }
+    @{ title = 'RIV-Alert AMARILLO · PRUEBA · Lluvia 15 mm en 1 h'; priority = 3; tags = @('yellow_circle', 'nivel-amarillo', 'evento-prueba'); message = 'Prueba de RIV-Alert AMARILLO (notificación). No es un aviso real.' },
+    @{ title = 'RIV-Alert NARANJA · PRUEBA · Rachas 90 km/h'; priority = 4; tags = @('orange_circle', 'nivel-naranja', 'evento-prueba'); message = 'Prueba de RIV-Alert NARANJA (alerta media). No es un aviso real.' },
+    @{ title = 'RIV-Alert ROJO · PRUEBA · Río Manzanares en Rivas'; priority = 5; tags = @('red_circle', 'nivel-rojo', 'evento-prueba'); message = 'Prueba de RIV-Alert ROJO (alerta máxima). No es un aviso real.' }
 )
 foreach ($p in $pruebas) {
     $p.topic = $cfg.topic

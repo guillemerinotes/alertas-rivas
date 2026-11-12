@@ -1,16 +1,22 @@
-# Alertas Rivas
+# RIV-Alert
 
-Sistema de alertas meteorológicas basado en los avisos oficiales de **AEMET** (Meteoalerta) para la
-Comunidad de Madrid, con tres niveles:
+Aviso interno (no oficial) de Protección Civil Rivas para emergencias que pueden afectar a **Rivas-Vaciamadrid**.
+El nivel de RIV-Alert es el **color oficial** de cada fuente:
 
-| Nivel | Cuándo | Móvil (ntfy) | Windows |
-|---|---|---|---|
-| **MADRID** | Aviso amarillo o superior en *Sierra de Madrid* o *Sur, Vegas y Oeste* | prioridad normal | notificación normal |
-| **CORREDOR** | Aviso en *Metropolitana y Henares* que la previsión de Rivas **no** confirma | prioridad alta | notificación fija hasta cerrarla |
-| **RIVAS** | Aviso NARANJA o ROJO en *Metropolitana y Henares* (siempre), o AMARILLO confirmado con la previsión horaria de AEMET para Rivas (28123), o sin datos para comprobarlo | prioridad máxima | ventana roja con alarma hasta pulsar ENTENDIDO |
+| Nivel | Móvil (ntfy) | Windows |
+|---|---|---|
+| 🟡 **AMARILLO** | Notificación (prioridad 3) | Notificación |
+| 🟠 **NARANJA** | Alerta media (prioridad 4) | Ventana naranja + un aviso sonoro |
+| 🔴 **ROJO** | Alerta máxima (prioridad 5) | Ventana roja + alarma continua hasta ENTENDIDO |
 
-Avisa cuando un aviso **es nuevo** (hoy, mañana o pasado), **sube** o **baja** de nivel, **entra en vigor**,
-se **cancela**, o cambia su confirmación en Rivas.
+Fuentes vigiladas (cada 10 min, cron-job.org → GitHub Actions):
+
+- **AEMET Meteoalerta**, solo la zona de Rivas (Metropolitana y Henares, 722802): lluvia 1 h / 12 h, viento,
+  nieve, tormentas (incluye granizo), temperaturas, niebla, polvo. Colores oficiales de AEMET.
+- **SAIH Tajo**: ríos en Rivas y aguas arriba con los umbrales oficiales de la CHT.
+- **IGN**: terremotos. Sin colores oficiales: nivel por magnitud y distancia (criterio RIV-Alert, `monitor/sismos.py`).
+- **AEMET riesgo de incendio forestal** en Rivas: alto = amarillo, muy alto = naranja, extremo = rojo
+  (equivalencia de RIV-Alert, `monitor/incendios.py`).
 
 ## Ríos (SAIH Tajo)
 
