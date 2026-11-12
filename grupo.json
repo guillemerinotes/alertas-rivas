@@ -26,13 +26,13 @@
         "rojo"
       ],
       "tipos": {
-        "aemet": true,
-        "rios": true,
-        "incendios": true,
+        "aemet": false,
+        "rios": false,
+        "incendios": false,
         "sismos": true,
         "noticias": false,
         "fin": true,
-        "resumen": false
+        "resumen": true
       }
     }
   }
