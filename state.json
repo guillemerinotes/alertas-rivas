@@ -1,7 +1,7 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma); 12 imágenes; previsión 30 h",
+ "panel": "radar ok (ma, sin imagen nueva); 12 imágenes; previsión 29 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -15,21 +15,21 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.632
+   "valor": 0.626
   },
   "AR15": {
    "desc": "Tajuña en Armuña",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "TAJUÑA EN ARMUÑA",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.2,
     1.7,
     1.9
    ],
    "unidad": "m",
-   "valor": 0.954
+   "valor": 0.956
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -43,7 +43,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 1.179
+   "valor": 1.15
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
@@ -57,28 +57,28 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.732
+   "valor": 0.716
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "grupo": "rivas",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.92,
     2.35,
     2.66
    ],
    "unidad": "m",
-   "valor": 0.867
+   "valor": 0.865
   },
   "MC02": {
    "desc": "Jarama en San Fernando (aguas arriba de Rivas)",
    "grupo": "rivas",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     559.55,
     560.34,
@@ -99,21 +99,21 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.479
+   "valor": 587.475
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "umbrales": [
     1.0,
     1.67,
     2.23
    ],
    "unidad": "m",
-   "valor": 0.26
+   "valor": 0.27
   },
   "R051": {
    "desc": "Jarama en Algete",
@@ -127,14 +127,14 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.738
+   "valor": 0.743
   },
   "R061": {
    "desc": "Henares en Humanes",
    "grupo": "corredor",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.71,
     1.99,
@@ -155,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 2.065
+   "valor": 2.057
   }
  },
  "rios_fallos": 0
