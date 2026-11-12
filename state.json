@@ -1,7 +1,7 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma); 12 imágenes; previsión 30 h",
+ "panel": "radar error: MA: HTTP Error 429: Too Many Requests; 12 imágenes; previsión 0 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -15,7 +15,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.634
+   "valor": 0.632
   },
   "AR15": {
    "desc": "Tajuña en Armuña",
@@ -43,7 +43,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 1.204
+   "valor": 1.179
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
@@ -57,7 +57,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.733
+   "valor": 0.732
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -71,7 +71,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.874
+   "valor": 0.867
   },
   "MC02": {
    "desc": "Jarama en San Fernando (aguas arriba de Rivas)",
@@ -85,7 +85,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.905
+   "valor": 558.899
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -99,21 +99,21 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.484
+   "valor": 587.479
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "umbrales": [
     1.0,
     1.67,
     2.23
    ],
    "unidad": "m",
-   "valor": 0.27
+   "valor": 0.26
   },
   "R051": {
    "desc": "Jarama en Algete",
@@ -127,7 +127,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.733
+   "valor": 0.738
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -141,7 +141,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.702
+   "valor": 0.701
   },
   "R174": {
    "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
@@ -155,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 2.072
+   "valor": 2.065
   }
  },
  "rios_fallos": 0
