@@ -1,149 +1,7 @@
 {
- "avisos": {
-  "722801|P1|2026-11-11": {
-   "descripcion": "Precipitación acumulada en una hora: 15 mm.",
-   "en_vigor_notificado": true,
-   "expires": "2026-11-11T23:59:59+01:00",
-   "fen_cod": "P1",
-   "fenomeno": "Precipitación acumulada en una hora",
-   "headline": "Aviso de lluvias de nivel amarillo. Sierra de Madrid",
-   "msg_type": "Alert",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T15:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "valor": "15 mm",
-   "zona": "722801",
-   "zona_nombre": "Sierra de Madrid"
-  },
-  "722801|P2|2026-11-11": {
-   "descripcion": "Precipitación acumulada en 12 horas: 60 mm.",
-   "en_vigor_notificado": true,
-   "expires": "2026-11-11T23:59:59+01:00",
-   "fen_cod": "P2",
-   "fenomeno": "Precipitación acumulada en 12 horas",
-   "headline": "Aviso de lluvias de nivel amarillo. Sierra de Madrid",
-   "msg_type": "Alert",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T12:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "valor": "60 mm",
-   "zona": "722801",
-   "zona_nombre": "Sierra de Madrid"
-  },
-  "722801|RM|2026-11-11": {
-   "descripcion": "Rachas máximas: 80 km/h. Viento de suroeste y sur.",
-   "en_vigor_notificado": false,
-   "expires": "2026-11-12T02:59:59+01:00",
-   "fen_cod": "RM",
-   "fenomeno": "Rachas máximas",
-   "headline": "Aviso de vientos de nivel amarillo. Sierra de Madrid",
-   "msg_type": "Update",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T18:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "valor": "80 km/h",
-   "zona": "722801",
-   "zona_nombre": "Sierra de Madrid"
-  },
-  "722802|P1|2026-11-11": {
-   "descripcion": "Precipitación acumulada en una hora: 15 mm.",
-   "en_vigor_notificado": true,
-   "expires": "2026-11-11T23:59:59+01:00",
-   "fen_cod": "P1",
-   "fenomeno": "Precipitación acumulada en una hora",
-   "headline": "Aviso de lluvias de nivel amarillo. Metropolitana y Henares",
-   "msg_type": "Alert",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T15:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "rivas": "no",
-   "rivas_motivo": "lluvia prevista en Rivas 17.2 mm (máx. 4.0 mm/h)",
-   "valor": "15 mm",
-   "zona": "722802",
-   "zona_nombre": "Metropolitana y Henares"
-  },
-  "722802|P2|2026-11-11": {
-   "descripcion": "Precipitación acumulada en 12 horas: 40 mm.",
-   "en_vigor_notificado": true,
-   "expires": "2026-11-11T23:59:59+01:00",
-   "fen_cod": "P2",
-   "fenomeno": "Precipitación acumulada en 12 horas",
-   "headline": "Aviso de lluvias de nivel amarillo. Metropolitana y Henares",
-   "msg_type": "Alert",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T12:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "rivas": "si",
-   "rivas_motivo": "lluvia prevista en Rivas 17.8 mm (máx. 4.0 mm/h)",
-   "valor": "40 mm",
-   "zona": "722802",
-   "zona_nombre": "Metropolitana y Henares"
-  },
-  "722802|RM|2026-11-11": {
-   "descripcion": "Rachas máximas: 80 km/h. Viento de suroeste y sur.",
-   "en_vigor_notificado": false,
-   "expires": "2026-11-12T02:59:59+01:00",
-   "fen_cod": "RM",
-   "fenomeno": "Rachas máximas",
-   "headline": "Aviso de vientos de nivel amarillo. Metropolitana y Henares",
-   "msg_type": "Update",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T18:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "rivas": "si",
-   "rivas_motivo": "racha máx. prevista en Rivas 56 km/h",
-   "valor": "80 km/h",
-   "zona": "722802",
-   "zona_nombre": "Metropolitana y Henares"
-  },
-  "722803|P1|2026-11-11": {
-   "descripcion": "Precipitación acumulada en una hora: 15 mm.",
-   "en_vigor_notificado": true,
-   "expires": "2026-11-11T23:59:59+01:00",
-   "fen_cod": "P1",
-   "fenomeno": "Precipitación acumulada en una hora",
-   "headline": "Aviso de lluvias de nivel amarillo. Sur, Vegas y Oeste",
-   "msg_type": "Update",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T15:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "valor": "15 mm",
-   "zona": "722803",
-   "zona_nombre": "Sur, Vegas y Oeste"
-  },
-  "722803|P2|2026-11-11": {
-   "descripcion": "Precipitación acumulada en 12 horas: 60 mm.",
-   "en_vigor_notificado": true,
-   "expires": "2026-11-11T23:59:59+01:00",
-   "fen_cod": "P2",
-   "fenomeno": "Precipitación acumulada en 12 horas",
-   "headline": "Aviso de lluvias de nivel amarillo. Sur, Vegas y Oeste",
-   "msg_type": "Alert",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T12:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "valor": "60 mm",
-   "zona": "722803",
-   "zona_nombre": "Sur, Vegas y Oeste"
-  },
-  "722803|RM|2026-11-11": {
-   "descripcion": "Rachas máximas: 80 km/h. Viento de suroeste y sur.",
-   "en_vigor_notificado": false,
-   "expires": "2026-11-12T02:59:59+01:00",
-   "fen_cod": "RM",
-   "fenomeno": "Rachas máximas",
-   "headline": "Aviso de vientos de nivel amarillo. Sur, Vegas y Oeste",
-   "msg_type": "Update",
-   "nivel": "amarillo",
-   "onset": "2026-11-11T18:00:00+01:00",
-   "probabilidad": "40%-70%",
-   "valor": "80 km/h",
-   "zona": "722803",
-   "zona_nombre": "Sur, Vegas y Oeste"
-  }
- },
+ "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma); 2 imágenes; previsión 36 h",
+ "panel": "radar ok (ma); 3 imágenes; previsión 36 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -157,35 +15,35 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.678
+   "valor": 0.711
   },
   "AR15": {
    "desc": "Tajuña en Armuña",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "TAJUÑA EN ARMUÑA",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.2,
     1.7,
     1.9
    ],
    "unidad": "m",
-   "valor": 0.857
+   "valor": 0.932
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "umbrales": [
     2.11,
     3.11,
     3.5
    ],
    "unidad": "m",
-   "valor": 0.657
+   "valor": 1.237
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
@@ -199,12 +57,12 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.755
+   "valor": 1.015
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "grupo": "rivas",
-   "nivel": 1,
+   "nivel": 3,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
    "tendencia": "Descendente",
    "umbrales": [
@@ -213,7 +71,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 2.064
+   "valor": 3.904
   },
   "MC02": {
    "desc": "Jarama en San Fernando (aguas arriba de Rivas)",
@@ -227,7 +85,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.954
+   "valor": 559.262
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -241,35 +99,35 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.421
+   "valor": 587.891
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "umbrales": [
     1.0,
     1.67,
     2.23
    ],
    "unidad": "m",
-   "valor": 0.27
+   "valor": 0.31
   },
   "R051": {
    "desc": "Jarama en Algete",
    "grupo": "corredor",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "umbrales": [
     1.45,
     1.82,
     2.15
    ],
    "unidad": "m",
-   "valor": 0.571
+   "valor": 0.725
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -283,12 +141,12 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.678
+   "valor": 0.7
   },
   "R174": {
    "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
    "grupo": "corredor",
-   "nivel": 0,
+   "nivel": 1,
    "nombre": "JARAMA EN CIEMPOZUELOS - PUENTE TITULCIA",
    "tendencia": "Ascendente",
    "umbrales": [
@@ -297,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 1.632
+   "valor": 1.984
   }
  },
  "rios_fallos": 0
