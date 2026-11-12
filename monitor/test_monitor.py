@@ -168,6 +168,18 @@ class PruebasComunicado(unittest.TestCase):
         self.assertEqual(len(m.agrupar([c, alerta, comun.mensaje(2, "Lluvia", "y")])), 2)  # el comunicado va aparte
 
 
+class PruebasGrupo(unittest.TestCase):
+    def test_filtro(self):
+        cfg = {"canal": "x", "niveles": ["naranja", "rojo"], "tipos": {"aemet": True, "rios": False, "noticias": False,
+                                                                      "fin": False, "resumen": True}}
+        am = comun.mensaje(1, "Lluvia", "x")
+        na = comun.mensaje(2, "Rachas", "x")
+        rio = comun.mensaje(3, "Río", "x", extra_tags=["evento-rio"])
+        fin = comun.mensaje(0, "fin", "x")
+        com = m.comunicado("Hola", "informativo", AHORA)
+        self.assertEqual([m.para_grupo(x, cfg) for x in (am, na, rio, fin, com)], [False, True, False, False, True])
+
+
 class PruebasResumen(unittest.TestCase):
     def test_resumen(self):
         st = {"avisos": m.avisos_activos([cap()], AHORA),

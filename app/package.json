@@ -1,0 +1,6 @@
+{
+  "name": "riv-alert-app",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" }
+}

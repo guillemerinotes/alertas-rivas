@@ -302,6 +302,41 @@ def enviar_ntfy(topic: str, msg: dict, server: str = "https://ntfy.sh") -> None:
         r.read()
 
 
+def cargar_grupo() -> dict:
+    """Qué recibe el canal de grupo (grupo.json, editable desde la app por los coordinadores)."""
+    try:
+        return json.loads((ROOT / "grupo.json").read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def tipo_de(m: dict) -> str:
+    tags = set(m.get("tags", []))
+    for t, clave in (("evento-comunicado", "comunicado"), ("evento-resumen", "resumen"), ("evento-noticia", "noticias"),
+                     ("evento-rio", "rios"), ("evento-sismo", "sismos"), ("evento-incendio", "incendios"),
+                     ("evento-sistema", "sistema"), ("evento-prueba", "prueba")):
+        if t in tags:
+            return clave
+    return "aemet"
+
+
+def para_grupo(m: dict, cfg: dict) -> bool:
+    tipo = tipo_de(m)
+    if tipo == "comunicado":
+        return True
+    if tipo in ("sistema", "prueba"):
+        return False
+    tipos = cfg.get("tipos", {})
+    if tipo in ("resumen", "noticias"):
+        return bool(tipos.get(tipo))
+    if not tipos.get(tipo, True):
+        return False
+    nivel = next((t[6:] for t in m.get("tags", []) if t.startswith("nivel-")), "")
+    if nivel == "normalidad":
+        return bool(tipos.get("fin", True))
+    return nivel in cfg.get("niveles", ["amarillo", "naranja", "rojo"])
+
+
 def cargar_estado() -> dict:
     if STATE_FILE.exists():
         st = json.loads(STATE_FILE.read_text(encoding="utf-8"))
@@ -436,20 +471,27 @@ def main() -> int:
     fuente("AEMET incendios", f_incendios)
     fuente("Noticias", f_noticias)
 
-    mensajes = agrupar(mensajes)
+    extra = []
     if os.environ.get("MODO_RESUMEN") == "1":
-        mensajes.append(resumen(st, ahora))
+        extra.append(resumen(st, ahora))
     texto = os.environ.get("COMUNICADO", "").strip()
     if texto:
-        mensajes.append(comunicado(texto, os.environ.get("NIVEL_COMUNICADO", "informativo"), ahora))
+        extra.append(comunicado(texto, os.environ.get("NIVEL_COMUNICADO", "informativo"), ahora))
+
+    cfg = cargar_grupo()
+    envios = [(topic, m) for m in agrupar(mensajes) + extra]
+    if cfg.get("canal"):
+        envios += [(cfg["canal"], m) for m in agrupar([x for x in mensajes if para_grupo(x, cfg)])
+                   + [x for x in extra if para_grupo(x, cfg)]]
     fallos = 0
-    for msg in mensajes:
-        print(f"-> {msg['title']}")
+    for canal, msg in envios:
+        print(f"-> [{'yo' if canal == topic else 'grupo'}] {msg['title']}")
         try:
-            enviar_ntfy(topic, msg)
+            enviar_ntfy(canal, msg)
         except Exception as e:  # noqa: BLE001
             fallos += 1
             print(f"[error] ntfy: {e}", file=sys.stderr)
+    mensajes = envios
 
     hb = st.get("heartbeat") or ""
     if not hb or datetime.fromisoformat(hb) < ahora - timedelta(days=20):

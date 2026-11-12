@@ -1,0 +1,13 @@
+{
+  "canal": "riv-alert-grupo-sj2ipao4sg",
+  "niveles": ["amarillo", "naranja", "rojo"],
+  "tipos": {
+    "aemet": true,
+    "rios": true,
+    "incendios": true,
+    "sismos": true,
+    "noticias": false,
+    "fin": true,
+    "resumen": true
+  }
+}

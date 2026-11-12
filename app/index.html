@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RIV-Alert</title>
+<meta name="theme-color" content="#1B3A8C">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon.svg">
+<style>
+  :root{--azul:#1B3A8C;--azul2:#122a66;--naranja:#F07D00;--bg:#0d1424;--card:#16203a;--linea:#26345a;--txt:#e8ecf6;--sub:#9aa7c7;
+        --am:#f5c518;--na:#F07D00;--ro:#e0263a;--ok:#2fb36d}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{background:linear-gradient(90deg,var(--azul2),var(--azul));border-bottom:4px solid var(--naranja);padding:12px 16px calc(12px);padding-top:max(12px,env(safe-area-inset-top));position:sticky;top:0;z-index:10}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  h1{margin:0;font-size:20px;letter-spacing:.3px} h1 span{color:var(--naranja)}
+  .meta{font-size:12px;color:#cdd6ef;margin-top:2px}
+  .estado{font-weight:800;padding:6px 12px;border-radius:999px;font-size:13px;background:#ffffff22;white-space:nowrap}
+  .estado.e3{background:var(--ro);animation:lat 1.4s infinite} .estado.e2{background:var(--na);color:#111} .estado.e1{background:var(--am);color:#222} .estado.e0{background:var(--ok)}
+  @keyframes lat{50%{filter:brightness(1.4)}}
+  nav{display:flex;gap:6px;margin-top:10px;overflow-x:auto}
+  nav button{flex:1;min-width:max-content;background:#ffffff14;color:#fff;border:1px solid #ffffff22;border-radius:10px;padding:8px 10px;font-weight:600;font-size:14px;cursor:pointer}
+  nav button.on{background:var(--naranja);color:#111;border-color:var(--naranja)}
+  main{max-width:900px;margin:0 auto;padding:14px 12px 40px}
+  .vista{display:none} .vista.on{display:block}
+  .card{background:var(--card);border:1px solid var(--linea);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .card h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.8px;padding:10px 14px;border-bottom:1px solid var(--linea);color:#cdd6ef}
+  .item{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--linea)} .item:last-child{border-bottom:0}
+  .barra{width:6px;border-radius:4px;flex:none;background:#3b4f86}
+  .n1 .barra,.b1{background:var(--am)} .n2 .barra,.b2{background:var(--na)} .n3 .barra,.b3{background:var(--ro)}
+  .tit{font-weight:700} .peq{font-size:13px;color:var(--sub)}
+  .chip{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;margin-right:6px;background:#2a3a5e}
+  .c1{background:var(--am);color:#222} .c2{background:var(--na);color:#111} .c3{background:var(--ro)}
+  .vacio{padding:14px;color:var(--sub)}
+  .pad{padding:14px}
+  .btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:800;cursor:pointer;margin:8px 0;text-align:center;text-decoration:none}
+  .btn.naranja{background:var(--naranja);color:#111} .btn.azul{background:var(--azul);color:#fff;border:1px solid #ffffff33} .btn.gris{background:#2a3a5e;color:#fff}
+  .btn:disabled{opacity:.5}
+  input,textarea,select{width:100%;background:#0b1222;color:var(--txt);border:1px solid var(--linea);border-radius:10px;padding:12px;font-size:16px;font-family:inherit}
+  textarea{min-height:130px;resize:vertical}
+  label{display:block;font-size:13px;color:var(--sub);margin:10px 0 4px}
+  .fila{display:flex;gap:8px;flex-wrap:wrap}
+  .check{display:flex;align-items:center;gap:8px;background:#0b1222;border:1px solid var(--linea);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer}
+  .check input{width:auto;transform:scale(1.3)}
+  .aviso-txt{background:#F07D0022;border:1px solid var(--naranja);border-radius:10px;padding:10px 12px;font-size:13px;margin:8px 0}
+  .ok-txt{background:#2fb36d22;border:1px solid var(--ok);border-radius:10px;padding:10px 12px;margin:8px 0}
+  .err-txt{background:#e0263a22;border:1px solid var(--ro);border-radius:10px;padding:10px 12px;margin:8px 0}
+  code{background:#0b1222;padding:2px 6px;border-radius:6px;user-select:all}
+  ol{padding-left:20px;margin:6px 0} li{margin:6px 0}
+  footer{font-size:12px;color:var(--sub);text-align:center;padding:10px 16px 30px}
+  .oculto{display:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div><h1>RIV<span>-Alert</span></h1><div class="meta" id="meta">Cargando…</div></div>
+    <div class="estado" id="estado">…</div>
+  </div>
+  <nav>
+    <button data-v="situacion" class="on">Situación</button>
+    <button data-v="alertas">Recibir alertas</button>
+    <button data-v="coord">Coordinación</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ===================== SITUACIÓN ===================== -->
+  <section class="vista on" id="v-situacion">
+    <div class="card"><h2>Avisos AEMET · zona de Rivas</h2><div id="avisos"><div class="vacio">Cargando…</div></div></div>
+    <div class="card"><h2>Ríos · en Rivas y aguas arriba</h2><div id="rios"><div class="vacio">Cargando…</div></div></div>
+    <div class="card"><h2>Incendios forestales y terremotos</h2><div id="otros"><div class="vacio">Cargando…</div></div></div>
+    <div class="card"><h2>Noticias · NO oficiales</h2><div id="noticias"><div class="vacio">Cargando…</div></div></div>
+    <a class="btn azul" href="https://guillemerinotes.github.io/alertas-rivas/" target="_blank" rel="noopener">Panel completo con radar y previsión ↗</a>
+  </section>
+
+  <!-- ===================== RECIBIR ALERTAS ===================== -->
+  <section class="vista" id="v-alertas">
+    <div class="card"><h2>Recibir las alertas en este dispositivo</h2>
+      <div class="pad">
+        <p>Las alertas llegan con la app gratuita <b>ntfy</b>. No hace falta cuenta.</p>
+        <ol>
+          <li><b>Instala ntfy:</b>
+            <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener" style="color:#9cc0ff">Android</a> ·
+            <a href="https://apps.apple.com/app/ntfy/id1625396347" target="_blank" rel="noopener" style="color:#9cc0ff">iPhone</a> ·
+            en el PC usa la <a id="lnkWeb" href="#" target="_blank" rel="noopener" style="color:#9cc0ff">versión web</a> y permite las notificaciones.</li>
+          <li><b>Suscríbete al canal del grupo:</b> en ntfy pulsa <b>+</b> y escribe:<br><code id="canal">…</code>
+            <button class="btn gris" id="copiar" style="margin-top:8px">Copiar nombre del canal</button></li>
+          <li>Haz una prueba pidiendo al coordinador que mande un comunicado.</li>
+        </ol>
+        <div class="aviso-txt">
+          🟡 <b>Amarillo</b>: notificación · 🟠 <b>Naranja</b>: alerta media · 🔴 <b>Rojo</b>: alerta máxima.<br>
+          Si el móvil está en silencio, no suena. RIV-Alert es un aviso <b>interno y no oficial</b> de Protección Civil Rivas: confirma siempre por los canales oficiales.
+        </div>
+        <p class="peq">No compartas el nombre del canal fuera del grupo: quien lo tenga puede leer las alertas.</p>
+      </div>
+    </div>
+    <div class="card"><h2>Instalar esta app</h2>
+      <div class="pad peq">En el móvil: menú del navegador → <b>Añadir a pantalla de inicio</b> / <b>Instalar app</b>. En el PC (Chrome o Edge): icono de instalar en la barra de direcciones.</div>
+    </div>
+  </section>
+
+  <!-- ===================== COORDINACIÓN ===================== -->
+  <section class="vista" id="v-coord">
+    <div class="card" id="login"><h2>Acceso de coordinadores</h2>
+      <div class="pad">
+        <label for="clave">Contraseña</label>
+        <input type="password" id="clave" autocomplete="current-password">
+        <button class="btn naranja" id="entrar">Entrar</button>
+        <div id="loginMsg"></div>
+      </div>
+    </div>
+
+    <div id="panelCoord" class="oculto">
+      <div class="card"><h2>Pedir actualización</h2>
+        <div class="pad">
+          <p class="peq">Lanza una comprobación nueva de todas las fuentes y manda un resumen de la situación al grupo (si está activado en la configuración) y a ti.</p>
+          <button class="btn azul" id="actualizar">Pedir actualización ahora</button>
+          <div id="actMsg"></div>
+        </div>
+      </div>
+
+      <div class="card"><h2>Mandar comunicado a todos</h2>
+        <div class="pad">
+          <label for="texto">Mensaje (la primera línea es el título)</label>
+          <textarea id="texto" placeholder="Ej.: Activación preventiva por crecida del Manzanares&#10;Punto de encuentro: base, 18:00"></textarea>
+          <label for="nivel">Nivel</label>
+          <select id="nivel">
+            <option value="informativo">Informativo</option>
+            <option value="amarillo">🟡 Amarillo · notificación</option>
+            <option value="naranja">🟠 Naranja · alerta media</option>
+            <option value="rojo">🔴 Rojo · alerta máxima</option>
+          </select>
+          <label for="firma">Firma (opcional)</label>
+          <input id="firma" placeholder="Ej.: Merino, Jefe de Grupo">
+          <button class="btn naranja" id="enviar">Enviar a todos</button>
+          <div id="comMsg"></div>
+        </div>
+      </div>
+
+      <div class="card"><h2>Qué recibe el grupo</h2>
+        <div class="pad">
+          <label>Niveles</label>
+          <div class="fila">
+            <label class="check"><input type="checkbox" data-n="amarillo"> 🟡 Amarillo</label>
+            <label class="check"><input type="checkbox" data-n="naranja"> 🟠 Naranja</label>
+            <label class="check"><input type="checkbox" data-n="rojo"> 🔴 Rojo</label>
+          </div>
+          <label>Tipos</label>
+          <label class="check"><input type="checkbox" data-t="aemet"> Avisos de AEMET (zona de Rivas)</label>
+          <label class="check"><input type="checkbox" data-t="rios"> Ríos (SAIH Tajo)</label>
+          <label class="check"><input type="checkbox" data-t="incendios"> Riesgo de incendio forestal</label>
+          <label class="check"><input type="checkbox" data-t="sismos"> Terremotos (IGN)</label>
+          <label class="check"><input type="checkbox" data-t="noticias"> Noticias de medios (no oficiales)</label>
+          <label class="check"><input type="checkbox" data-t="fin"> Avisos de fin / vuelta a normalidad</label>
+          <label class="check"><input type="checkbox" data-t="resumen"> Resúmenes pedidos por coordinadores</label>
+          <p class="peq">Los comunicados siempre llegan al grupo. Tú sigues recibiendo todo en tu canal personal.</p>
+          <button class="btn azul" id="guardar">Guardar</button>
+          <div id="cfgMsg"></div>
+        </div>
+      </div>
+      <button class="btn gris" id="salir">Salir</button>
+    </div>
+  </section>
+</main>
+<footer>RIV-Alert · aviso interno de Protección Civil Rivas-Vaciamadrid · no oficial · Datos: AEMET, SAIH Tajo (CHT), IGN</footer>
+
+<script>
+const DATOS = 'https://guillemerinotes.github.io/alertas-rivas/datos.json';
+const NIV = {amarillo:1, naranja:2, rojo:3};
+const NOM = ['normalidad','amarillo','naranja','rojo'];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = iso => iso ? new Date(iso).toLocaleString('es-ES',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
+
+// ---------- pestañas ----------
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.vista').forEach(v => v.classList.toggle('on', v.id === 'v-' + b.dataset.v));
+  try { localStorage.setItem('riv-vista', b.dataset.v); } catch(e) {}
+});
+try { const v = localStorage.getItem('riv-vista'); if (v) document.querySelector(`nav button[data-v="${v}"]`)?.click(); } catch(e) {}
+
+// ---------- situación ----------
+async function cargarDatos(){
+  try{
+    const d = await (await fetch(DATOS + '?t=' + Date.now(), {cache:'no-store'})).json();
+    const mins = Math.round((Date.now() - new Date(d.actualizado)) / 60000);
+    $('meta').textContent = `Datos de ${fmt(d.actualizado)} (hace ${mins} min)` + (mins > 40 ? ' ⚠️ antiguos' : '');
+    let peor = 0;
+    const av = (d.avisos || []).sort((a,b) => NIV[b.nivel]-NIV[a.nivel]);
+    av.forEach(a => peor = Math.max(peor, NIV[a.nivel] || 0));
+    $('avisos').innerHTML = av.length ? av.map(a => `<div class="item n${NIV[a.nivel]}"><div class="barra"></div><div>
+        <div class="tit"><span class="chip c${NIV[a.nivel]}">${esc(a.nivel.toUpperCase())}</span>${esc(a.fenomeno)}</div>
+        <div class="peq">Umbral ${esc(a.valor || '—')} · ${fmt(a.onset)} → ${fmt(a.expires)}</div>
+        ${a.rivas ? `<div class="peq">Previsión para Rivas: ${esc(a.rivas)}</div>` : ''}</div></div>`).join('')
+      : '<div class="vacio">✅ Sin avisos de AEMET en la zona de Rivas.</div>';
+
+    const rios = Object.entries(d.rios || {}).map(([c,r]) => ({c, ...r})).filter(r => r.tramo)
+      .sort((a,b) => (a.tramo==='rivas'?0:1)-(b.tramo==='rivas'?0:1) || b.nivel-a.nivel);
+    rios.forEach(r => peor = Math.max(peor, r.nivel || 0));
+    $('rios').innerHTML = rios.length ? rios.map(r => {
+      const t = /asc/i.test(r.tendencia) ? '↗' : /desc/i.test(r.tendencia) ? '↘' : '→';
+      const u = (r.umbrales || []).filter(x => x != null);
+      return `<div class="item n${r.nivel}"><div class="barra"></div><div style="flex:1">
+        <div class="tit">${r.nivel ? `<span class="chip c${r.nivel}">${NOM[r.nivel].toUpperCase()}</span>` : ''}${esc(r.desc)}</div>
+        <div class="peq"><b>${Number(r.valor).toFixed(2)} ${esc(r.unidad||'m')}</b> ${t} · ${r.tramo==='rivas'?'en Rivas':'aguas arriba'}${u.length===3?` · umbrales ${u.map(x=>x.toFixed(2)).join(' / ')}`:''}</div></div></div>`;
+    }).join('') : '<div class="vacio">Sin datos de ríos.</div>';
+
+    let h = '';
+    const inc = d.incendios || {};
+    if (inc.hoy){ peor = Math.max(peor, inc.nivel || 0);
+      h += `<div class="item n${inc.nivel||0}"><div class="barra"></div><div><div class="tit">${inc.nivel?`<span class="chip c${inc.nivel}">${NOM[inc.nivel].toUpperCase()}</span>`:''}Riesgo de incendio: ${esc(inc.hoy)}</div><div class="peq">Mañana: ${esc(inc.manana||'?')} (AEMET)</div></div></div>`; }
+    (d.sismos || []).forEach(s => { peor = Math.max(peor, s.nivel || 0);
+      h += `<div class="item n${s.nivel}"><div class="barra"></div><div><div class="tit"><span class="chip c${s.nivel}">${NOM[s.nivel].toUpperCase()}</span>Terremoto M${s.mag} a ${Math.round(s.dist)} km</div><div class="peq">${esc(s.lugar)} · ${esc(s.fecha)} (IGN)</div></div></div>`; });
+    if (!(d.sismos||[]).length) h += '<div class="vacio">✅ Sin terremotos relevantes cerca de Rivas (10 días).</div>';
+    $('otros').innerHTML = h;
+
+    const ns = d.noticias || [];
+    $('noticias').innerHTML = ns.length ? ns.slice(0,8).map(n => { let dom=''; try{dom=new URL(n.web).hostname}catch(e){}
+      return `<div class="item"><div class="barra"></div><div><div class="tit"><a href="${esc(n.link)}" target="_blank" rel="noopener" style="color:inherit">${esc(n.titulo)}</a></div>
+        <div class="peq">Fuente: <b>${esc(n.medio)}</b> (${esc(dom)}) · ${fmt(n.fecha)}</div></div></div>`; }).join('')
+      : '<div class="vacio">Sin noticias recientes sobre emergencias en Rivas.</div>';
+
+    const e = $('estado'); e.className = 'estado e' + peor;
+    e.textContent = peor ? 'RIV-Alert ' + NOM[peor].toUpperCase() : '✅ Sin alertas';
+  }catch(err){ $('meta').textContent = 'No se pudieron cargar los datos'; }
+}
+cargarDatos(); setInterval(cargarDatos, 2*60*1000);
+
+// ---------- canal del grupo ----------
+let CFG = null;
+async function cargarCfg(){
+  try{
+    CFG = await (await fetch('/api/accion', {cache:'no-store'})).json();
+    $('canal').textContent = CFG.canal;
+    $('lnkWeb').href = 'https://ntfy.sh/' + encodeURIComponent(CFG.canal);
+    document.querySelectorAll('[data-n]').forEach(c => c.checked = (CFG.niveles || []).includes(c.dataset.n));
+    document.querySelectorAll('[data-t]').forEach(c => c.checked = !!(CFG.tipos || {})[c.dataset.t]);
+  }catch(e){ $('canal').textContent = 'no disponible'; }
+}
+cargarCfg();
+$('copiar').onclick = async () => { try { await navigator.clipboard.writeText(CFG.canal); $('copiar').textContent = 'Copiado ✓'; } catch(e) {} };
+
+// ---------- coordinación ----------
+let clave = '';
+try { clave = sessionStorage.getItem('riv-clave') || ''; } catch(e) {}
+const msg = (id, ok, t) => $(id).innerHTML = `<div class="${ok?'ok-txt':'err-txt'}">${esc(t)}</div>`;
+async function accion(datos){
+  const r = await fetch('/api/accion', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clave, ...datos})});
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401){ salir(); throw new Error('Contraseña incorrecta'); }
+  if (!r.ok) throw new Error(j.error || 'Error ' + r.status);
+  return j;
+}
+function mostrarPanel(si){ $('login').classList.toggle('oculto', si); $('panelCoord').classList.toggle('oculto', !si); }
+function salir(){ clave = ''; try{ sessionStorage.removeItem('riv-clave'); }catch(e){} mostrarPanel(false); }
+$('salir').onclick = salir;
+$('entrar').onclick = async () => {
+  clave = $('clave').value; $('entrar').disabled = true;
+  try { await accion({accion:'login'}); try{ sessionStorage.setItem('riv-clave', clave); }catch(e){} $('clave').value=''; $('loginMsg').innerHTML=''; mostrarPanel(true); }
+  catch(e){ msg('loginMsg', false, e.message); }
+  $('entrar').disabled = false;
+};
+$('clave').onkeydown = e => { if (e.key === 'Enter') $('entrar').click(); };
+if (clave) accion({accion:'login'}).then(() => mostrarPanel(true)).catch(() => {});
+
+$('actualizar').onclick = async () => {
+  $('actualizar').disabled = true;
+  try { const j = await accion({accion:'actualizar'}); msg('actMsg', true, j.mensaje); setTimeout(cargarDatos, 90000); }
+  catch(e){ msg('actMsg', false, e.message); }
+  setTimeout(() => $('actualizar').disabled = false, 60000);
+};
+$('enviar').onclick = async () => {
+  const texto = $('texto').value.trim();
+  if (!texto) return msg('comMsg', false, 'Escribe un mensaje.');
+  const nivel = $('nivel').value;
+  if (!confirm(`¿Enviar este comunicado (${nivel}) a todo el grupo?`)) return;
+  $('enviar').disabled = true;
+  try { const j = await accion({accion:'comunicado', texto, nivel, firma: $('firma').value}); msg('comMsg', true, j.mensaje); $('texto').value=''; }
+  catch(e){ msg('comMsg', false, e.message); }
+  $('enviar').disabled = false;
+};
+$('guardar').onclick = async () => {
+  const niveles = [...document.querySelectorAll('[data-n]')].filter(c => c.checked).map(c => c.dataset.n);
+  const tipos = Object.fromEntries([...document.querySelectorAll('[data-t]')].map(c => [c.dataset.t, c.checked]));
+  $('guardar').disabled = true;
+  try { const j = await accion({accion:'guardar_grupo', niveles, tipos}); msg('cfgMsg', true, j.mensaje); }
+  catch(e){ msg('cfgMsg', false, e.message); }
+  $('guardar').disabled = false;
+};
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "RIV-Alert · Rivas-Vaciamadrid",
+  "short_name": "RIV-Alert",
+  "description": "Aviso interno (no oficial) de Protección Civil Rivas: AEMET, ríos, incendios, terremotos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1424",
+  "theme_color": "#1B3A8C",
+  "lang": "es",
+  "icons": [
+    {"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
+    {"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable"}
+  ]
+}
