@@ -1,7 +1,7 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma); 9 imágenes; previsión 33 h",
+ "panel": "radar ok (ma, sin imagen nueva); 9 imágenes; previsión 32 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -43,7 +43,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 1.45
+   "valor": 1.436
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
@@ -57,7 +57,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.767
+   "valor": 0.764
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -85,7 +85,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.952
+   "valor": 558.95
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -99,7 +99,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.55
+   "valor": 587.542
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -127,21 +127,21 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.705
+   "valor": 0.706
   },
   "R061": {
    "desc": "Henares en Humanes",
    "grupo": "corredor",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "umbrales": [
     1.71,
     1.99,
     2.23
    ],
    "unidad": "m",
-   "valor": 0.683
+   "valor": 0.691
   },
   "R174": {
    "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
@@ -155,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 2.134
+   "valor": 2.13
   }
  },
  "rios_fallos": 0
