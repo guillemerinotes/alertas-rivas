@@ -22,6 +22,7 @@
       "nombre": "Voluntarios",
       "canal": "riv-alert-grupo-sj2ipao4sg",
       "niveles": [
+        "amarillo",
         "naranja",
         "rojo"
       ],
