@@ -16,13 +16,20 @@
    "down_20261111_peligro_c_D03.sld",
    "down_20261111_peligro_c_D03.tif"
   ],
-  "clase": 0,
+  "clase": 1,
   "dias": {
-   "2026-11-11": "bajo"
+   "2026-11-11": "bajo",
+   "2026-11-12": "bajo",
+   "2026-11-13": "bajo",
+   "2026-11-14": "bajo",
+   "2026-11-15": "bajo",
+   "2026-11-16": "bajo",
+   "2026-11-17": "bajo",
+   "2026-11-18": "bajo"
   },
   "fecha": "2026-11-12",
-  "hoy": "",
-  "manana": "",
+  "hoy": "bajo",
+  "manana": "bajo",
   "nivel": 0,
   "nivel_manana": 0
  },
