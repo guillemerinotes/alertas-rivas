@@ -9,84 +9,140 @@
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon.svg">
 <style>
-  :root{--azul:#1B3A8C;--azul2:#122a66;--naranja:#F07D00;--bg:#0d1424;--card:#16203a;--linea:#26345a;--txt:#e8ecf6;--sub:#9aa7c7;
-        --am:#f5c518;--na:#F07D00;--ro:#e0263a;--ok:#2fb36d}
-  *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-  header{background:linear-gradient(90deg,var(--azul2),var(--azul));border-bottom:4px solid var(--naranja);padding:12px 16px calc(12px);padding-top:max(12px,env(safe-area-inset-top));position:sticky;top:0;z-index:10}
-  .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  h1{margin:0;font-size:20px;letter-spacing:.3px} h1 span{color:var(--naranja)}
-  .meta{font-size:12px;color:#cdd6ef;margin-top:2px}
-  .estado{font-weight:800;padding:6px 12px;border-radius:999px;font-size:13px;background:#ffffff22;white-space:nowrap}
-  .estado.e3{background:var(--ro);animation:lat 1.4s infinite} .estado.e2{background:var(--na);color:#111} .estado.e1{background:var(--am);color:#222} .estado.e0{background:var(--ok)}
-  @keyframes lat{50%{filter:brightness(1.4)}}
-  nav{display:flex;gap:6px;margin-top:10px;overflow-x:auto}
-  nav button{flex:1;min-width:max-content;background:#ffffff14;color:#fff;border:1px solid #ffffff22;border-radius:10px;padding:8px 10px;font-weight:600;font-size:14px;cursor:pointer}
-  nav button.on{background:var(--naranja);color:#111;border-color:var(--naranja)}
-  main{max-width:900px;margin:0 auto;padding:14px 12px 40px}
-  .vista{display:none} .vista.on{display:block}
-  .card{background:var(--card);border:1px solid var(--linea);border-radius:12px;margin-bottom:12px;overflow:hidden}
-  .card h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.8px;padding:10px 14px;border-bottom:1px solid var(--linea);color:#cdd6ef}
-  .item{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--linea)} .item:last-child{border-bottom:0}
-  .barra{width:6px;border-radius:4px;flex:none;background:#3b4f86}
-  .n1 .barra,.b1{background:var(--am)} .n2 .barra,.b2{background:var(--na)} .n3 .barra,.b3{background:var(--ro)}
-  .tit{font-weight:700} .peq{font-size:13px;color:var(--sub)}
-  .chip{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;margin-right:6px;background:#2a3a5e}
-  .c1{background:var(--am);color:#222} .c2{background:var(--na);color:#111} .c3{background:var(--ro)}
-  .vacio{padding:14px;color:var(--sub)}
-  .pad{padding:14px}
-  .btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:800;cursor:pointer;margin:8px 0;text-align:center;text-decoration:none}
-  .btn.naranja{background:var(--naranja);color:#111} .btn.azul{background:var(--azul);color:#fff;border:1px solid #ffffff33} .btn.gris{background:#2a3a5e;color:#fff}
-  .btn:disabled{opacity:.5}
-  input,textarea,select{width:100%;background:#0b1222;color:var(--txt);border:1px solid var(--linea);border-radius:10px;padding:12px;font-size:16px;font-family:inherit}
+  :root{--azul:#1B3A8C;--azul-cl:#3d63d6;--naranja:#F07D00;--naranja-cl:#ff9d2e;
+        --bg:#070c18;--card:rgba(22,32,60,.72);--card2:#111a33;--linea:rgba(140,165,230,.14);--txt:#eef2fb;--sub:#93a1c4;
+        --am:#f7c736;--na:#F07D00;--ro:#ef3349;--ok:#22c47a;--r:18px}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;color:var(--txt);font:15px/1.5 "Segoe UI Variable","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+    background-color:var(--bg);background-attachment:fixed;
+    background-image:radial-gradient(1200px 600px at 10% -10%,#1B3A8C55,transparent 60%),radial-gradient(900px 500px at 110% 10%,#F07D0022,transparent 60%)}
+  body{min-height:100vh}
+  a{color:#9cc0ff}
+  /* ---------- cabecera ---------- */
+  header{position:sticky;top:0;z-index:20;padding:max(12px,env(safe-area-inset-top)) 16px 12px;
+    background:rgba(7,12,24,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--linea)}
+  .top{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .marca{display:flex;align-items:center;gap:10px}
+  .logo{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(145deg,var(--azul-cl),var(--azul));box-shadow:0 6px 18px #1B3A8C88,inset 0 1px 0 #ffffff33}
+  h1{margin:0;font-size:21px;font-weight:800;letter-spacing:-.3px;line-height:1} h1 span{color:var(--naranja)}
+  .meta{font-size:12px;color:var(--sub);margin-top:4px}
+  /* ---------- pestañas: arriba en PC, abajo en móvil ---------- */
+  nav{display:flex;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--linea)}
+  nav button{display:flex;align-items:center;gap:7px;justify-content:center;background:none;color:var(--sub);border:0;border-radius:10px;
+    padding:9px 16px;font-weight:600;font-size:14px;line-height:1;font-family:inherit;cursor:pointer;transition:.2s}
+  nav button svg{width:18px;height:18px;flex:none}
+  nav button:hover{color:var(--txt)}
+  nav button.on{background:linear-gradient(145deg,var(--naranja-cl),var(--naranja));color:#1a0d00;box-shadow:0 4px 14px #F07D0055}
+  @media (max-width:720px){
+    header{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(7,12,24,.94)}
+    nav{position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));z-index:30;justify-content:space-around;
+      background:rgba(14,21,40,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 10px 30px #0009;border-radius:18px;padding:6px}
+    nav button{flex:1;flex-direction:column;gap:4px;font-size:11px;padding:8px 4px}
+    nav button svg{width:22px;height:22px}
+    main{padding-bottom:20px!important} footer{padding-bottom:120px}
+  }
+  main{max-width:1040px;margin:0 auto;padding:18px 14px 50px}
+  .vista{display:none;animation:entra .35s ease} .vista.on{display:block}
+  @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  /* ---------- banner de estado ---------- */
+  .estado{position:relative;overflow:hidden;border-radius:22px;padding:20px 22px;margin-bottom:16px;font-size:24px;font-weight:800;letter-spacing:-.3px;
+    display:flex;align-items:center;gap:14px;border:1px solid #ffffff1f;box-shadow:0 14px 40px #0006;
+    background:linear-gradient(135deg,#1d2a4d,#141d36)}
+  .estado::before{content:"";width:46px;height:46px;flex:none;border-radius:14px;background:#ffffff22 center/26px no-repeat;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 21h20L12 3z'/%3E%3Cpath d='M12 10v5M12 18h.01'/%3E%3C/svg%3E")}
+  .estado::after{content:attr(data-sub);position:absolute;right:22px;bottom:14px;font-size:12px;font-weight:600;opacity:.8}
+  .estado.e0{background:linear-gradient(135deg,#0f7a4c,#16a463)}
+  .estado.e0::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+  .estado.e1{background:linear-gradient(135deg,#d9a400,#f7c736);color:#241a00}
+  .estado.e2{background:linear-gradient(135deg,#c95f00,#ff8c1a);color:#1d0e00}
+  .estado.e3{background:linear-gradient(135deg,#a3101f,#ef3349);animation:pulso 1.6s infinite}
+  @keyframes pulso{50%{box-shadow:0 0 0 8px #ef334933,0 14px 40px #0006}}
+  /* ---------- tarjetas ---------- */
+  .rejilla{display:grid;gap:14px} @media (min-width:900px){.rejilla{grid-template-columns:1fr 1fr}}
+  .card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--linea);border-radius:var(--r);
+    margin-bottom:14px;overflow:hidden;box-shadow:0 8px 28px #0004}
+  .rejilla .card{margin-bottom:0}
+  .card h2{margin:0;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;
+    padding:14px 16px;color:#c9d4f0;border-bottom:1px solid var(--linea)}
+  .card h2 i{font-style:normal;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:16px;
+    background:linear-gradient(145deg,#2a4aa8,var(--azul));box-shadow:inset 0 1px 0 #ffffff26}
+  .card h2 i.nar{background:linear-gradient(145deg,var(--naranja-cl),var(--naranja))}
+  .item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--linea);transition:background .2s}
+  .item:hover{background:#ffffff06} .item:last-child{border-bottom:0}
+  .barra{width:5px;border-radius:5px;flex:none;background:#34477d}
+  .n1 .barra,.b1{background:var(--am);box-shadow:0 0 10px #f7c73688} .n2 .barra,.b2{background:var(--na);box-shadow:0 0 10px #F07D0088}
+  .n3 .barra,.b3{background:var(--ro);box-shadow:0 0 12px #ef3349aa}
+  .tit{font-weight:700;line-height:1.35} .peq{font-size:13px;color:var(--sub)} .peq b{color:var(--txt)}
+  .chip{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.5px;padding:3px 9px;border-radius:999px;margin-right:7px;vertical-align:1px;background:#2a3a5e}
+  .c1{background:var(--am);color:#2a1f00} .c2{background:var(--na);color:#1d0e00} .c3{background:var(--ro);color:#fff}
+  .vacio{padding:16px;color:var(--sub)}
+  .pad{padding:16px}
+  /* ---------- botones y formularios ---------- */
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:14px;padding:15px;font-weight:800;font-size:16px;line-height:1.2;font-family:inherit;
+    cursor:pointer;margin:10px 0;text-align:center;text-decoration:none;transition:transform .12s,filter .2s,box-shadow .2s}
+  .btn:hover{filter:brightness(1.08)} .btn:active{transform:scale(.98)}
+  .btn.naranja{background:linear-gradient(145deg,var(--naranja-cl),var(--naranja));color:#1a0d00;box-shadow:0 8px 22px #F07D0044}
+  .btn.azul{background:linear-gradient(145deg,var(--azul-cl),var(--azul));color:#fff;box-shadow:0 8px 22px #1B3A8C66}
+  .btn.gris{background:#ffffff10;color:var(--txt);border:1px solid var(--linea)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.confirmar{background:linear-gradient(145deg,#ff4d5e,#c41c2e)!important;color:#fff!important;animation:pulso 1s infinite}
+  input,textarea,select{width:100%;background:rgba(5,9,20,.6);color:var(--txt);border:1px solid var(--linea);border-radius:12px;padding:13px 14px;font-size:16px;font-family:inherit;transition:border .2s,box-shadow .2s}
+  input:focus,textarea:focus,select:focus{outline:0;border-color:var(--naranja);box-shadow:0 0 0 3px #F07D0033}
   textarea{min-height:130px;resize:vertical}
-  label{display:block;font-size:13px;color:var(--sub);margin:10px 0 4px}
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--sub);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+  .check{display:flex;align-items:center;gap:10px;background:rgba(5,9,20,.45);border:1px solid var(--linea);border-radius:12px;padding:11px 13px;margin:7px 0;
+    cursor:pointer;text-transform:none;letter-spacing:0;font-size:14px;font-weight:500;color:var(--txt)}
+  .fila .check{flex:1;min-width:110px}
+  .check input{width:18px;height:18px;accent-color:var(--naranja);margin:0}
   .fila{display:flex;gap:8px;flex-wrap:wrap}
-  .check{display:flex;align-items:center;gap:8px;background:#0b1222;border:1px solid var(--linea);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer}
-  .check input{width:auto;transform:scale(1.3)}
-  .aviso-txt{background:#F07D0022;border:1px solid var(--naranja);border-radius:10px;padding:10px 12px;font-size:13px;margin:8px 0}
-  .ok-txt{background:#2fb36d22;border:1px solid var(--ok);border-radius:10px;padding:10px 12px;margin:8px 0}
-  .err-txt{background:#e0263a22;border:1px solid var(--ro);border-radius:10px;padding:10px 12px;margin:8px 0}
-  code{background:#0b1222;padding:2px 6px;border-radius:6px;user-select:all}
-  ol{padding-left:20px;margin:6px 0} li{margin:6px 0}
-  footer{font-size:12px;color:var(--sub);text-align:center;padding:10px 16px 30px}
-  .oculto{display:none}
-  .btn.confirmar{background:#c62828;color:#fff;animation:lat 1s infinite} @keyframes lat{50%{opacity:.75}}
+  .aviso-txt{background:#F07D0014;border:1px solid #F07D0066;border-radius:14px;padding:12px 14px;font-size:13.5px;margin:10px 0}
+  .ok-txt{background:#22c47a1a;border:1px solid #22c47a88;border-radius:12px;padding:11px 13px;margin:8px 0}
+  .err-txt{background:#ef33491a;border:1px solid #ef334988;border-radius:12px;padding:11px 13px;margin:8px 0}
+  code{background:rgba(5,9,20,.7);border:1px solid var(--linea);padding:4px 9px;border-radius:8px;user-select:all;font-size:14px;color:var(--naranja-cl)}
+  ol{padding-left:20px;margin:6px 0} li{margin:10px 0}
+  footer{font-size:12px;color:var(--sub);text-align:center;padding:10px 16px 30px;opacity:.8}
+  .oculto{display:none!important}
 </style>
 </head>
 <body>
 <header>
   <div class="top">
-    <div><h1>RIV<span>-Alert</span></h1><div class="meta" id="meta">Cargando…</div></div>
-    <div class="estado" id="estado">…</div>
-  </div>
-  <nav>
-    <button data-v="situacion" class="on">Situación</button>
-    <button data-v="alertas">Recibir alertas</button>
-    <button data-v="coord">Coordinación</button>
+    <div class="marca">
+      <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F07D00" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z" fill="#F07D0033"/><path d="M12 10v5M12 18h.01" stroke="#fff"/></svg></div>
+      <div><h1>RIV<span>-Alert</span></h1><div class="meta" id="meta">Cargando…</div></div>
+    </div>
+    <nav>
+    <button data-v="situacion" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>Situación</button>
+    <button data-v="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>Recibir alertas</button>
+    <button data-v="coord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Coordinación</button>
   </nav>
+  </div>
 </header>
 
 <main>
   <!-- ===================== SITUACIÓN ===================== -->
   <section class="vista on" id="v-situacion">
-    <div class="card"><h2>Avisos AEMET · zona de Rivas</h2><div id="avisos"><div class="vacio">Cargando…</div></div></div>
-    <div class="card"><h2>Ríos · en Rivas y aguas arriba</h2><div id="rios"><div class="vacio">Cargando…</div></div></div>
-    <div class="card"><h2>Incendios forestales y terremotos</h2><div id="otros"><div class="vacio">Cargando…</div></div></div>
-    <div class="card"><h2>Noticias · NO oficiales</h2><div id="noticias"><div class="vacio">Cargando…</div></div></div>
+    <div class="estado" id="estado" data-sub="Rivas-Vaciamadrid">Cargando…</div>
+    <div class="rejilla">
+      <div class="card"><h2><i>⛈️</i>Avisos AEMET · zona de Rivas</h2><div id="avisos"><div class="vacio">Cargando…</div></div></div>
+      <div class="card"><h2><i>🌊</i>Ríos · en Rivas y aguas arriba</h2><div id="rios"><div class="vacio">Cargando…</div></div></div>
+      <div class="card"><h2><i class="nar">🔥</i>Incendios forestales y terremotos</h2><div id="otros"><div class="vacio">Cargando…</div></div></div>
+      <div class="card"><h2><i class="nar">📰</i>Noticias · NO oficiales</h2><div id="noticias"><div class="vacio">Cargando…</div></div></div>
+    </div>
     <a class="btn azul" href="https://guillemerinotes.github.io/alertas-rivas/" target="_blank" rel="noopener">Panel completo con radar y previsión ↗</a>
   </section>
 
   <!-- ===================== RECIBIR ALERTAS ===================== -->
   <section class="vista" id="v-alertas">
-    <div class="card"><h2>Recibir las alertas en este dispositivo</h2>
+    <div class="card"><h2><i>🔔</i>Recibir las alertas en este dispositivo</h2>
       <div class="pad">
         <p>Las alertas llegan con la app gratuita <b>ntfy</b>. No hace falta cuenta.</p>
         <ol>
           <li><b>Instala ntfy:</b>
-            <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener" style="color:#9cc0ff">Android</a> ·
-            <a href="https://apps.apple.com/app/ntfy/id1625396347" target="_blank" rel="noopener" style="color:#9cc0ff">iPhone</a> ·
-            en el PC usa la <a id="lnkWeb" href="#" target="_blank" rel="noopener" style="color:#9cc0ff">versión web</a> y permite las notificaciones.</li>
+            <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">Android</a> ·
+            <a href="https://apps.apple.com/app/ntfy/id1625396347" target="_blank" rel="noopener">iPhone</a> ·
+            en el PC usa la <a id="lnkWeb" href="#" target="_blank" rel="noopener">versión web</a> y permite las notificaciones.</li>
           <li><b>Suscríbete al canal del grupo:</b> en ntfy pulsa <b>+</b> y escribe:<br><code id="canal">…</code>
             <button class="btn gris" id="copiar" style="margin-top:8px">Copiar nombre del canal</button></li>
           <li>Haz una prueba pidiendo al coordinador que mande un comunicado.</li>
@@ -98,14 +154,14 @@
         <p class="peq">No compartas el nombre del canal fuera del grupo: quien lo tenga puede leer las alertas.</p>
       </div>
     </div>
-    <div class="card"><h2>Instalar esta app</h2>
+    <div class="card"><h2><i>📲</i>Instalar esta app</h2>
       <div class="pad peq">En el móvil: menú del navegador → <b>Añadir a pantalla de inicio</b> / <b>Instalar app</b>. En el PC (Chrome o Edge): icono de instalar en la barra de direcciones.</div>
     </div>
   </section>
 
   <!-- ===================== COORDINACIÓN ===================== -->
   <section class="vista" id="v-coord">
-    <div class="card" id="login"><h2>Acceso de coordinadores</h2>
+    <div class="card" id="login"><h2><i class="nar">🔐</i>Acceso de coordinadores</h2>
       <div class="pad">
         <label for="clave">Contraseña</label>
         <input type="password" id="clave" autocomplete="current-password">
@@ -115,7 +171,7 @@
     </div>
 
     <div id="panelCoord" class="oculto">
-      <div class="card"><h2>Pedir actualización</h2>
+      <div class="card"><h2><i>🔄</i>Pedir actualización</h2>
         <div class="pad">
           <p class="peq">Lanza una comprobación nueva de todas las fuentes y manda un resumen de la situación al grupo (si está activado en la configuración) y a ti.</p>
           <button class="btn azul" id="actualizar">Pedir actualización ahora</button>
@@ -123,7 +179,7 @@
         </div>
       </div>
 
-      <div class="card"><h2>Mandar comunicado a todos</h2>
+      <div class="card"><h2><i class="nar">📢</i>Mandar comunicado a todos</h2>
         <div class="pad">
           <label for="texto">Mensaje (la primera línea es el título)</label>
           <textarea id="texto" placeholder="Ej.: Activación preventiva por crecida del Manzanares&#10;Punto de encuentro: base, 18:00"></textarea>
@@ -141,7 +197,7 @@
         </div>
       </div>
 
-      <div class="card"><h2>Qué recibe el grupo</h2>
+      <div class="card"><h2><i>⚙️</i>Qué recibe el grupo</h2>
         <div class="pad">
           <label>Niveles</label>
           <div class="fila">
@@ -226,8 +282,8 @@ async function cargarDatos(){
       : '<div class="vacio">Sin noticias recientes sobre emergencias en Rivas.</div>';
 
     const e = $('estado'); e.className = 'estado e' + peor;
-    e.textContent = peor ? 'RIV-Alert ' + NOM[peor].toUpperCase() : '✅ Sin alertas';
-  }catch(err){ $('meta').textContent = 'No se pudieron cargar los datos'; }
+    e.textContent = peor ? 'Alerta ' + NOM[peor].toUpperCase() : 'Sin alertas activas';
+  }catch(err){ $('meta').textContent = 'No se pudieron cargar los datos'; const e=$('estado'); if(e.textContent==='Cargando…'){ e.className='estado'; e.textContent='Sin conexión con los datos'; } }
 }
 cargarDatos(); setInterval(cargarDatos, 2*60*1000);
 
