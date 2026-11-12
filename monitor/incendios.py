@@ -33,17 +33,30 @@ def descargar(http_get) -> dict:
             nombres.append(nombre)
             if not nombre.lower().endswith((".tif", ".tiff")) or "_p_" not in nombre:
                 continue
-            partes = nombre.split("_")
-            fecha_base = next((p for p in partes if re.fullmatch(r"\d{8}", p)), None)
+            partes = re.split(r"[_.]", nombre)
+            fecha_base = None
+            for p in partes:
+                if re.fullmatch(r"\d{8}", p):
+                    for fmt in ("%Y%m%d", "%d%m%Y"):
+                        try:
+                            d = datetime.strptime(p, fmt).date()
+                        except ValueError:
+                            continue
+                        if abs((d - datetime.now().date()).days) <= 10:
+                            fecha_base = d
+                            break
+                if fecha_base:
+                    break
             desfase = next((int(p) for p in partes[1:4] if re.fullmatch(r"\d{1,2}", p)), 0)
             if not fecha_base:
                 continue
-            fecha = datetime.strptime(fecha_base, "%d%m%Y").date() + timedelta(days=desfase)
+            fecha = fecha_base + timedelta(days=desfase)
             clase = valor_en_punto(tar.extractfile(m).read(), RIVAS)
             if clase:
                 res[fecha] = clase
     if not res:
         raise ValueError(f"no se encontraron mapas de la península; archivos: {nombres[:6]}")
+    res["_archivos"] = nombres[:12]
     return res
 
 
@@ -72,11 +85,13 @@ def valor_en_punto(tif_bytes: bytes, punto) -> int | None:
 
 
 def evaluar(por_dia: dict, prev: dict, ahora) -> tuple[dict, list[dict]]:
+    archivos = por_dia.pop("_archivos", None)
     hoy = ahora.astimezone(TZ).date()
     c_hoy = por_dia.get(hoy)
     c_man = por_dia.get(hoy + timedelta(days=1))
     estado = {"hoy": CLASES.get(c_hoy, ""), "manana": CLASES.get(c_man, ""), "clase": c_hoy or 0,
-              "nivel": A_COLOR.get(c_hoy, 0), "nivel_manana": A_COLOR.get(c_man, 0), "fecha": hoy.isoformat()}
+              "nivel": A_COLOR.get(c_hoy, 0), "nivel_manana": A_COLOR.get(c_man, 0), "fecha": hoy.isoformat(),
+              "dias": {d.isoformat(): CLASES.get(c, "?") for d, c in sorted(por_dia.items())}, "archivos": archivos}
     msgs = []
     n, n_prev = estado["nivel"], int(prev.get("nivel", 0)) if prev.get("fecha") else 0
     cuerpo = (f"Riesgo meteorológico de incendio forestal en Rivas (AEMET): hoy {estado['hoy'] or '?'}"
