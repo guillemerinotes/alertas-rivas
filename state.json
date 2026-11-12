@@ -1,7 +1,7 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma); 11 imágenes; previsión 32 h",
+ "panel": "radar ok (ma); 12 imágenes; previsión 32 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -15,7 +15,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.625
+   "valor": 0.626
   },
   "AR15": {
    "desc": "Tajuña en Armuña",
@@ -43,7 +43,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 1.419
+   "valor": 1.403
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
@@ -57,7 +57,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.751
+   "valor": 0.749
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -85,7 +85,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.944
+   "valor": 558.942
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -99,7 +99,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.534
+   "valor": 587.525
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -127,7 +127,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.709
+   "valor": 0.71
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -141,7 +141,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.702
+   "valor": 0.712
   },
   "R174": {
    "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
@@ -155,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 2.125
+   "valor": 2.119
   }
  },
  "rios_fallos": 0
