@@ -51,6 +51,7 @@
   ol{padding-left:20px;margin:6px 0} li{margin:6px 0}
   footer{font-size:12px;color:var(--sub);text-align:center;padding:10px 16px 30px}
   .oculto{display:none}
+  .btn.confirmar{background:#c62828;color:#fff;animation:lat 1s infinite} @keyframes lat{50%{opacity:.75}}
 </style>
 </head>
 <body>
@@ -273,15 +274,26 @@ $('actualizar').onclick = async () => {
   catch(e){ msg('actMsg', false, e.message); }
   setTimeout(() => $('actualizar').disabled = false, 60000);
 };
+// Confirmación dentro de la página (confirm() está bloqueado en algunas apps instaladas y visores)
+let armado = null;
+function desarmar(){ clearTimeout(armado); armado = null; $('enviar').textContent = 'Enviar a todos'; $('enviar').classList.remove('confirmar'); }
+$('texto').oninput = $('nivel').onchange = desarmar;
 $('enviar').onclick = async () => {
   const texto = $('texto').value.trim();
-  if (!texto) return msg('comMsg', false, 'Escribe un mensaje.');
+  if (!texto) { desarmar(); return msg('comMsg', false, 'Escribe un mensaje.'); }
   const nivel = $('nivel').value;
-  if (!confirm(`¿Enviar este comunicado (${nivel}) a todo el grupo?`)) return;
-  $('enviar').disabled = true;
+  if (!armado){
+    $('enviar').textContent = `Pulsa otra vez para ENVIAR (${nivel.toUpperCase()})`;
+    $('enviar').classList.add('confirmar');
+    $('comMsg').innerHTML = '';
+    armado = setTimeout(desarmar, 6000);
+    return;
+  }
+  desarmar();
+  $('enviar').disabled = true; $('enviar').textContent = 'Enviando…';
   try { const j = await accion({accion:'comunicado', texto, nivel, firma: $('firma').value}); msg('comMsg', true, j.mensaje); $('texto').value=''; }
   catch(e){ msg('comMsg', false, e.message); }
-  $('enviar').disabled = false;
+  $('enviar').disabled = false; $('enviar').textContent = 'Enviar a todos';
 };
 $('guardar').onclick = async () => {
   const niveles = [...document.querySelectorAll('[data-n]')].filter(c => c.checked).map(c => c.dataset.n);
