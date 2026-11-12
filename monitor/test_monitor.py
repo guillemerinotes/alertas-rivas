@@ -179,6 +179,23 @@ class PruebasGrupo(unittest.TestCase):
         com = m.comunicado("Hola", "informativo", AHORA)
         self.assertEqual([m.para_grupo(x, cfg) for x in (am, na, rio, fin, com)], [False, True, False, False, True])
 
+    def test_dos_grupos(self):
+        import json, tempfile, pathlib
+        d = {"grupos": {"jefes": {"canal": "j", "niveles": ["amarillo", "naranja", "rojo"], "tipos": {"noticias": True}},
+                        "voluntarios": {"canal": "v", "niveles": ["rojo"], "tipos": {"noticias": False}}}}
+        viejo = m.ROOT
+        with tempfile.TemporaryDirectory() as t:
+            pathlib.Path(t, "grupo.json").write_text(json.dumps(d), encoding="utf-8")
+            m.ROOT = pathlib.Path(t)
+            try:
+                gs = dict(m.cargar_grupos())
+            finally:
+                m.ROOT = viejo
+        am = comun.mensaje(1, "Lluvia", "x")
+        noti = comun.mensaje(0, "Noticia", "x", extra_tags=["evento-noticia"])
+        self.assertEqual([m.para_grupo(x, gs["jefes"]) for x in (am, noti)], [True, True])
+        self.assertEqual([m.para_grupo(x, gs["voluntarios"]) for x in (am, noti)], [False, False])
+
 
 class PruebasResumen(unittest.TestCase):
     def test_resumen(self):

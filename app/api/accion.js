@@ -51,6 +51,13 @@ async function ntfy(topic, msg) {
   if (!r.ok) throw new Error(`ntfy ${r.status}`);
 }
 
+// Admite el formato antiguo de un solo grupo
+function normalizar(d) {
+  if (d && d.grupos) return d.grupos;
+  return { voluntarios: { nombre: "Voluntarios", ...d } };
+}
+const TIPOS = ["aemet", "rios", "incendios", "sismos", "noticias", "fin", "resumen"];
+
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export default async function handler(req, res) {
@@ -59,7 +66,10 @@ export default async function handler(req, res) {
     // Configuración pública del grupo (canal para suscribirse y qué recibe)
     try {
       const r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/grupo.json?t=${Date.now()}`);
-      return res.status(200).json(await r.json());
+      const grupos = normalizar(await r.json());
+      // El canal de jefes no se publica: solo se ve tras entrar como coordinador
+      const pub = Object.fromEntries(Object.entries(grupos).map(([k, g]) => [k, k === "jefes" ? { ...g, canal: null } : g]));
+      return res.status(200).json({ grupos: pub });
     } catch (e) {
       return res.status(500).json({ error: "No se pudo leer la configuración" });
     }
@@ -73,8 +83,10 @@ export default async function handler(req, res) {
   }
   try {
     switch (body.accion) {
-      case "login":
-        return res.status(200).json({ ok: true });
+      case "login": {
+        const { cfg } = await leerGrupo();
+        return res.status(200).json({ ok: true, grupos: normalizar(cfg) });
+      }
 
       case "actualizar": {
         await gh(`/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`, {
@@ -98,31 +110,37 @@ export default async function handler(req, res) {
           tags: [EMOJI[n], `nivel-${NOMBRE[n]}`, "evento-comunicado"],
           click: PANEL,
         };
-        const { cfg } = await leerGrupo();
-        const destinos = [cfg.canal, process.env.NTFY_TOPIC].filter(Boolean);
+        const grupos = normalizar((await leerGrupo()).cfg);
+        const para = body.destino === "jefes" || body.destino === "voluntarios" ? [body.destino] : Object.keys(grupos);
+        const nombres = para.filter((k) => grupos[k]?.canal);
+        if (!nombres.length) return res.status(400).json({ error: "Ese grupo no tiene canal" });
+        const destinos = [...new Set([...nombres.map((k) => grupos[k].canal), process.env.NTFY_TOPIC].filter(Boolean))];
         for (const t of destinos) await ntfy(t, msg);
-        return res.status(200).json({ ok: true, mensaje: `Comunicado enviado a ${destinos.length} canal(es).` });
+        const quien = nombres.map((k) => grupos[k].nombre || k).join(" y ");
+        return res.status(200).json({ ok: true, mensaje: `Comunicado enviado a: ${quien}.` });
       }
 
       case "guardar_grupo": {
         const { cfg, sha } = await leerGrupo();
-        const nuevo = {
-          canal: cfg.canal,
+        const grupos = normalizar(cfg);
+        const g = body.grupo;
+        if (!grupos[g]) return res.status(400).json({ error: "Grupo desconocido" });
+        grupos[g] = {
+          ...grupos[g],
           niveles: (body.niveles || []).filter((x) => ["amarillo", "naranja", "rojo"].includes(x)),
-          tipos: Object.fromEntries(
-            ["aemet", "rios", "incendios", "sismos", "noticias", "fin", "resumen"].map((k) => [k, !!(body.tipos || {})[k]])
-          ),
+          tipos: Object.fromEntries(TIPOS.map((k) => [k, !!(body.tipos || {})[k]])),
         };
+        const nuevo = { grupos };
         await gh(`/repos/${REPO}/contents/grupo.json`, {
           method: "PUT",
           body: JSON.stringify({
-            message: "App RIV-Alert: cambiar lo que recibe el grupo",
+            message: `App RIV-Alert: cambiar lo que recibe ${grupos[g].nombre || g}`,
             content: Buffer.from(JSON.stringify(nuevo, null, 2) + "\n").toString("base64"),
             sha,
             branch: "main",
           }),
         });
-        return res.status(200).json({ ok: true, mensaje: "Guardado. Se aplica desde la próxima comprobación." });
+        return res.status(200).json({ ok: true, mensaje: `Guardado (${grupos[g].nombre || g}). Se aplica desde la próxima comprobación.` });
       }
 
       default:

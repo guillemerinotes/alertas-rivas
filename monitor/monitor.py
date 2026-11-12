@@ -302,12 +302,16 @@ def enviar_ntfy(topic: str, msg: dict, server: str = "https://ntfy.sh") -> None:
         r.read()
 
 
-def cargar_grupo() -> dict:
-    """Qué recibe el canal de grupo (grupo.json, editable desde la app por los coordinadores)."""
+def cargar_grupos() -> list:
+    """Grupos y qué recibe cada uno (grupo.json, editable desde la app por los coordinadores).
+    Acepta el formato antiguo de un solo grupo {"canal", "niveles", "tipos"}."""
     try:
-        return json.loads((ROOT / "grupo.json").read_text(encoding="utf-8"))
+        d = json.loads((ROOT / "grupo.json").read_text(encoding="utf-8"))
     except Exception:  # noqa: BLE001
-        return {}
+        return []
+    if "grupos" in d:
+        return [(k, g) for k, g in d["grupos"].items() if g.get("canal")]
+    return [("grupo", d)] if d.get("canal") else []
 
 
 def tipo_de(m: dict) -> str:
@@ -478,20 +482,19 @@ def main() -> int:
     if texto:
         extra.append(comunicado(texto, os.environ.get("NIVEL_COMUNICADO", "informativo"), ahora))
 
-    cfg = cargar_grupo()
-    envios = [(topic, m) for m in agrupar(mensajes) + extra]
-    if cfg.get("canal"):
-        envios += [(cfg["canal"], m) for m in agrupar([x for x in mensajes if para_grupo(x, cfg)])
+    envios = [("yo", topic, m) for m in agrupar(mensajes) + extra]
+    for nombre, cfg in cargar_grupos():
+        envios += [(nombre, cfg["canal"], m) for m in agrupar([x for x in mensajes if para_grupo(x, cfg)])
                    + [x for x in extra if para_grupo(x, cfg)]]
     fallos = 0
-    for canal, msg in envios:
-        print(f"-> [{'yo' if canal == topic else 'grupo'}] {msg['title']}")
+    for quien, canal, msg in envios:
+        print(f"-> [{quien}] {msg['title']}")
         try:
             enviar_ntfy(canal, msg)
         except Exception as e:  # noqa: BLE001
             fallos += 1
             print(f"[error] ntfy: {e}", file=sys.stderr)
-    mensajes = envios
+    mensajes = [(c, m) for _, c, m in envios]
 
     hb = st.get("heartbeat") or ""
     if not hb or datetime.fromisoformat(hb) < ahora - timedelta(days=20):
