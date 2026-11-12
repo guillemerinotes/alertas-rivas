@@ -1,56 +1,102 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma, sin imagen nueva); 12 imágenes; previsión 29 h",
+ "noticias": {
+  "recientes": [
+   {
+    "fecha": "2026-11-12T11:19:03+00:00",
+    "id": "CBMi1wFBVV95cUxOck5GN3dQOE5RdGJ4RHRVT213dXY3U2FDYXd5enE0Skk4ZTgzNVFlYkNrVTNwQm5MYk9RWlhHaWd3VzBjdUpUOWtaMUs2YTd5NHZ2aTlMV3ZoWXdITy00Rk5URlg0cXJhdXpDT24zd3Vna25fVE53eTc5Q2Qxc1VpUGQtS3BsTzNKZk9pRWdhbHNYVzVUUEY4cUVUejF1UFpURjc3c2lzdHIxQ1N3TlJPNFhWamVnRFBxdGpQeEhmazhadUJjaTllWDMxUHhrQ29kT3dNYlBBONIB3AFBVV95cUxOZ0swOVBaYjhqcXdfRGV2XzdvSDVtOC1iQzloQWVibXZKT3NDODgzSGdOQV9WUjZNSlNCdl9OcUtSSjBkR0ttVFhjUEpnMnE1Qy0zV1A4RzFTdzRLRXNoNUNTc3R5ME8tSXZiNHZYcHN3Q1hkTTFrQ2FIX2xSYnFXelhKSS1YUkV4dnUtRExVLUpTVHpQTU9Pemc0VE9IVlctQldZWnBlT0s1NEgxbWZJWE04SzM0dGpIZ2pFckF4M0RGV0ZaTU14LVQ3TW53Z3dwNWdqSEp6cjBIVnJa",
+    "link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOck5GN3dQOE5RdGJ4RHRVT213dXY3U2FDYXd5enE0Skk4ZTgzNVFlYkNrVTNwQm5MYk9RWlhHaWd3VzBjdUpUOWtaMUs2YTd5NHZ2aTlMV3ZoWXdITy00Rk5URlg0cXJhdXpDT24zd3Vna25fVE53eTc5Q2Qxc1VpUGQtS3BsTzNKZk9pRWdhbHNYVzVUUEY4cUVUejF1UFpURjc3c2lzdHIxQ1N3TlJPNFhWamVnRFBxdGpQeEhmazhadUJjaTllWDMxUHhrQ29kT3dNYlBBONIB3AFBVV95cUxOZ0swOVBaYjhqcXdfRGV2XzdvSDVtOC1iQzloQWVibXZKT3NDODgzSGdOQV9WUjZNSlNCdl9OcUtSSjBkR0ttVFhjUEpnMnE1Qy0zV1A4RzFTdzRLRXNoNUNTc3R5ME8tSXZiNHZYcHN3Q1hkTTFrQ2FIX2xSYnFXelhKSS1YUkV4dnUtRExVLUpTVHpQTU9Pemc0VE9IVlctQldZWnBlT0s1NEgxbWZJWE04SzM0dGpIZ2pFckF4M0RGV0ZaTU14LVQ3TW53Z3dwNWdqSEp6cjBIVnJa?oc=5",
+    "medio": "El Diario de Madrid",
+    "titulo": "Aviso rojo del Manzanares en Rivas: nivel de 4,30 metros en La Chopera y Jarama en amarillo en Titulcia",
+    "web": "https://www.eldiariodemadrid.es"
+   },
+   {
+    "fecha": "2026-11-12T11:01:44+00:00",
+    "id": "CBMi1AFBVV95cUxNOUVOaXpndFJ2anJzQWp1R0ctR3NDaXMzTUxDT0hQT1FlcEtGTXJzaVFfMVFUX290OUNsVzRXMWJVUWxKNS00S01lcTZhVl9wQ1ZmRnJ5YmZJbHd3OVVSLUlESjc5OC1XaE9YWlBNSkE1VExZbTFSS1VtRGZ1aHpsX1BEUVdZal96Q2pFbVJjanM1OUNOSGw4aTlHT1M0bGdhM2JuQVZ1amdTM2lpRjgzbl9ZMGpmYTRnYXMtVXdoRks3M2Zwdmw1OVF0bWNVNnNabmdCVQ",
+    "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNOUVOaXpndFJ2anJzQWp1R0ctR3NDaXMzTUxDT0hQT1FlcEtGTXJzaVFfMVFUX290OUNsVzRXMWJVUWxKNS00S01lcTZhVl9wQ1ZmRnJ5YmZJbHd3OVVSLUlESjc5OC1XaE9YWlBNSkE1VExZbTFSS1VtRGZ1aHpsX1BEUVdZal96Q2pFbVJjanM1OUNOSGw4aTlHT1M0bGdhM2JuQVZ1amdTM2lpRjgzbl9ZMGpmYTRnYXMtVXdoRks3M2Zwdmw1OVF0bWNVNnNabmdCVQ?oc=5",
+    "medio": "MiraCorredor",
+    "titulo": "Alerta roja por riesgo de desbordamiento del Manzanares en Rivas tras las últimas lluvias",
+    "web": "https://www.miracorredor.tv"
+   },
+   {
+    "fecha": "2026-11-12T10:03:52+00:00",
+    "id": "CBMiugFBVV95cUxPRjhqMVJIXzZQRzlwX0x5UzZMZ3BYRkE3by1DblQ1NWlYdUo4aVFpa2hxOGNBdmtidDZYZmJVU0VEeGlzSU1Qd19tQ2ctMkRZTTFVcEVPOUtCWkx1aEh4cXpxMU1xTVNqdGxaVmFwX0pQcnRLR1FyeDBldGh1Y1FlLVIxR1lsY2YxaDBqQm5IX25VcXJ2WWIyX2QtVDJqNXBJblpocXZsRkJDMjlaa29VbmVuVURhRWFPREHSAb8BQVVfeXFMTndFLUVUUXQzNkd2cjVMZkJrZEJfWDFaSTZxb3hfQ2RQV0dvV2x0TEVQWVJsX0tCZHRLZ3pNc1lCYk42TFRkSVhiTG9WT2ZMVy1WTjNLQXVXNWswWEFlUWstelNXa2l3TFdKZEREaEZUYlFlZlVidmozdVY1V0JNanRiN0dtWlpDN1RnbVVRTl9yNjdfbXd2dmZiaE5mcjZqeE94NzZYSWNJbklibVFTWVdndDNwSFRhaUxoNHMybkE",
+    "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPRjhqMVJIXzZQRzlwX0x5UzZMZ3BYRkE3by1DblQ1NWlYdUo4aVFpa2hxOGNBdmtidDZYZmJVU0VEeGlzSU1Qd19tQ2ctMkRZTTFVcEVPOUtCWkx1aEh4cXpxMU1xTVNqdGxaVmFwX0pQcnRLR1FyeDBldGh1Y1FlLVIxR1lsY2YxaDBqQm5IX25VcXJ2WWIyX2QtVDJqNXBJblpocXZsRkJDMjlaa29VbmVuVURhRWFPREHSAb8BQVVfeXFMTndFLUVUUXQzNkd2cjVMZkJrZEJfWDFaSTZxb3hfQ2RQV0dvV2x0TEVQWVJsX0tCZHRLZ3pNc1lCYk42TFRkSVhiTG9WT2ZMVy1WTjNLQXVXNWswWEFlUWstelNXa2l3TFdKZEREaEZUYlFlZlVidmozdVY1V0JNanRiN0dtWlpDN1RnbVVRTl9yNjdfbXd2dmZiaE5mcjZqeE94NzZYSWNJbklibVFTWVdndDNwSFRhaUxoNHMybkE?oc=5",
+    "medio": "El Debate",
+    "titulo": "Aviso rojo por riesgo de desbordamiento del río Manzanares a su paso por Rivas",
+    "web": "https://www.eldebate.com"
+   },
+   {
+    "fecha": "2026-11-12T09:30:28+00:00",
+    "id": "CBMiqgFBVV95cUxNSXFneUw1aTYtTzQ3eGE4RmZPczRwbGRTUkV2cEw5d3JKc2VJNUE5ZU9xY0wyWXllTE01aFp6aUw5QkpLQVdGZkx3UmtHMmpXS1paZ2w4NzhoVktxUkFrS2dsTFVQWmwtdFRoSGlhTlNMQXpDMXBpREZ3UzJ0RXdQZzlWYndSa1pncXY4QTZRbEp5V3hyRmRPSThySzktTzkzOWtTTWdyMUtxUdIBqgFBVV95cUxQYlRIa1IzaHJpU3ROT1czUlYyOF9mSEc5dWgyaC1LVVprdXJpVXhMcE9QTlRiTFN3Sl85M2xyYTRIcENidlBzRHZybDBIMEZZVlFYOGtrdEhuMHJDb3g0b09CNGJsb291R1ZqZWNDLXJvbm9nZUE5aExZdDRrbUpvMHlXZHNScTJEMkJmcmdFQjJ2azVDUFlkSWFlTnpmaXZidDNJU0t3dTNWZw",
+    "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNSXFneUw1aTYtTzQ3eGE4RmZPczRwbGRTUkV2cEw5d3JKc2VJNUE5ZU9xY0wyWXllTE01aFp6aUw5QkpLQVdGZkx3UmtHMmpXS1paZ2w4NzhoVktxUkFrS2dsTFVQWmwtdFRoSGlhTlNMQXpDMXBpREZ3UzJ0RXdQZzlWYndSa1pncXY4QTZRbEp5V3hyRmRPSThySzktTzkzOWtTTWdyMUtxUdIBqgFBVV95cUxQYlRIa1IzaHJpU3ROT1czUlYyOF9mSEc5dWgyaC1LVVprdXJpVXhMcE9QTlRiTFN3Sl85M2xyYTRIcENidlBzRHZybDBIMEZZVlFYOGtrdEhuMHJDb3g0b09CNGJsb291R1ZqZWNDLXJvbm9nZUE5aExZdDRrbUpvMHlXZHNScTJEMkJmcmdFQjJ2azVDUFlkSWFlTnpmaXZidDNJU0t3dTNWZw?oc=5",
+    "medio": "El Periódico de España",
+    "titulo": "Alerta roja en Rivas por riesgo de desbordamiento del Manzanares tras las intensas lluvias",
+    "web": "https://www.epe.es"
+   },
+   {
+    "fecha": "2026-11-12T09:29:00+00:00",
+    "id": "CBMirwFBVV95cUxNWUIwWFBMZFoxUkVWTWVtQTN1ZjVnbnpFRUcwekNaREVqal92QngyMGZUbUphTlpxeFZMc25ONEs1bEZmS0JMaXhZdXFpckVzaVJQdHJ5bFBLVl9QZmVmMEVNdUhrNW5mcGxMTDhXQUw0OXN0TVZiS3JKbGwtcm9MbDlNQXNHRUcwa25YMXlKNHFCMTF2cE5XRVVVY3VlOUtSamt3SlkzU3Y1N3pJOEZV0gG0AUFVX3lxTE44eFpadExNbmx3aUg2S2FublNpRVp5MUhjOVBQdmM0eXVoMlRQdExTbVE2bjJHVzJjdkNrcDBIeXVmXy1oSmRHcDBSQTltUnotdF8yYWk0S2JBY3lhZlBJQndOUnRWZldvdG5od3RHR2hJLXd3aVpOcWpqNmIwcU51ZXpnR0FOcTdKZnVaZDNtZEpmRFBpYjhMZjdkUko5bVd3ekhqNm51d2hMaTNVeGFuVjA4TA",
+    "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWUIwWFBMZFoxUkVWTWVtQTN1ZjVnbnpFRUcwekNaREVqal92QngyMGZUbUphTlpxeFZMc25ONEs1bEZmS0JMaXhZdXFpckVzaVJQdHJ5bFBLVl9QZmVmMEVNdUhrNW5mcGxMTDhXQUw0OXN0TVZiS3JKbGwtcm9MbDlNQXNHRUcwa25YMXlKNHFCMTF2cE5XRVVVY3VlOUtSamt3SlkzU3Y1N3pJOEZV0gG0AUFVX3lxTE44eFpadExNbmx3aUg2S2FublNpRVp5MUhjOVBQdmM0eXVoMlRQdExTbVE2bjJHVzJjdkNrcDBIeXVmXy1oSmRHcDBSQTltUnotdF8yYWk0S2JBY3lhZlBJQndOUnRWZldvdG5od3RHR2hJLXd3aVpOcWpqNmIwcU51ZXpnR0FOcTdKZnVaZDNtZEpmRFBpYjhMZjdkUko5bVd3ekhqNm51d2hMaTNVeGFuVjA4TA?oc=5",
+    "medio": "Telemadrid",
+    "titulo": "Aviso rojo por riesgo de desbordamiento del Manzanares en Rivas: el nivel del río supera el umbral de alerta",
+    "web": "https://www.telemadrid.es"
+   },
+   {
+    "fecha": "2026-11-12T09:27:00+00:00",
+    "id": "CBMihwFBVV95cUxOTEl6QndlUXdicU9zNWZDdVlNaVRnQjFieGJXTEpZd2xWZDNFTmIzTkxkRXVJLVBYTE1Jc2k1MzRGdkxwTTdqaDlWU1hHS1pXVXhLM0IwYXZFRXRRdGVxdmZEYUI0MkxENVpvN2pOWi1sUk0tTE5Gb1pwU0l0V0FOQkwzRHhaQjg",
+    "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOTEl6QndlUXdicU9zNWZDdVlNaVRnQjFieGJXTEpZd2xWZDNFTmIzTkxkRXVJLVBYTE1Jc2k1MzRGdkxwTTdqaDlWU1hHS1pXVXhLM0IwYXZFRXRRdGVxdmZEYUI0MkxENVpvN2pOWi1sUk0tTE5Gb1pwU0l0V0FOQkwzRHhaQjg?oc=5",
+    "medio": "Madridiario",
+    "titulo": "Aviso rojo por riesgo de desbordamiento del río Manzanares a su paso por Rivas",
+    "web": "https://www.madridiario.es"
+   }
+  ],
+  "vistas": {
+   "CBMi1AFBVV95cUxNOUVOaXpndFJ2anJzQWp1R0ctR3NDaXMzTUxDT0hQT1FlcEtGTXJzaVFfMVFUX290OUNsVzRXMWJVUWxKNS00S01lcTZhVl9wQ1ZmRnJ5YmZJbHd3OVVSLUlESjc5OC1XaE9YWlBNSkE1VExZbTFSS1VtRGZ1aHpsX1BEUVdZal96Q2pFbVJjanM1OUNOSGw4aTlHT1M0bGdhM2JuQVZ1amdTM2lpRjgzbl9ZMGpmYTRnYXMtVXdoRks3M2Zwdmw1OVF0bWNVNnNabmdCVQ": "2026-11-12T11:01:44+00:00",
+   "CBMi1wFBVV95cUxOck5GN3dQOE5RdGJ4RHRVT213dXY3U2FDYXd5enE0Skk4ZTgzNVFlYkNrVTNwQm5MYk9RWlhHaWd3VzBjdUpUOWtaMUs2YTd5NHZ2aTlMV3ZoWXdITy00Rk5URlg0cXJhdXpDT24zd3Vna25fVE53eTc5Q2Qxc1VpUGQtS3BsTzNKZk9pRWdhbHNYVzVUUEY4cUVUejF1UFpURjc3c2lzdHIxQ1N3TlJPNFhWamVnRFBxdGpQeEhmazhadUJjaTllWDMxUHhrQ29kT3dNYlBBONIB3AFBVV95cUxOZ0swOVBaYjhqcXdfRGV2XzdvSDVtOC1iQzloQWVibXZKT3NDODgzSGdOQV9WUjZNSlNCdl9OcUtSSjBkR0ttVFhjUEpnMnE1Qy0zV1A4RzFTdzRLRXNoNUNTc3R5ME8tSXZiNHZYcHN3Q1hkTTFrQ2FIX2xSYnFXelhKSS1YUkV4dnUtRExVLUpTVHpQTU9Pemc0VE9IVlctQldZWnBlT0s1NEgxbWZJWE04SzM0dGpIZ2pFckF4M0RGV0ZaTU14LVQ3TW53Z3dwNWdqSEp6cjBIVnJa": "2026-11-12T11:19:03+00:00",
+   "CBMihwFBVV95cUxOTEl6QndlUXdicU9zNWZDdVlNaVRnQjFieGJXTEpZd2xWZDNFTmIzTkxkRXVJLVBYTE1Jc2k1MzRGdkxwTTdqaDlWU1hHS1pXVXhLM0IwYXZFRXRRdGVxdmZEYUI0MkxENVpvN2pOWi1sUk0tTE5Gb1pwU0l0V0FOQkwzRHhaQjg": "2026-11-12T09:27:00+00:00",
+   "CBMiqgFBVV95cUxNSXFneUw1aTYtTzQ3eGE4RmZPczRwbGRTUkV2cEw5d3JKc2VJNUE5ZU9xY0wyWXllTE01aFp6aUw5QkpLQVdGZkx3UmtHMmpXS1paZ2w4NzhoVktxUkFrS2dsTFVQWmwtdFRoSGlhTlNMQXpDMXBpREZ3UzJ0RXdQZzlWYndSa1pncXY4QTZRbEp5V3hyRmRPSThySzktTzkzOWtTTWdyMUtxUdIBqgFBVV95cUxQYlRIa1IzaHJpU3ROT1czUlYyOF9mSEc5dWgyaC1LVVprdXJpVXhMcE9QTlRiTFN3Sl85M2xyYTRIcENidlBzRHZybDBIMEZZVlFYOGtrdEhuMHJDb3g0b09CNGJsb291R1ZqZWNDLXJvbm9nZUE5aExZdDRrbUpvMHlXZHNScTJEMkJmcmdFQjJ2azVDUFlkSWFlTnpmaXZidDNJU0t3dTNWZw": "2026-11-12T09:30:28+00:00",
+   "CBMirwFBVV95cUxNWUIwWFBMZFoxUkVWTWVtQTN1ZjVnbnpFRUcwekNaREVqal92QngyMGZUbUphTlpxeFZMc25ONEs1bEZmS0JMaXhZdXFpckVzaVJQdHJ5bFBLVl9QZmVmMEVNdUhrNW5mcGxMTDhXQUw0OXN0TVZiS3JKbGwtcm9MbDlNQXNHRUcwa25YMXlKNHFCMTF2cE5XRVVVY3VlOUtSamt3SlkzU3Y1N3pJOEZV0gG0AUFVX3lxTE44eFpadExNbmx3aUg2S2FublNpRVp5MUhjOVBQdmM0eXVoMlRQdExTbVE2bjJHVzJjdkNrcDBIeXVmXy1oSmRHcDBSQTltUnotdF8yYWk0S2JBY3lhZlBJQndOUnRWZldvdG5od3RHR2hJLXd3aVpOcWpqNmIwcU51ZXpnR0FOcTdKZnVaZDNtZEpmRFBpYjhMZjdkUko5bVd3ekhqNm51d2hMaTNVeGFuVjA4TA": "2026-11-12T09:29:00+00:00",
+   "CBMiugFBVV95cUxPRjhqMVJIXzZQRzlwX0x5UzZMZ3BYRkE3by1DblQ1NWlYdUo4aVFpa2hxOGNBdmtidDZYZmJVU0VEeGlzSU1Qd19tQ2ctMkRZTTFVcEVPOUtCWkx1aEh4cXpxMU1xTVNqdGxaVmFwX0pQcnRLR1FyeDBldGh1Y1FlLVIxR1lsY2YxaDBqQm5IX25VcXJ2WWIyX2QtVDJqNXBJblpocXZsRkJDMjlaa29VbmVuVURhRWFPREHSAb8BQVVfeXFMTndFLUVUUXQzNkd2cjVMZkJrZEJfWDFaSTZxb3hfQ2RQV0dvV2x0TEVQWVJsX0tCZHRLZ3pNc1lCYk42TFRkSVhiTG9WT2ZMVy1WTjNLQXVXNWswWEFlUWstelNXa2l3TFdKZEREaEZUYlFlZlVidmozdVY1V0JNanRiN0dtWlpDN1RnbVVRTl9yNjdfbXd2dmZiaE5mcjZqeE94NzZYSWNJbklibVFTWVdndDNwSFRhaUxoNHMybkE": "2026-11-12T10:03:52+00:00"
+  }
+ },
+ "panel": "radar ok (ma); 12 imágenes; previsión 29 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
-   "grupo": "corredor",
    "nivel": 0,
    "nombre": "HENARES EN ESPINILLO",
    "tendencia": "Descendente",
+   "tramo": "arriba",
    "umbrales": [
     1.3,
     1.8,
     2.3
    ],
    "unidad": "m",
-   "valor": 0.626
-  },
-  "AR15": {
-   "desc": "Tajuña en Armuña",
-   "grupo": "madrid",
-   "nivel": 0,
-   "nombre": "TAJUÑA EN ARMUÑA",
-   "tendencia": "Estable",
-   "umbrales": [
-    1.2,
-    1.7,
-    1.9
-   ],
-   "unidad": "m",
-   "valor": 0.956
+   "valor": 0.62
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
-   "grupo": "madrid",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
    "tendencia": "Descendente",
+   "tramo": "arriba",
    "umbrales": [
     2.11,
     3.11,
     3.5
    ],
    "unidad": "m",
-   "valor": 1.15
+   "valor": 1.129
   },
   "AR17": {
-   "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
-   "grupo": "rivas",
+   "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
+   "tramo": "rivas",
    "umbrales": [
     1.27,
     1.53,
@@ -61,24 +107,24 @@
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
-   "grupo": "rivas",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
+   "tramo": "rivas",
    "umbrales": [
     1.92,
     2.35,
     2.66
    ],
    "unidad": "m",
-   "valor": 0.865
+   "valor": 0.856
   },
   "MC02": {
-   "desc": "Jarama en San Fernando (aguas arriba de Rivas)",
-   "grupo": "rivas",
+   "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
    "tendencia": "Estable",
+   "tramo": "rivas",
    "umbrales": [
     559.55,
     560.34,
@@ -89,74 +135,70 @@
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
-   "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
    "tendencia": "Descendente",
+   "tramo": "arriba",
    "umbrales": [
     588.44,
     588.9,
     589.24
    ],
    "unidad": "m",
-   "valor": 587.475
+   "valor": 587.469
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
-   "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
+   "tramo": "arriba",
    "umbrales": [
     1.0,
     1.67,
     2.23
    ],
    "unidad": "m",
-   "valor": 0.27
+   "valor": 0.26
   },
   "R051": {
    "desc": "Jarama en Algete",
-   "grupo": "corredor",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
    "tendencia": "Ascendente",
+   "tramo": "arriba",
    "umbrales": [
     1.45,
     1.82,
     2.15
    ],
    "unidad": "m",
-   "valor": 0.743
+   "valor": 0.749
   },
   "R061": {
    "desc": "Henares en Humanes",
-   "grupo": "corredor",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
+   "tramo": "arriba",
    "umbrales": [
     1.71,
     1.99,
     2.23
    ],
    "unidad": "m",
-   "valor": 0.701
-  },
-  "R174": {
-   "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
-   "grupo": "corredor",
-   "nivel": 1,
-   "nombre": "JARAMA EN CIEMPOZUELOS - PUENTE TITULCIA",
-   "tendencia": "Descendente",
-   "umbrales": [
-    1.9,
-    2.3,
-    2.6
-   ],
-   "unidad": "m",
-   "valor": 2.057
+   "valor": 0.705
   }
  },
- "rios_fallos": 0
+ "rios_fallos": 0,
+ "salud": {
+  "AEMET avisos": 0,
+  "AEMET incendios": 1,
+  "AEMET incendios · último error": "ValueError: unconverted data remains: 1",
+  "IGN terremotos": 0,
+  "Noticias": 0,
+  "SAIH Tajo": 0
+ },
+ "sismos": {},
+ "version": 2
 }
