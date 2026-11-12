@@ -1,7 +1,7 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma, sin imagen nueva); 12 imágenes; previsión 30 h",
+ "panel": "radar ok (ma); 12 imágenes; previsión 30 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -15,7 +15,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.635
+   "valor": 0.634
   },
   "AR15": {
    "desc": "Tajuña en Armuña",
@@ -43,21 +43,21 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 1.236
+   "valor": 1.204
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
    "grupo": "rivas",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "umbrales": [
     1.27,
     1.53,
     1.75
    ],
    "unidad": "m",
-   "valor": 0.737
+   "valor": 0.733
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -71,21 +71,21 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.88
+   "valor": 0.874
   },
   "MC02": {
    "desc": "Jarama en San Fernando (aguas arriba de Rivas)",
    "grupo": "rivas",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "umbrales": [
     559.55,
     560.34,
     560.7
    ],
    "unidad": "m",
-   "valor": 558.916
+   "valor": 558.905
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -99,21 +99,21 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.489
+   "valor": 587.484
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "umbrales": [
     1.0,
     1.67,
     2.23
    ],
    "unidad": "m",
-   "valor": 0.26
+   "valor": 0.27
   },
   "R051": {
    "desc": "Jarama en Algete",
@@ -127,7 +127,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.728
+   "valor": 0.733
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -141,7 +141,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.709
+   "valor": 0.702
   },
   "R174": {
    "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
@@ -155,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 2.079
+   "valor": 2.072
   }
  },
  "rios_fallos": 0
