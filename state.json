@@ -1,7 +1,7 @@
 {
  "avisos": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "panel": "radar ok (ma); 7 imágenes; previsión 33 h",
+ "panel": "radar ok (ma); 8 imágenes; previsión 33 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -22,14 +22,14 @@
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "TAJUÑA EN ARMUÑA",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.2,
     1.7,
     1.9
    ],
    "unidad": "m",
-   "valor": 0.954
+   "valor": 0.956
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -43,21 +43,21 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 1.465
+   "valor": 1.45
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando (aguas arriba de Rivas)",
    "grupo": "rivas",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "umbrales": [
     1.27,
     1.53,
     1.75
    ],
    "unidad": "m",
-   "valor": 0.768
+   "valor": 0.767
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -85,7 +85,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.961
+   "valor": 558.952
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -99,14 +99,14 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.556
+   "valor": 587.55
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "grupo": "madrid",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "umbrales": [
     1.0,
     1.67,
@@ -127,7 +127,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.704
+   "valor": 0.705
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -141,7 +141,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.689
+   "valor": 0.683
   },
   "R174": {
    "desc": "Jarama en Puente Titulcia (aguas abajo de Rivas)",
@@ -155,7 +155,7 @@
     2.6
    ],
    "unidad": "m",
-   "valor": 2.138
+   "valor": 2.134
   }
  },
  "rios_fallos": 0
