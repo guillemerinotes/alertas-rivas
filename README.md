@@ -15,6 +15,7 @@ Fuentes vigiladas (cada 10 min, cron-job.org → GitHub Actions):
   nieve, tormentas (incluye granizo), temperaturas, niebla, polvo. Colores oficiales de AEMET.
 - **SAIH Tajo**: ríos en Rivas y aguas arriba con los umbrales oficiales de la CHT.
 - **IGN**: terremotos. Sin colores oficiales: nivel por magnitud y distancia (criterio RIV-Alert, `monitor/sismos.py`).
+- **Noticias** (Google News, NO oficial): titulares sobre emergencias en Rivas, siempre con el medio indicado.
 - **AEMET riesgo de incendio forestal** en Rivas: alto = amarillo, muy alto = naranja, extremo = rojo
   (equivalencia de RIV-Alert, `monitor/incendios.py`).
 

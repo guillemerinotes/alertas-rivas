@@ -86,6 +86,7 @@ def generar(st: dict, horas, key: str, ahora: datetime, http_get) -> None:
         "rios": st.get("rios", {}),
         "sismos": sorted(st.get("sismos", {}).values(), key=lambda x: -x.get("nivel", 0)),
         "incendios": st.get("incendios", {}),
+        "noticias": st.get("noticias", {}).get("recientes", []),
         "salud": st.get("salud", {}),
         "prevision_rivas": _prevision(horas, ahora),
         "radar_aemet": radar,

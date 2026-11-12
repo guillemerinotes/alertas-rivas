@@ -274,7 +274,7 @@ def agrupar(mensajes: list[dict]) -> list[dict]:
         n = next((t[6:] for t in m["tags"] if t.startswith("nivel-")), "amarillo")
         por_nivel.setdefault(n, []).append(m)
     res = []
-    for n in ("normalidad", "amarillo", "naranja", "rojo"):
+    for n in ("info", "normalidad", "amarillo", "naranja", "rojo"):
         lista = por_nivel.get(n, [])
         if len(lista) <= 1:
             res.extend(lista)
@@ -282,6 +282,9 @@ def agrupar(mensajes: list[dict]) -> list[dict]:
         cuerpo = "\n\n".join(f"• {m['title']}\n{m['message'].split(chr(10) + chr(10) + 'RIV-Alert')[0]}" for m in lista)
         cuerpo = cuerpo[:3600] + "\n\nRIV-Alert · aviso interno PC Rivas (no oficial). Confirma por canales oficiales."
         top = max(lista, key=lambda m: m["priority"])
+        if n == "info":  # las noticias ya vienen agrupadas
+            res.extend(lista)
+            continue
         etq = "FIN" if n == "normalidad" else n.upper()
         res.append({"title": f"{comun.MARCA} {etq} · {len(lista)} novedades", "message": cuerpo,
                     "priority": top["priority"], "tags": [top["tags"][0], f"nivel-{n}", "evento-varios"],
@@ -405,10 +408,16 @@ def main() -> int:
         st["incendios"], m = incendios.evaluar(incendios.descargar(http_get), st.get("incendios", {}), ahora)
         mensajes.extend(m)
 
+    def f_noticias():
+        import noticias
+        st["noticias"], m = noticias.evaluar(noticias.descargar(http_get), st.get("noticias", {}), ahora)
+        mensajes.extend(m)
+
     fuente("AEMET avisos", f_aemet)
     fuente("SAIH Tajo", f_rios)
     fuente("IGN terremotos", f_sismos)
     fuente("AEMET incendios", f_incendios)
+    fuente("Noticias", f_noticias)
 
     mensajes = agrupar(mensajes)
     if os.environ.get("MODO_RESUMEN") == "1":

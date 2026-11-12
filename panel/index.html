@@ -110,6 +110,11 @@
     <div id="otros"><div class="vacio">Cargando…</div></div>
   </section>
 
+  <section class="card ancho">
+    <h2>Noticias sobre Rivas <small>medios de comunicación · NO oficiales</small></h2>
+    <div id="noticias"><div class="vacio">Cargando…</div></div>
+  </section>
+
   <section class="card">
     <h2>Previsión horaria Rivas <small>AEMET · municipio 28123</small></h2>
     <div class="tabla" id="prevision"><div class="vacio">Cargando…</div></div>
@@ -264,6 +269,16 @@ function pintarPrevision(p){
       <td>${h.temp ?? ''}</td></tr>`).join('')}</tbody></table>`;
 }
 
+function pintarNoticias(ns){
+  const el = document.getElementById('noticias');
+  if (!ns || !ns.length){ el.innerHTML = '<div class="vacio">Sin noticias recientes sobre emergencias en Rivas.</div>'; return; }
+  el.innerHTML = ns.map(n => { let dom = ''; try { dom = new URL(n.web).hostname; } catch(e) {}
+    return `<div class="aviso"><div class="barra" style="background:#6b7aa6"></div><div>
+      <div class="tit"><a href="${esc(n.link)}" target="_blank" rel="noopener" style="color:inherit">${esc(n.titulo)}</a></div>
+      <div class="peq">Fuente: <b>${esc(n.medio || '?')}</b> (${esc(dom)}) · ${n.fecha ? fmtH(n.fecha) : ''} · vía Google News</div></div></div>`; }).join('')
+    + '<div class="nota">Titulares de medios, no avisos oficiales. Contrástalos con AEMET, SAIH, 112 o el Ayuntamiento.</div>';
+}
+
 function estadoGeneral(d){
   let max = 0;
   (d.avisos || []).forEach(a => max = Math.max(max, NIV[a.nivel] || 0));
@@ -286,6 +301,7 @@ async function cargarDatos(){
     pintarAvisos(d.avisos || []);
     pintarRios(d.rios || {}, d.salud || {});
     pintarOtros(d.incendios, d.sismos, d.salud || {});
+    pintarNoticias(d.noticias || []);
     pintarPrevision(d.prevision_rivas || []);
     estadoGeneral(d);
     aemetFrames = d.radar_aemet || [];

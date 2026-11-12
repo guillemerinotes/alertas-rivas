@@ -135,6 +135,29 @@ class PruebasIncendios(unittest.TestCase):
         self.assertEqual(incendios.valor_en_punto(buf.getvalue(), incendios.RIVAS), 4)
 
 
+RSS_NEWS = """<?xml version="1.0"?><rss><channel>
+<item><title>Aviso rojo por riesgo de desbordamiento del Manzanares en Rivas - Telemadrid</title>
+<link>https://news.google.com/a1</link><guid>a1</guid><pubDate>Wed, 11 Nov 2026 11:00:00 GMT</pubDate>
+<source url="https://www.telemadrid.es">Telemadrid</source></item>
+<item><title>Fiestas de Rivas este fin de semana - X</title><link>l2</link><guid>a2</guid>
+<pubDate>Wed, 11 Nov 2026 11:00:00 GMT</pubDate><source url="https://x.es">X</source></item>
+<item><title>Inundación en Rivas hace un mes - Y</title><link>l3</link><guid>a3</guid>
+<pubDate>Sun, 11 Oct 2026 11:00:00 GMT</pubDate><source url="https://y.es">Y</source></item>
+</channel></rss>"""
+
+
+class PruebasNoticias(unittest.TestCase):
+    def test_filtra_y_marca_fuente(self):
+        import noticias
+        st, ms = noticias.evaluar(RSS_NEWS.encode(), {}, AHORA)
+        self.assertEqual(len(st["recientes"]), 1)
+        self.assertIn("Telemadrid", ms[0]["title"])
+        self.assertIn("no oficial", ms[0]["title"])
+        self.assertIn("www.telemadrid.es", ms[0]["message"])
+        self.assertEqual(noticias.evaluar(RSS_NEWS.encode(), st, AHORA)[1], [])
+        self.assertEqual(len(m.agrupar(ms + ms)), 2)
+
+
 class PruebasResumen(unittest.TestCase):
     def test_resumen(self):
         st = {"avisos": m.avisos_activos([cap()], AHORA),
