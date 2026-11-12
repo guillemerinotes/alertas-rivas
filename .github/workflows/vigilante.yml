@@ -10,9 +10,18 @@ on:
         type: boolean
         default: false
       resumen:
-        description: "Enviar además un resumen de la situación actual"
+        description: "PEDIR ACTUALIZACIÓN: enviar un resumen de la situación actual"
         type: boolean
         default: false
+      comunicado:
+        description: "MANDAR COMUNICADO a todos (escribe el mensaje; vacío = no se manda)"
+        type: string
+        default: ""
+      nivel_comunicado:
+        description: "Nivel del comunicado"
+        type: choice
+        options: [informativo, amarillo, naranja, rojo]
+        default: informativo
 
 permissions:
   contents: write
@@ -54,6 +63,8 @@ jobs:
           PANEL_URL: ${{ vars.PANEL_URL }}
           MODO_PRUEBA: ${{ inputs.prueba && '1' || '0' }}
           MODO_RESUMEN: ${{ inputs.resumen && '1' || '0' }}
+          COMUNICADO: ${{ inputs.comunicado }}
+          NIVEL_COMUNICADO: ${{ inputs.nivel_comunicado }}
         run: python monitor/monitor.py
 
       - name: Guardar estado

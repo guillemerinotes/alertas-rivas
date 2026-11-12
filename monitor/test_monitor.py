@@ -158,6 +158,16 @@ class PruebasNoticias(unittest.TestCase):
         self.assertEqual(len(m.agrupar(ms + ms)), 2)
 
 
+class PruebasComunicado(unittest.TestCase):
+    def test_niveles(self):
+        c = m.comunicado("Activación preventiva\nPunto de encuentro: base", "naranja", AHORA)
+        self.assertEqual(c["priority"], 4)
+        self.assertIn("COMUNICADO NARANJA · Activación preventiva", c["title"])
+        self.assertEqual(m.comunicado("Hola", "informativo", AHORA)["priority"], 3)
+        alerta = comun.mensaje(2, "Rachas", "x")
+        self.assertEqual(len(m.agrupar([c, alerta, comun.mensaje(2, "Lluvia", "y")])), 2)  # el comunicado va aparte
+
+
 class PruebasResumen(unittest.TestCase):
     def test_resumen(self):
         st = {"avisos": m.avisos_activos([cap()], AHORA),

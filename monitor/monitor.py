@@ -270,6 +270,8 @@ def eventos_aemet(prev: dict, act: dict, ahora: datetime) -> list[dict]:
 def agrupar(mensajes: list[dict]) -> list[dict]:
     """Varias novedades del mismo nivel en una comprobación -> una sola notificación."""
     por_nivel: dict[str, list[dict]] = {}
+    sueltos = [m for m in mensajes if {"evento-comunicado", "evento-resumen"} & set(m["tags"])]
+    mensajes = [m for m in mensajes if m not in sueltos]
     for m in mensajes:
         n = next((t[6:] for t in m["tags"] if t.startswith("nivel-")), "amarillo")
         por_nivel.setdefault(n, []).append(m)
@@ -289,7 +291,7 @@ def agrupar(mensajes: list[dict]) -> list[dict]:
         res.append({"title": f"{comun.MARCA} {etq} · {len(lista)} novedades", "message": cuerpo,
                     "priority": top["priority"], "tags": [top["tags"][0], f"nivel-{n}", "evento-varios"],
                     "click": PANEL_URL})
-    return res
+    return res + sueltos
 
 
 def enviar_ntfy(topic: str, msg: dict, server: str = "https://ntfy.sh") -> None:
@@ -340,6 +342,21 @@ def resumen(st: dict, ahora: datetime) -> dict:
     m["priority"] = 3
     m["title"] = f"{comun.MARCA} · RESUMEN · peor nivel: {comun.NOMBRE[peor].upper()}"
     return m
+
+
+def comunicado(texto: str, nivel: str, ahora: datetime) -> dict:
+    """Mensaje manual del responsable a todos los suscritos."""
+    n = NIVELES.get(nivel.lower(), 0)
+    cuerpo = (texto[:3000] + f"\n\nComunicado manual enviado el {ahora.astimezone(TZ):%d/%m a las %H:%M} "
+              "desde RIV-Alert · Protección Civil Rivas (aviso interno, no oficial).")
+    return {
+        "title": f"{comun.MARCA} · COMUNICADO" + (f" {nivel.upper()}" if n else "") + f" · {texto.splitlines()[0][:80]}",
+        "message": cuerpo,
+        "priority": comun.PRIORIDAD.get(n, 3),
+        "tags": [comun.EMOJI.get(n, "loudspeaker") if n else "loudspeaker", f"nivel-{comun.NOMBRE[n] if n else 'info'}",
+                 "evento-comunicado"],
+        "click": PANEL_URL,
+    }
 
 
 def mensajes_de_prueba() -> list[dict]:
@@ -422,6 +439,9 @@ def main() -> int:
     mensajes = agrupar(mensajes)
     if os.environ.get("MODO_RESUMEN") == "1":
         mensajes.append(resumen(st, ahora))
+    texto = os.environ.get("COMUNICADO", "").strip()
+    if texto:
+        mensajes.append(comunicado(texto, os.environ.get("NIVEL_COMUNICADO", "informativo"), ahora))
     fallos = 0
     for msg in mensajes:
         print(f"-> {msg['title']}")
