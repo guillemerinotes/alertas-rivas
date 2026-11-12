@@ -31,7 +31,7 @@ def descargar(http_get) -> dict:
         for m in tar.getmembers():
             nombre = m.name.split("/")[-1]
             nombres.append(nombre)
-            if not nombre.lower().endswith((".tif", ".tiff")) or "_p_" not in nombre:
+            if not nombre.lower().endswith((".tif", ".tiff")) or "_p_" not in nombre:  # p = península
                 continue
             partes = re.split(r"[_.]", nombre)
             fecha_base = None
@@ -47,7 +47,8 @@ def descargar(http_get) -> dict:
                             break
                 if fecha_base:
                     break
-            desfase = next((int(p) for p in partes[1:4] if re.fullmatch(r"\d{1,2}", p)), 0)
+            md = next((re.fullmatch(r"[Dd](\d{1,2})", p) for p in partes if re.fullmatch(r"[Dd]\d{1,2}", p)), None)
+            desfase = int(md.group(1)) if md else 0
             if not fecha_base:
                 continue
             fecha = fecha_base + timedelta(days=desfase)
