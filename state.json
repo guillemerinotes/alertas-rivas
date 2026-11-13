@@ -153,7 +153,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.731
+   "valor": 0.721
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -167,7 +167,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.638
+   "valor": 0.648
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -181,13 +181,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.905
+   "valor": 558.901
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -195,7 +195,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.289
+   "valor": 587.29
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -215,7 +215,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -223,7 +223,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.68
+   "valor": 0.678
   },
   "R061": {
    "desc": "Henares en Humanes",
