@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RIV-Alert · Panel</title>
 <meta name="theme-color" content="#1B3A8C">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   :root{
     --azul:#1B3A8C; --azul2:#122a66; --naranja:#F07D00;
@@ -82,17 +81,8 @@
 <div id="errores"></div>
 <main>
   <section class="card">
-    <h2>Radar de precipitación
-      <span class="tabs"><button id="tMapa" class="on">Mapa animado</button><button id="tAemet">Radar AEMET Madrid</button></span>
-    </h2>
-    <div id="mapa"></div>
-    <div id="aemetRadar"><img id="aemetImg" alt="Radar regional de Madrid (AEMET)"></div>
-    <div class="ctrl">
-      <button id="play">❚❚</button>
-      <input type="range" id="slider" min="0" max="0" value="0">
-      <span class="hora" id="hora">—</span>
-    </div>
-    <div class="nota" id="notaRadar">Últimas 2 h, cada 10 min. Círculo: 10 km alrededor de Rivas.</div>
+    <h2>Radar de lluvia</h2>
+    <div class="nota" style="padding:14px">El radar se ha trasladado a la app RIV-Alert: <a href="https://riv-alert.vercel.app/" style="color:#9cc0ff">riv-alert.vercel.app</a> (pestaña Situación).</div>
   </section>
 
   <section class="card">
@@ -141,66 +131,12 @@
   RIV-Alert es un aviso interno de Protección Civil Rivas, no oficial. No sustituye a los canales oficiales (AEMET, 112, ES-Alert).
 </footer>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const RIVAS = [40.3283, -3.5158];
 const NIV = {amarillo:1, naranja:2, rojo:3};
 const fmtH = iso => { const d = new Date(iso); return d.toLocaleString('es-ES',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); };
 const hh = iso => new Date(iso).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-// ---------- Mapa + radar RainViewer ----------
-const mapa = L.map('mapa', {zoomControl:true, attributionControl:true}).setView(RIVAS, 8);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  maxZoom: 12, subdomains:'abcd', attribution:'© OpenStreetMap © CARTO'}).addTo(mapa);
-L.circle(RIVAS, {radius:10000, color:'#F07D00', weight:2, fill:false}).addTo(mapa);
-L.circleMarker(RIVAS, {radius:6, color:'#fff', weight:2, fillColor:'#F07D00', fillOpacity:1}).addTo(mapa).bindTooltip('Rivas-Vaciamadrid');
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {maxZoom:12, subdomains:'abcd', pane:'shadowPane'}).addTo(mapa);
-
-let frames = [], capas = [], idx = 0, timer = null, modo = 'mapa', aemetFrames = [];
-async function cargarRainViewer(){
-  try{
-    const r = await fetch('https://api.rainviewer.com/public/weather-maps.json', {cache:'no-store'});
-    const j = await r.json();
-    capas.forEach(c => mapa.removeLayer(c));
-    frames = (j.radar && j.radar.past) || [];
-    capas = frames.map(f => L.tileLayer(`${j.host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`, {
-      opacity:0, maxNativeZoom:7, maxZoom:12, zIndex:5}).addTo(mapa));
-    if (modo === 'mapa') { idx = frames.length - 1; prepararSlider(frames.length); mostrar(idx); }
-  }catch(e){ document.getElementById('notaRadar').textContent = 'No se pudo cargar el mapa animado (RainViewer). Usa la pestaña Radar AEMET.'; }
-}
-function prepararSlider(n){ const s = document.getElementById('slider'); s.max = Math.max(0, n-1); s.value = idx; }
-function mostrar(i){
-  idx = i; document.getElementById('slider').value = i;
-  if (modo === 'mapa'){
-    capas.forEach((c,k) => c.setOpacity(k === i ? 0.75 : 0));
-    if (frames[i]) document.getElementById('hora').textContent = hh(frames[i].time*1000);
-  } else if (aemetFrames[i]) {
-    document.getElementById('aemetImg').src = aemetFrames[i].archivo;
-    document.getElementById('hora').textContent = hh(aemetFrames[i].hora);
-  }
-}
-function total(){ return modo === 'mapa' ? frames.length : aemetFrames.length; }
-function paso(){ const n = total(); if(!n) return; mostrar((idx + 1) % n); clearTimeout(timer); timer = setTimeout(paso, idx === n-1 ? 2000 : 600); }
-document.getElementById('slider').oninput = e => { pausar(); mostrar(+e.target.value); };
-const playBtn = document.getElementById('play');
-function pausar(){ clearTimeout(timer); timer = null; playBtn.textContent = '▶'; }
-playBtn.onclick = () => { if (timer) pausar(); else { playBtn.textContent = '❚❚'; paso(); } };
-function cambiar(m){
-  modo = m; pausar();
-  document.getElementById('tMapa').classList.toggle('on', m==='mapa');
-  document.getElementById('tAemet').classList.toggle('on', m==='aemet');
-  document.getElementById('mapa').style.display = m==='mapa' ? '' : 'none';
-  document.getElementById('aemetRadar').style.display = m==='aemet' ? 'block' : 'none';
-  idx = total() - 1; prepararSlider(total()); mostrar(Math.max(0, idx));
-  document.getElementById('notaRadar').textContent = m==='mapa'
-    ? 'Mapa animado (RainViewer, no oficial). Últimas 2 h, cada 10 min. Círculo: 10 km alrededor de Rivas.'
-    : (aemetFrames.length ? `Radar regional de Madrid de AEMET (oficial). ${aemetFrames.length} imágenes guardadas.` : 'Aún no hay imágenes del radar de AEMET guardadas.');
-  if (m==='mapa') setTimeout(() => mapa.invalidateSize(), 50);
-  playBtn.textContent = '▶';
-}
-document.getElementById('tMapa').onclick = () => cambiar('mapa');
-document.getElementById('tAemet').onclick = () => cambiar('aemet');
 
 // ---------- Datos del vigilante ----------
 const COLOR = {1:'amarillo', 2:'naranja', 3:'rojo'};
@@ -305,17 +241,13 @@ async function cargarDatos(){
     pintarNoticias(d.noticias || []);
     pintarPrevision(d.prevision_rivas || []);
     estadoGeneral(d);
-    aemetFrames = d.radar_aemet || [];
-    if (modo === 'aemet') cambiar('aemet');
-    document.getElementById('tAemet').style.display = aemetFrames.length ? '' : 'none';
   }catch(e){
     document.getElementById('errores').innerHTML = '<p class="error">No se pudieron cargar los datos del vigilante.</p>';
   }
 }
 
-cargarDatos(); cargarRainViewer().then(() => { playBtn.textContent = '❚❚'; paso(); });
+cargarDatos();
 setInterval(cargarDatos, 2*60*1000);
-setInterval(cargarRainViewer, 10*60*1000);
 </script>
 </body>
 </html>

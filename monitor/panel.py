@@ -70,7 +70,7 @@ def _prevision(horas: list[dict] | None, ahora: datetime) -> list[dict]:
 def generar(st: dict, horas, key: str, ahora: datetime, http_get) -> None:
     SITE.mkdir(exist_ok=True)
     shutil.copy(ROOT / "panel" / "index.html", SITE / "index.html")
-    estado_radar = _radar_aemet(key, http_get, ahora) if key else "sin clave de AEMET"
+    estado_radar = "radar en la app (RainViewer)"  # el radar de AEMET ya no se descarga
     print(f"Radar AEMET: {estado_radar}")
     frames = sorted(f.name for f in RADAR_DIR.iterdir()) if RADAR_DIR.exists() else []
     radar = []

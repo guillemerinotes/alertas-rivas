@@ -123,8 +123,14 @@
   .tabla-v td{padding:9px 6px;border-bottom:1px solid var(--linea);vertical-align:top}
   .tabla-v tr:last-child td{border-bottom:0}
   .lista-v{padding-left:18px;margin:8px 0} .lista-v li{margin:7px 0}
+  #radarMapa{height:340px;background:#0b1224} @media (max-width:720px){#radarMapa{height:300px}}
+  .radar-ctrl{display:flex;align-items:center;gap:12px;padding:10px 16px}
+  .radar-ctrl .btn{width:auto;margin:0;padding:9px 14px;font-size:14px}
+  .radar-ctrl input{flex:1;accent-color:var(--naranja);padding:0;border:0;background:none}
+  .leaflet-container{font-family:inherit}
   .oculto{display:none!important}
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
 <header>
@@ -146,6 +152,14 @@
   <!-- ===================== SITUACIÓN ===================== -->
   <section class="vista on" id="v-situacion">
     <div class="estado" id="estado" data-sub="Rivas-Vaciamadrid">Cargando…</div>
+    <div class="card"><h2><i>🛰️</i>Radar de lluvia <span class="peq" id="radarHora" style="margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600"></span></h2>
+      <div id="radarMapa"></div>
+      <div class="radar-ctrl">
+        <button class="btn gris" id="radarPlay" aria-label="Reproducir o pausar">❚❚</button>
+        <input type="range" id="radarSlider" min="0" max="0" value="0" aria-label="Momento del radar">
+      </div>
+      <div class="emb-pie" id="radarNota">Últimas 2 horas, una imagen cada 10 minutos. El círculo marca 10 km alrededor de Rivas. Radar de <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a> (no oficial); el oficial es el de <a href="https://www.aemet.es/es/eltiempo/observacion/radar" target="_blank" rel="noopener">AEMET</a>.</div>
+    </div>
     <div class="rejilla">
       <div class="card"><h2><i>⛈️</i>Avisos AEMET · zona de Rivas</h2><div id="avisos"><div class="vacio">Cargando…</div></div></div>
       <div class="card"><h2><i>🌊</i>Ríos · en Rivas y aguas arriba</h2><div id="rios"><div class="vacio">Cargando…</div></div></div>
@@ -604,7 +618,45 @@ $('mClave').onkeydown = e => { if (e.key === 'Enter') $('mEntrar').click(); };
 $('mSalir').onclick = () => { try{ sessionStorage.removeItem('riv-miembro'); }catch(e){} $('mPanel').classList.add('oculto'); $('mLogin').classList.remove('oculto'); };
 try { const c = sessionStorage.getItem('riv-miembro'); if (c) entrarMiembro(c, true).catch(() => {}); } catch(e) {}
 
+// ---------- radar (RainViewer) ----------
+const RIVAS = [40.3283, -3.5158];
+let radar = null, rFrames = [], rCapas = [], rIdx = 0, rTimer = null;
+function iniciarRadar(){
+  if (radar || !window.L) return;
+  radar = L.map('radarMapa', {zoomControl:true, attributionControl:true}).setView(RIVAS, 8);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:12, subdomains:'abcd', attribution:'© OpenStreetMap © CARTO · RainViewer'}).addTo(radar);
+  L.circle(RIVAS, {radius:10000, color:'#F07D00', weight:2, fill:false}).addTo(radar);
+  L.circleMarker(RIVAS, {radius:6, color:'#fff', weight:2, fillColor:'#F07D00', fillOpacity:1}).addTo(radar).bindTooltip('Rivas-Vaciamadrid');
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {maxZoom:12, subdomains:'abcd', pane:'shadowPane'}).addTo(radar);
+  cargarRadar().then(() => { $('radarPlay').textContent = '❚❚'; rPaso(); });
+  setInterval(cargarRadar, 10*60*1000);
+}
+async function cargarRadar(){
+  try{
+    const j = await (await fetch('https://api.rainviewer.com/public/weather-maps.json', {cache:'no-store'})).json();
+    rCapas.forEach(c => radar.removeLayer(c));
+    rFrames = (j.radar && j.radar.past) || [];
+    rCapas = rFrames.map(f => L.tileLayer(`${j.host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`, {opacity:0, maxNativeZoom:7, maxZoom:12, zIndex:5}).addTo(radar));
+    $('radarSlider').max = Math.max(0, rFrames.length - 1);
+    rMostrar(rFrames.length - 1);
+  }catch(e){ $('radarHora').textContent = 'sin conexión con el radar'; }
+}
+function rMostrar(i){
+  if (!rFrames.length) return;
+  rIdx = i; $('radarSlider').value = i;
+  rCapas.forEach((c,k) => c.setOpacity(k === i ? 0.75 : 0));
+  const t = new Date(rFrames[i].time * 1000);
+  $('radarHora').textContent = t.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'}) + (i === rFrames.length - 1 ? ' · última' : '');
+}
+function rPaso(){ const n = rFrames.length; if (!n) return; rMostrar((rIdx + 1) % n); clearTimeout(rTimer); rTimer = setTimeout(rPaso, rIdx === n - 1 ? 2000 : 600); }
+function rPausar(){ clearTimeout(rTimer); rTimer = null; $('radarPlay').textContent = '▶'; }
+$('radarPlay').onclick = () => { if (rTimer) rPausar(); else { $('radarPlay').textContent = '❚❚'; rPaso(); } };
+$('radarSlider').oninput = e => { rPausar(); rMostrar(+e.target.value); };
+document.querySelector('nav button[data-v="situacion"]').addEventListener('click', () => setTimeout(() => radar && radar.invalidateSize(), 60));
+window.addEventListener('load', iniciarRadar);
+
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
