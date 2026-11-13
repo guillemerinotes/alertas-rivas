@@ -102,7 +102,7 @@
    "CBMiugFBVV95cUxPRjhqMVJIXzZQRzlwX0x5UzZMZ3BYRkE3by1DblQ1NWlYdUo4aVFpa2hxOGNBdmtidDZYZmJVU0VEeGlzSU1Qd19tQ2ctMkRZTTFVcEVPOUtCWkx1aEh4cXpxMU1xTVNqdGxaVmFwX0pQcnRLR1FyeDBldGh1Y1FlLVIxR1lsY2YxaDBqQm5IX25VcXJ2WWIyX2QtVDJqNXBJblpocXZsRkJDMjlaa29VbmVuVURhRWFPREHSAb8BQVVfeXFMTndFLUVUUXQzNkd2cjVMZkJrZEJfWDFaSTZxb3hfQ2RQV0dvV2x0TEVQWVJsX0tCZHRLZ3pNc1lCYk42TFRkSVhiTG9WT2ZMVy1WTjNLQXVXNWswWEFlUWstelNXa2l3TFdKZEREaEZUYlFlZlVidmozdVY1V0JNanRiN0dtWlpDN1RnbVVRTl9yNjdfbXd2dmZiaE5mcjZqeE94NzZYSWNJbklibVFTWVdndDNwSFRhaUxoNHMybkE": "2026-11-12T10:03:52+00:00"
   }
  },
- "panel": "radar ok (ma, sin imagen nueva); 12 imágenes; previsión 36 h",
+ "panel": "radar ok (ma); 12 imágenes; previsión 36 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -130,7 +130,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.738
+   "valor": 0.736
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -144,13 +144,13 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.719
+   "valor": 0.726
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -158,7 +158,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.716
+   "valor": 0.714
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -172,13 +172,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.933
+   "valor": 558.937
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -186,7 +186,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.348
+   "valor": 587.344
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
