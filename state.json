@@ -167,7 +167,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.644
+   "valor": 0.648
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -181,13 +181,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.944
+   "valor": 558.942
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -195,7 +195,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.29
+   "valor": 587.292
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -223,7 +223,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.693
+   "valor": 0.691
   },
   "R061": {
    "desc": "Henares en Humanes",
