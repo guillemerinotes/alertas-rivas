@@ -156,29 +156,41 @@ function Procesar($m) {
 Log "Receptor RIV-Alert iniciado. Canal: $Topic"
 $client = New-Object System.Net.Http.HttpClient
 $client.Timeout = [System.Threading.Timeout]::InfiniteTimeSpan
+# ntfy manda un "keepalive" cada ~45 s. Si en 100 s no llega nada, la conexión está muerta
+# (pasa tras suspender el PC o cambiar de wifi) y hay que reconectar.
+$SinDatosMs = 100000
 
 while ($true) {
+    $resp = $null; $reader = $null
     try {
         $since = ''
         if (Test-Path $LastFile) { $since = (Get-Content $LastFile -Raw).Trim() }
         $url = "$Server/$Topic/json"
         if ($since) { $url += "?since=$since" }
         $req = New-Object System.Net.Http.HttpRequestMessage([System.Net.Http.HttpMethod]::Get, $url)
-        $resp = $client.SendAsync($req, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead).GetAwaiter().GetResult()
+        $cts = New-Object System.Threading.CancellationTokenSource(20000)   # 20 s para conectar
+        $resp = $client.SendAsync($req, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead, $cts.Token).GetAwaiter().GetResult()
         [void]$resp.EnsureSuccessStatusCode()
         $stream = $resp.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
         $reader = New-Object System.IO.StreamReader($stream, [System.Text.Encoding]::UTF8)
         Log 'Conectado a ntfy.'
-        while ($null -ne ($line = $reader.ReadLine())) {
+        while ($true) {
+            $t = $reader.ReadLineAsync()
+            if (-not $t.Wait($SinDatosMs)) { Log 'Sin datos de ntfy en 100 s: reconectando.'; break }
+            $line = $t.Result
+            if ($null -eq $line) { Log 'Conexión cerrada por el servidor.'; break }
             if (-not $line.Trim()) { continue }
             $m = $line | ConvertFrom-Json
             if ($m.event -ne 'message') { continue }
             Set-Content -Path $LastFile -Value $m.id -Encoding ASCII
             try { Procesar $m } catch { Log "Error mostrando alerta: $_" }
         }
-        Log 'Conexión cerrada por el servidor.'
     } catch {
-        Log "Sin conexión ($($_.Exception.Message)). Reintento en 30 s."
+        $e = $_.Exception; while ($e.InnerException) { $e = $e.InnerException }
+        Log "Sin conexión ($($e.Message)). Reintento en 15 s."
+    } finally {
+        try { if ($reader) { $reader.Dispose() } } catch {}
+        try { if ($resp) { $resp.Dispose() } } catch {}
     }
-    Start-Sleep -Seconds 30
+    Start-Sleep -Seconds 15
 }
