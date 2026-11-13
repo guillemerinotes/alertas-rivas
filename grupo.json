@@ -2,7 +2,6 @@
   "grupos": {
     "jefes": {
       "nombre": "Jefes",
-      "canal": "riv-alert-jefes-c6b150f2f8",
       "niveles": [
         "amarillo",
         "naranja",
@@ -20,7 +19,6 @@
     },
     "voluntarios": {
       "nombre": "Voluntarios",
-      "canal": "riv-alert-grupo-sj2ipao4sg",
       "niveles": [
         "amarillo",
         "naranja",

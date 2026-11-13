@@ -5,6 +5,7 @@
 //   NTFY_TOPIC      (opcional) canal personal, para recibir también los comunicados
 //   PASS_JEFES      contraseña de miembros jefes (ven los enlaces de jefes y voluntarios)
 //   PASS_VOLUNTARIOS contraseña de miembros voluntarios (ven solo el enlace de voluntarios)
+//   CANAL_JEFES / CANAL_VOLUNTARIOS  nombres (secretos) de los canales ntfy de cada grupo
 import crypto from "node:crypto";
 
 const REPO = "guillemerinotes/alertas-rivas";
@@ -62,8 +63,12 @@ async function ntfy(topic, msg) {
 
 // Admite el formato antiguo de un solo grupo
 function normalizar(d) {
-  if (d && d.grupos) return d.grupos;
-  return { voluntarios: { nombre: "Voluntarios", ...d } };
+  const grupos = d && d.grupos ? d.grupos : { voluntarios: { nombre: "Voluntarios", ...d } };
+  // Los canales son secretos: vienen de CANAL_JEFES / CANAL_VOLUNTARIOS, no del repositorio
+  for (const [k, g] of Object.entries(grupos)) {
+    grupos[k] = { ...g, canal: process.env["CANAL_" + k.toUpperCase()] || g.canal || null };
+  }
+  return grupos;
 }
 const TIPOS = ["aemet", "rios", "incendios", "sismos", "noticias", "fin", "resumen"];
 
@@ -160,7 +165,8 @@ export default async function handler(req, res) {
           niveles: (body.niveles || []).filter((x) => ["amarillo", "naranja", "rojo"].includes(x)),
           tipos: Object.fromEntries(TIPOS.map((k) => [k, !!(body.tipos || {})[k]])),
         };
-        const nuevo = { grupos };
+        // No se guardan los canales en el repositorio
+        const nuevo = { grupos: Object.fromEntries(Object.entries(grupos).map(([k, { canal, ...resto }]) => [k, resto])) };
         await gh(`/repos/${REPO}/contents/grupo.json`, {
           method: "PUT",
           body: JSON.stringify({

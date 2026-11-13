@@ -304,14 +304,19 @@ def enviar_ntfy(topic: str, msg: dict, server: str = "https://ntfy.sh") -> None:
 
 def cargar_grupos() -> list:
     """Grupos y qué recibe cada uno (grupo.json, editable desde la app por los coordinadores).
-    Acepta el formato antiguo de un solo grupo {"canal", "niveles", "tipos"}."""
+    Acepta el formato antiguo de un solo grupo {"niveles", "tipos"}."""
     try:
         d = json.loads((ROOT / "grupo.json").read_text(encoding="utf-8"))
     except Exception:  # noqa: BLE001
         return []
-    if "grupos" in d:
-        return [(k, g) for k, g in d["grupos"].items() if g.get("canal")]
-    return [("grupo", d)] if d.get("canal") else []
+    grupos = d.get("grupos") or {"voluntarios": d}
+    out = []
+    for k, g in grupos.items():
+        # El canal es secreto: viene de CANAL_JEFES / CANAL_VOLUNTARIOS (secretos de GitHub), no del repo
+        canal = os.environ.get("CANAL_" + k.upper(), "").strip() or g.get("canal", "")
+        if canal:
+            out.append((k, {**g, "canal": canal}))
+    return out
 
 
 def tipo_de(m: dict) -> str:
