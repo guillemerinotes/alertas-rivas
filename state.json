@@ -329,7 +329,7 @@
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -343,7 +343,7 @@
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -351,7 +351,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.655
+   "valor": 0.656
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -371,7 +371,7 @@
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -379,7 +379,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.275
+   "valor": 587.277
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -399,7 +399,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -407,7 +407,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.645
+   "valor": 0.644
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -421,7 +421,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.733
+   "valor": 0.73
   }
  },
  "rios_fallos": 0,
