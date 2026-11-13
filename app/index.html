@@ -118,6 +118,11 @@
   .llenado span{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#2f6fe0,#5fb0ff)}
   .llenado span.alto{background:linear-gradient(90deg,#ff9d2e,#F07D00)}
   .emb-pie{padding:10px 16px 14px;font-size:12px;color:var(--sub);border-top:1px solid var(--linea)}
+  .tabla-v{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+  .tabla-v th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--sub);padding:8px 6px;border-bottom:1px solid var(--linea)}
+  .tabla-v td{padding:9px 6px;border-bottom:1px solid var(--linea);vertical-align:top}
+  .tabla-v tr:last-child td{border-bottom:0}
+  .lista-v{padding-left:18px;margin:8px 0} .lista-v li{margin:7px 0}
   .oculto{display:none!important}
 </style>
 </head>
@@ -131,6 +136,7 @@
     <nav>
     <button data-v="situacion" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>Situación</button>
     <button data-v="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>Recibir alertas</button>
+    <button data-v="valores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V21h16"/></svg>Valores</button>
     <button data-v="coord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Coordinación</button>
   </nav>
   </div>
@@ -197,6 +203,121 @@
     </div>
     <div class="card"><h2><i>📲</i>Instalar esta app</h2>
       <div class="pad peq">En el móvil: menú del navegador → <b>Añadir a pantalla de inicio</b> / <b>Instalar app</b>. En el PC (Chrome o Edge): icono de instalar en la barra de direcciones.</div>
+    </div>
+  </section>
+
+  <!-- ===================== VALORES ===================== -->
+  <section class="vista" id="v-valores">
+    <div class="card"><h2><i class="nar">🚦</i>Niveles de RIV-Alert</h2>
+      <div class="pad">
+        <p class="peq">RIV-Alert usa los mismos colores que AEMET y la Confederación Hidrográfica del Tajo. Es un aviso <b>interno y no oficial</b> de Protección Civil Rivas: ante cualquier duda, manda lo que digan las autoridades y los canales oficiales.</p>
+        <table class="tabla-v">
+          <tr><th></th><th>Qué significa (definición AEMET)</th><th>Cómo llega</th></tr>
+          <tr><td><span class="chip c1">AMARILLO</span><br><b>Notificación</b></td><td>No hay riesgo meteorológico para la población en general, aunque sí para alguna actividad concreta. Hay que estar atento a la predicción.</td><td>Móvil: notificación normal. PC: notificación de Windows.</td></tr>
+          <tr><td><span class="chip c2">NARANJA</span><br><b>Alerta media</b></td><td>Riesgo meteorológico importante: fenómenos no habituales y con cierto grado de peligro para las actividades usuales.</td><td>Móvil: prioridad alta, aparece encima de lo que estés haciendo. PC: ventana naranja y un aviso sonoro.</td></tr>
+          <tr><td><span class="chip c3">ROJO</span><br><b>Alerta máxima</b></td><td>Riesgo meteorológico extremo: fenómenos no habituales de intensidad excepcional y riesgo muy alto para la población.</td><td>Móvil: prioridad máxima (puede tener sonido propio, ver "Recibir alertas"). PC: ventana roja con alarma continua hasta pulsar ENTENDIDO.</td></tr>
+          <tr><td><span class="chip">FIN</span></td><td>El aviso ha terminado, se ha cancelado o el valor ha vuelto a la normalidad.</td><td>Notificación discreta, sin alarma.</td></tr>
+          <tr><td><span class="chip">INFO</span></td><td>Comunicados de coordinadores, resúmenes pedidos y noticias de medios. No es un nivel de riesgo.</td><td>Notificación normal.</td></tr>
+        </table>
+        <p class="peq">Con el móvil o el PC en silencio <b>no suena nada</b>; la notificación o la ventana sí aparecen.<br>
+        El recuadro grande de la pestaña Situación muestra el <b>peor nivel activo</b> entre AEMET, ríos, incendios y terremotos (los embalses y las noticias no cuentan).</p>
+      </div>
+    </div>
+
+    <div class="card"><h2><i>⛈️</i>Avisos de AEMET</h2>
+      <div class="pad">
+        <p>Solo se tienen en cuenta los avisos de la zona <b>722802 · Metropolitana y Henares</b>, que es la que incluye Rivas. Fuente oficial: AEMET (Plan Meteoalerta).</p>
+        <table class="tabla-v">
+          <tr><th>Fenómeno</th><th><span class="chip c1">Amarillo</span></th><th><span class="chip c2">Naranja</span></th><th><span class="chip c3">Rojo</span></th></tr>
+          <tr><td>Temperatura máxima</td><td>36 °C</td><td>39 °C</td><td>42 °C</td></tr>
+          <tr><td>Temperatura mínima</td><td>−4 °C</td><td>−8 °C</td><td>−12 °C</td></tr>
+          <tr><td>Rachas de viento</td><td>70 km/h</td><td>90 km/h</td><td>130 km/h</td></tr>
+          <tr><td>Lluvia en 12 h</td><td>40 mm</td><td>80 mm</td><td>120 mm</td></tr>
+          <tr><td>Lluvia en 1 h</td><td>15 mm</td><td>30 mm</td><td>60 mm</td></tr>
+          <tr><td>Nieve acumulada</td><td>2 cm</td><td>5 cm</td><td>20 cm</td></tr>
+          <tr><td>Tormentas</td><td>Fuertes</td><td>Muy fuertes</td><td>Muy fuertes y excepcionales, de alto impacto</td></tr>
+          <tr><td>Niebla, polvo en suspensión</td><td>Sí</td><td>—</td><td>—</td></tr>
+        </table>
+        <p class="peq">1 mm de lluvia = 1 litro por metro cuadrado. Las tormentas pueden traer granizo y rachas fuertes; AEMET lo indica en el texto del aviso. Estos umbrales son los que tenía AEMET al montar RIV-Alert; si AEMET los cambia, manda lo que diga su web.</p>
+        <p class="peq"><b>Cuándo avisa RIV-Alert:</b> cuando AEMET emite un aviso nuevo (aunque sea para mañana o pasado), cuando entra en vigor, cuando sube o baja de nivel y cuando termina o se cancela.</p>
+      </div>
+    </div>
+
+    <div class="card"><h2><i>🌊</i>Ríos (SAIH Tajo)</h2>
+      <div class="pad">
+        <p>Nivel del agua medido en tiempo real por las estaciones de aforo de la <b>Confederación Hidrográfica del Tajo</b> (fuente oficial).</p>
+        <ul class="lista-v">
+          <li><b>En Rivas:</b> Manzanares en Rivas-Vaciamadrid, Jarama en Mejorada–San Fernando y Jarama en San Fernando.</li>
+          <li><b>Aguas arriba:</b> Manzanares en Madrid y Colmenar Viejo, Jarama en Algete y Valdepeñas de la Sierra, Henares en Alcalá y Humanes. Lo que sube aquí llega después a Rivas, así que sirven para ver venir una crecida.</li>
+          <li><b>Valor:</b> altura del agua en la escala de esa estación (en metros). No es la altura sobre la calle; solo se compara con los umbrales de la misma estación. En algunas estaciones la escala es la cota sobre el nivel del mar (por eso ves valores como 558 m).</li>
+          <li><b>Umbrales:</b> cada estación tiene tres umbrales fijados por la Confederación. Superar el 1.º = <span class="chip c1">amarillo</span>, el 2.º = <span class="chip c2">naranja</span>, el 3.º = <span class="chip c3">rojo</span>. En la tarjeta se muestran en ese orden.</li>
+          <li><b>Flechas:</b> ↗ subiendo · → estable · ↘ bajando (tendencia que da la Confederación).</li>
+          <li><b>Margen de 3 cm:</b> para no avisar una y otra vez cuando el agua oscila justo en un umbral, para bajar de nivel el agua tiene que quedar más de 3 cm por debajo del umbral.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card"><h2><i>🏞️</i>Embalses aguas arriba</h2>
+      <div class="pad">
+        <p>Embalses cuyas aguas pueden llegar a Rivas. Datos de <b>embalses.net</b>, que los recopila del Ministerio (boletín semanal) y del SAIH Tajo (tiempo real). <b>No es fuente oficial</b> y la propia web avisa de que el tiempo real no está homogeneizado ni confirmado. <b>Solo informativo: no genera alertas.</b> Se actualiza una vez por hora.</p>
+        <ul class="lista-v">
+          <li><b>Manzanares:</b> Navacerrada, Santillana y <b>El Pardo</b>, el último antes de Madrid y el más directo para el Manzanares en Rivas.</li>
+          <li><b>Jarama:</b> El Vado; los del Lozoya (Pinilla, Riosequillo, Puentes Viejas, El Villar y El Atazar) y Pedrezuela en el Guadalix.</li>
+          <li><b>Henares:</b> Beleña y Pozo de los Ramos (Sorbe), Alcorlo (Bornova) y Pálmaces (Cañamares). El Henares se une al Jarama antes de llegar a Rivas.</li>
+        </ul>
+        <table class="tabla-v">
+          <tr><th>Dato</th><th>Qué es</th></tr>
+          <tr><td>% de llenado</td><td>Agua embalsada respecto a la capacidad total. La barra se pone <span style="color:var(--naranja-cl)"><b>naranja</b></span> a partir del 90 % (solo visual).</td></tr>
+          <tr><td>hm³</td><td>Hectómetro cúbico = mil millones de litros.</td></tr>
+          <tr><td>Tiempo real / dato semanal</td><td>Si hay dato en tiempo real se muestra ese (cada pocas horas); si no, el del boletín semanal del Ministerio.</td></tr>
+          <tr><td>Desembalsa (m³/s)</td><td>Agua que el embalse está soltando al río. 1 m³/s = 1.000 litros por segundo. Solo hay dato en algunos embalses.</td></tr>
+          <tr><td>↗ sube / ↘ baja</td><td>Comparación del caudal soltado ahora con el de hace aproximadamente un día y medio.</td></tr>
+        </table>
+        <p class="peq"><b>Qué implica:</b> un embalse muy lleno tiene poco margen para retener una lluvia fuerte. Si además empieza a soltar más agua, aumenta el caudal del río aguas abajo y, con tiempo, puede subir el nivel en Rivas. El efecto real hay que confirmarlo en las estaciones de ríos (SAIH Tajo) y con los avisos oficiales de la Confederación.</p>
+      </div>
+    </div>
+
+    <div class="card"><h2><i class="nar">🔥</i>Riesgo de incendio forestal</h2>
+      <div class="pad">
+        <p>Mapa diario de AEMET de <b>riesgo meteorológico de incendio</b>, leído en el punto de Rivas (fuente oficial). Escala de AEMET: <b>bajo, moderado, alto, muy alto, extremo</b>. Se muestra hoy y mañana.</p>
+        <table class="tabla-v">
+          <tr><th>Riesgo AEMET</th><th>Nivel RIV-Alert</th></tr>
+          <tr><td>Bajo · Moderado</td><td>Sin aviso</td></tr>
+          <tr><td>Alto</td><td><span class="chip c1">Amarillo</span></td></tr>
+          <tr><td>Muy alto</td><td><span class="chip c2">Naranja</span></td></tr>
+          <tr><td>Extremo</td><td><span class="chip c3">Rojo</span></td></tr>
+        </table>
+        <p class="peq">La equivalencia con colores es un <b>criterio propio de RIV-Alert</b>, no de AEMET. Es riesgo meteorológico (lo favorable que está el tiempo para que un fuego se propague), no un incendio declarado.</p>
+      </div>
+    </div>
+
+    <div class="card"><h2><i class="nar">🌍</i>Terremotos (IGN)</h2>
+      <div class="pad">
+        <p>Terremotos de los últimos 10 días del <b>Instituto Geográfico Nacional</b> (fuente oficial). El IGN no da colores; RIV-Alert los calcula según la <b>magnitud</b> y la <b>distancia a Rivas</b> (criterio propio, no oficial):</p>
+        <table class="tabla-v">
+          <tr><th>Distancia a Rivas</th><th><span class="chip c1">Amarillo</span></th><th><span class="chip c2">Naranja</span></th><th><span class="chip c3">Rojo</span></th></tr>
+          <tr><td>Hasta 50 km</td><td>M 2,5</td><td>M 3,5</td><td>M 4,5</td></tr>
+          <tr><td>Hasta 150 km</td><td>M 3,5</td><td>M 4,5</td><td>M 5,5</td></tr>
+          <tr><td>Hasta 300 km</td><td>M 5,0</td><td>M 6,0</td><td>—</td></tr>
+        </table>
+        <p class="peq">Cada terremoto se avisa una sola vez.</p>
+      </div>
+    </div>
+
+    <div class="card"><h2><i>📰</i>Noticias (no oficiales)</h2>
+      <div class="pad peq">Titulares de Google News de las últimas 36 horas que mencionan <b>Rivas</b> y una palabra de emergencia (inundación, desbordamiento, crecida, aviso, alerta, lluvia, tormenta, nieve, granizo, incendio…). Siempre se indica el medio y su web. <b>No son fuente oficial</b>: sirven para enterarse antes, no para confirmar.</div>
+    </div>
+
+    <div class="card"><h2><i>⚙️</i>Funcionamiento</h2>
+      <div class="pad">
+        <ul class="lista-v">
+          <li><b>Frecuencia:</b> todas las fuentes se comprueban cada 10 minutos; los embalses, una vez por hora.</li>
+          <li><b>"Datos antiguos":</b> aparece arriba si la última comprobación tiene más de 40 minutos.</li>
+          <li><b>Fuente caída:</b> si una fuente falla 3 comprobaciones seguidas, llega un aviso amarillo "No puedo leer…" y otro cuando vuelve.</li>
+          <li><b>Grupos:</b> jefes y voluntarios tienen canal propio y el coordinador elige qué niveles y tipos recibe cada uno.</li>
+          <li><b>Pedir actualización:</b> lanza una comprobación al momento y manda un resumen de la situación.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
