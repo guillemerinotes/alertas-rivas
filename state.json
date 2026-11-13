@@ -116,7 +116,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.514
+   "valor": 0.515
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -136,7 +136,7 @@
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -144,7 +144,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.737
+   "valor": 0.738
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -158,13 +158,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.495
+   "valor": 0.482
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -186,7 +186,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.305
+   "valor": 587.302
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -214,7 +214,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.729
+   "valor": 0.724
   },
   "R061": {
    "desc": "Henares en Humanes",
