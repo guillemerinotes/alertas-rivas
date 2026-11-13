@@ -211,5 +211,44 @@ class PruebasResumen(unittest.TestCase):
         self.assertEqual(r["priority"], 3)
 
 
+
+FICHA_EMBALSE = """
+<div class="SeccionCentral_TituloTexto">Embalse: El Pardo (Tiempo Real)</div></div><div class="SeccionCentral_Caja">
+<table class="Tabla"><tbody><tr class="Campos"><td>Fecha</td><td>hm3</td><td>%</td><td>Dif</td></tr>
+<tr class="ResultadoCampo"> <td align="center"> <strong>13-11-2026 19:30</strong> </td> <td align="center"><strong>12,83 </strong></td> <td align="center"><strong>29,84% </strong></td> <td align="center">0,00</td> </tr>
+<tr class="ResultadoCampo"> <td align="center"><strong>13-11-2026 18:45</strong></td> <td align="center"><strong>12,83</strong></td> <td align="center"><strong>29,84%</strong></td> <td><div style="color:#0000FF">+0,01</div></td></tr>
+</tbody></table></div>
+<div class="SeccionCentral_Titulo"><div class="SeccionCentral_TituloTexto">Embalse: El Pardo (Caudal desembalsado)</div></div>
+<table class="Tabla"><tbody><tr class="Campos"><td>Fecha</td><td>m3/s</td><td>Dif</td></tr>
+<tr class="ResultadoCampo"> <td align="center"> <strong>13-11-2026 19:30</strong> </td> <td align="center"><strong>12,40</strong></td> <td align="center">0,00</td> </tr>
+<tr class="ResultadoCampo"> <td align="center"><strong>13-11-2026 12:45</strong></td> <td align="center"><strong>4,10</strong></td> <td><div>+0,03</div></td></tr>
+<tr class="ResultadoCampo"> <td align="center"><strong>12-11-2026 12:45</strong></td> <td align="center"><strong>0,95</strong></td> <td><div>-0,08</div></td></tr>
+</tbody></table>
+<div class="SeccionCentral_Titulo"><div class="SeccionCentral_TituloTexto">Embalse: El Pardo</div></div>
+<div class="FilaSeccion"><div class="Campo"><strong>Agua embalsada (09-11-2026):</strong></div>
+<div class="Resultado"><strong>1.012</strong></div><div class="Unidad"><strong>hm<sup>3</sup></strong></div>
+<div class="Resultado"><strong>27,91</strong></div><div class="Unidad2"><strong>%</strong></div></div>
+<div class="FilaSeccion"><div class="Campo">Variación semana Anterior:</div><div class="Resultado">-3</div></div>
+<div class="FilaSeccion"><div class="Campo">Capacidad:</div><div class="Resultado">43</div></div>
+"""
+
+
+class TestEmbalses(unittest.TestCase):
+    def test_parsear_ficha(self):
+        import embalses
+        d = embalses.parsear(FICHA_EMBALSE)
+        self.assertEqual((d["tr_hm3"], d["tr_pct"]), (12.83, 29.84))
+        self.assertEqual(d["tr_fecha"], "2026-11-13T19:30:00")
+        self.assertEqual((d["semana_hm3"], d["semana_pct"], d["capacidad"], d["semana_var_hm3"]), (1012.0, 27.91, 43.0, -3.0))
+        self.assertEqual((d["desembalse"], d["desembalse_antes"], d["desembalse_tend"]), (12.4, 0.95, "sube"))
+
+    def test_cache_una_hora(self):
+        import embalses
+        llamadas = []
+        previo = {"t": 1000.0, "embalses": [{"nombre": "x"}]}
+        r = embalses.descargar(lambda u: llamadas.append(u) or b"", previo, ahora_ts=1000.0 + 600)
+        self.assertIs(r, previo)
+        self.assertEqual(llamadas, [])
+
 if __name__ == "__main__":
     unittest.main()

@@ -480,6 +480,12 @@ def main() -> int:
     fuente("AEMET incendios", f_incendios)
     fuente("Noticias", f_noticias)
 
+    def f_embalses():
+        import embalses
+        st["embalses"] = embalses.descargar(http_get, st.get("embalses"))
+
+    fuente("Embalses (embalses.net)", f_embalses)
+
     extra = []
     if os.environ.get("MODO_RESUMEN") == "1":
         extra.append(resumen(st, ahora))

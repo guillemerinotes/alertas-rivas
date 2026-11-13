@@ -113,6 +113,11 @@
   .paso .num{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#1a0d00;
     background:linear-gradient(145deg,var(--naranja-cl),var(--naranja))}
   .enlace{margin:10px 0 4px} .enlace .btn{margin:6px 0}
+  .grupo-emb{padding:10px 16px 4px;font-size:11.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--naranja-cl)}
+  .llenado{height:6px;border-radius:6px;background:#ffffff14;overflow:hidden;margin:6px 0 2px}
+  .llenado span{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#2f6fe0,#5fb0ff)}
+  .llenado span.alto{background:linear-gradient(90deg,#ff9d2e,#F07D00)}
+  .emb-pie{padding:10px 16px 14px;font-size:12px;color:var(--sub);border-top:1px solid var(--linea)}
   .oculto{display:none!important}
 </style>
 </head>
@@ -138,6 +143,7 @@
     <div class="rejilla">
       <div class="card"><h2><i>⛈️</i>Avisos AEMET · zona de Rivas</h2><div id="avisos"><div class="vacio">Cargando…</div></div></div>
       <div class="card"><h2><i>🌊</i>Ríos · en Rivas y aguas arriba</h2><div id="rios"><div class="vacio">Cargando…</div></div></div>
+      <div class="card"><h2><i>🏞️</i>Embalses aguas arriba de Rivas</h2><div id="embalses"><div class="vacio">Cargando…</div></div></div>
       <div class="card"><h2><i class="nar">🔥</i>Incendios forestales y terremotos</h2><div id="otros"><div class="vacio">Cargando…</div></div></div>
       <div class="card"><h2><i class="nar">📰</i>Noticias · NO oficiales</h2><div id="noticias"><div class="vacio">Cargando…</div></div></div>
     </div>
@@ -316,6 +322,29 @@ async function cargarDatos(){
       h += `<div class="item n${s.nivel}"><div class="barra"></div><div><div class="tit"><span class="chip c${s.nivel}">${NOM[s.nivel].toUpperCase()}</span>Terremoto M${s.mag} a ${Math.round(s.dist)} km</div><div class="peq">${esc(s.lugar)} · ${esc(s.fecha)} (IGN)</div></div></div>`; });
     if (!(d.sismos||[]).length) h += '<div class="vacio">✅ Sin terremotos relevantes cerca de Rivas (10 días).</div>';
     $('otros').innerHTML = h;
+
+    const EMB_TRAMO = {manzanares:'Río Manzanares', jarama:'Río Jarama (Lozoya y Guadalix)', henares:'Río Henares'};
+    const emb = (d.embalses || {}).embalses || [];
+    let he = '';
+    for (const [tr, tit] of Object.entries(EMB_TRAMO)) {
+      const lista = emb.filter(x => x.tramo === tr);
+      if (!lista.length) continue;
+      he += `<div class="grupo-emb">${tit}</div>`;
+      he += lista.map(x => {
+        const pct = x.tr_pct ?? x.semana_pct, hm3 = x.tr_hm3 ?? x.semana_hm3;
+        const cuando = x.tr_fecha ? 'tiempo real ' + fmt(x.tr_fecha) : x.semana_fecha ? 'dato semanal del ' + new Date(x.semana_fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'}) : '';
+        const flecha = {sube:'↗ sube', baja:'↘ baja', estable:'→ estable'}[x.desembalse_tend] || '';
+        const des = x.desembalse != null ? ` · desembalsa <b>${x.desembalse.toFixed(2)} m³/s</b> ${flecha}` : '';
+        return `<div class="item"><div style="flex:1">
+          <div class="tit"><a href="${esc(x.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(x.nombre)}</a>
+            <span class="peq" style="font-weight:500"> · ${esc(x.rio)}</span></div>
+          ${pct != null ? `<div class="llenado"><span class="${pct>=90?'alto':''}" style="width:${Math.min(100,pct)}%"></span></div>` : ''}
+          <div class="peq">${x.error ? 'Sin datos ahora mismo' : `<b>${pct != null ? pct.toFixed(1).replace('.',',') + ' %' : '—'}</b>${hm3 != null ? ` (${hm3.toFixed(1).replace('.',',')} de ${x.capacidad ?? '?'} hm³)` : ''}${des}`}${cuando ? ` · ${esc(cuando)}` : ''}</div>
+        </div></div>`;
+      }).join('');
+    }
+    $('embalses').innerHTML = he ? he + `<div class="emb-pie">Datos de <a href="https://www.embalses.net/cuenca-3-tajo.html" target="_blank" rel="noopener">embalses.net</a> (recopila MITECO y SAIH Tajo). <b>No oficial</b>: el tiempo real no está homogeneizado ni confirmado. Solo informativo, no genera alertas.</div>`
+      : '<div class="vacio">Sin datos de embalses todavía (se actualizan cada hora).</div>';
 
     const ns = d.noticias || [];
     $('noticias').innerHTML = ns.length ? ns.slice(0,8).map(n => { let dom=''; try{dom=new URL(n.web).hostname}catch(e){}
