@@ -9,6 +9,7 @@ $ErrorActionPreference = 'Stop'
 $Dir      = Join-Path $env:LOCALAPPDATA 'AlertasRivas'
 $LastFile = Join-Path $Dir 'ultimo_id.txt'
 $LogFile  = Join-Path $Dir 'receptor.log'
+$Latido   = Join-Path $Dir 'latido.txt'   # se actualiza con cada señal de ntfy: sirve para saber si sigue vivo
 
 function Log([string]$t) {
     try {
@@ -18,10 +19,26 @@ function Log([string]$t) {
     } catch {}
 }
 
+function Latir { try { Set-Content -Path $Latido -Value ("{0:yyyy-MM-dd HH:mm:ss} PID {1}" -f (Get-Date), $PID) -Encoding ASCII } catch {} }
+
 # Solo una copia funcionando a la vez
 $creado = $false
 $mutex = New-Object System.Threading.Mutex($true, 'Local\AlertasRivasReceptor', [ref]$creado)
-if (-not $creado) { exit }
+if (-not $creado) {
+    # Hay otra copia. Si lleva más de 6 minutos sin dar señales, está colgada: se cierra y se sustituye.
+    $colgada = $false
+    try {
+        $txt = (Get-Content $Latido -Raw).Trim()
+        $t = [datetime]::ParseExact($txt.Substring(0, 19), 'yyyy-MM-dd HH:mm:ss', $null)
+        if (((Get-Date) - $t).TotalMinutes -gt 6) {
+            $colgada = $true
+            if ($txt -match 'PID (\d+)') { Stop-Process -Id ([int]$Matches[1]) -Force -ErrorAction SilentlyContinue }
+        }
+    } catch {}
+    if (-not $colgada) { exit }
+    try { [void]$mutex.WaitOne(10000) } catch [System.Threading.AbandonedMutexException] {}
+    Log 'La copia anterior estaba colgada: se ha cerrado y se arranca de nuevo.'
+}
 
 $cfg    = Get-Content (Join-Path $Dir 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $Topic  = $cfg.topic
@@ -121,9 +138,11 @@ function Mostrar-Alerta([string]$titulo, [string]$cuerpo, [string]$url, [bool]$m
     $timer = New-Object System.Windows.Forms.Timer
     $timer.Interval = 700
     $script:rojo = $true
+    $script:ticks = 0
     $timer.Add_Tick({
         $script:rojo = -not $script:rojo
         $f.BackColor = if ($script:rojo) { $c1 } else { $c2 }
+        $script:ticks++; if ($script:ticks % 40 -eq 0) { Latir }   # sigue vivo mientras la ventana está abierta
     })
     $timer.Start()
     $f.Add_Shown({ $f.Activate() })
@@ -153,7 +172,9 @@ function Procesar($m) {
     }
 }
 
-Log "Receptor RIV-Alert iniciado. Canal: $Topic"
+trap { Log "Error grave, el receptor se cierra: $_"; break }
+Log "Receptor RIV-Alert iniciado. Canal: $Topic (PID $PID)"
+
 $client = New-Object System.Net.Http.HttpClient
 $client.Timeout = [System.Threading.Timeout]::InfiniteTimeSpan
 # ntfy manda un "keepalive" cada ~45 s. Si en 100 s no llega nada, la conexión está muerta
@@ -174,11 +195,13 @@ while ($true) {
         $stream = $resp.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
         $reader = New-Object System.IO.StreamReader($stream, [System.Text.Encoding]::UTF8)
         Log 'Conectado a ntfy.'
+        Latir
         while ($true) {
             $t = $reader.ReadLineAsync()
             if (-not $t.Wait($SinDatosMs)) { Log 'Sin datos de ntfy en 100 s: reconectando.'; break }
             $line = $t.Result
             if ($null -eq $line) { Log 'Conexión cerrada por el servidor.'; break }
+            Latir
             if (-not $line.Trim()) { continue }
             $m = $line | ConvertFrom-Json
             if ($m.event -ne 'message') { continue }
@@ -192,5 +215,6 @@ while ($true) {
         try { if ($reader) { $reader.Dispose() } } catch {}
         try { if ($resp) { $resp.Dispose() } } catch {}
     }
+    Latir   # vivo aunque no haya red
     Start-Sleep -Seconds 15
 }

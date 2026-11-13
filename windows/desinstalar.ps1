@@ -1,4 +1,5 @@
-﻿# Desinstala el receptor de Alertas Rivas
+﻿& schtasks.exe /Delete /F /TN 'RIV-Alert receptor' 2>$null | Out-Null
+# Desinstala el receptor de Alertas Rivas
 Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
     Where-Object { $_.CommandLine -like '*AlertasRivas*receptor.ps1*' } |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }

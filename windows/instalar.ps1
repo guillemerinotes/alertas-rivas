@@ -21,6 +21,7 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
 
 Copy-Item -Path (Join-Path $PSScriptRoot 'receptor.ps1') -Destination $Dir -Force
 Copy-Item -Path (Join-Path $PSScriptRoot 'probar.ps1') -Destination $Dir -Force
+Copy-Item -Path (Join-Path $PSScriptRoot 'lanzador.vbs') -Destination $Dir -Force
 foreach ($x in 'situacion.ps1') {
     $src = Join-Path $PSScriptRoot $x
     if (Test-Path $src) { Copy-Item -Path $src -Destination $Dir -Force }
@@ -34,8 +35,9 @@ $argsReceptor = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"
 $startup = [Environment]::GetFolderPath('Startup')
 $ws = New-Object -ComObject WScript.Shell
 $lnk = $ws.CreateShortcut((Join-Path $startup 'Alertas Rivas.lnk'))
-$lnk.TargetPath = $ps
-$lnk.Arguments = $argsReceptor
+$wscript = Join-Path $env:WINDIR 'System32\wscript.exe'
+$lnk.TargetPath = $wscript
+$lnk.Arguments = "`"$Dir\lanzador.vbs`""
 $lnk.WorkingDirectory = $Dir
 $lnk.Description = 'Receptor RIV-Alert (Protección Civil Rivas)'
 $lnk.Save()
@@ -53,7 +55,12 @@ $s.WorkingDirectory = $Dir
 $s.IconLocation = "$env:WINDIR\System32\shell32.dll,221"
 $s.Save()
 
-Start-Process -FilePath $ps -ArgumentList $argsReceptor -WindowStyle Hidden
+# Vigilante: cada 5 minutos comprueba que el receptor está funcionando y, si no, lo arranca
+& schtasks.exe /Create /F /SC MINUTE /MO 5 /TN 'RIV-Alert receptor' /TR "`"$wscript`" `"$Dir\lanzador.vbs`"" | Out-Null
+if ($LASTEXITCODE -eq 0) { Write-Host 'Vigilante de Windows creado (revisa el receptor cada 5 min).' -ForegroundColor Green }
+else { Write-Host 'No se pudo crear el vigilante de Windows; el receptor arrancará igualmente al iniciar sesión.' -ForegroundColor Yellow }
+
+Start-Process -FilePath $wscript -ArgumentList "`"$Dir\lanzador.vbs`""
 Write-Host ''
 Write-Host 'Listo. El receptor está funcionando y arrancará solo cada vez que inicies sesión.' -ForegroundColor Green
 Write-Host "Carpeta: $Dir"
