@@ -109,6 +109,10 @@
   .canal{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--linea)}
   .canal:last-child{border-bottom:0}
   .canal .btn{width:auto;margin:0;padding:9px 14px;font-size:13px}
+  .paso{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--linea)} .paso:last-of-type{border-bottom:0}
+  .paso .num{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#1a0d00;
+    background:linear-gradient(145deg,var(--naranja-cl),var(--naranja))}
+  .enlace{margin:10px 0 4px} .enlace .btn{margin:6px 0}
   .oculto{display:none!important}
 </style>
 </head>
@@ -142,24 +146,40 @@
 
   <!-- ===================== RECIBIR ALERTAS ===================== -->
   <section class="vista" id="v-alertas">
-    <div class="card"><h2><i>🔔</i>Recibir las alertas en este dispositivo</h2>
+    <div class="card" id="mLogin"><h2><i class="nar">🔐</i>Acceso de miembros</h2>
       <div class="pad">
-        <p>Las alertas llegan con la app gratuita <b>ntfy</b>. No hace falta cuenta.</p>
-        <ol>
-          <li><b>Instala ntfy:</b>
-            <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">Android</a> ·
-            <a href="https://apps.apple.com/app/ntfy/id1625396347" target="_blank" rel="noopener">iPhone</a> ·
-            en el PC usa la <a id="lnkWeb" href="#" target="_blank" rel="noopener">versión web</a> y permite las notificaciones.</li>
-          <li><b>Suscríbete al canal de voluntarios:</b> en ntfy pulsa <b>+</b> y escribe:<br><code id="canal">…</code>
-            <button class="btn gris" id="copiar" style="margin-top:8px">Copiar nombre del canal</button></li>
-          <li>Haz una prueba pidiendo al coordinador que mande un comunicado.</li>
-          <li><b>Jefes:</b> vuestro canal es otro. Lo tiene el coordinador en la pestaña <b>Coordinación</b>.</li>
-        </ol>
-        <div class="aviso-txt">
-          🟡 <b>Amarillo</b>: notificación · 🟠 <b>Naranja</b>: alerta media · 🔴 <b>Rojo</b>: alerta máxima.<br>
-          Si el móvil está en silencio, no suena. RIV-Alert es un aviso <b>interno y no oficial</b> de Protección Civil Rivas: confirma siempre por los canales oficiales.
+        <p class="peq">Para ver los enlaces de las alertas, entra con la contraseña de tu grupo (jefes o voluntarios). Te la da tu coordinador.</p>
+        <label for="mClave">Contraseña</label>
+        <input type="password" id="mClave" autocomplete="current-password">
+        <button class="btn naranja" id="mEntrar">Entrar</button>
+        <div id="mMsg"></div>
+      </div>
+    </div>
+
+    <div id="mPanel" class="oculto">
+      <div class="card"><h2><i>🔔</i>Recibir las alertas <span class="chip" id="mGrupo" style="margin-left:auto"></span></h2>
+        <div class="pad">
+          <p>Las alertas llegan con la app gratuita <b>ntfy</b>. No hace falta cuenta. Son dos pasos:</p>
+
+          <div class="paso"><div class="num">1</div><div style="flex:1">
+            <div class="tit">Instala ntfy</div>
+            <a class="btn azul" href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">⬇️ Instalar ntfy (Android)</a>
+            <div class="peq">iPhone: <a href="https://apps.apple.com/app/ntfy/id1625396347" target="_blank" rel="noopener">App Store</a> · PC: no hace falta instalar nada, usa el enlace web del paso 2 y permite las notificaciones.</div>
+          </div></div>
+
+          <div class="paso"><div class="num">2</div><div style="flex:1">
+            <div class="tit">Suscríbete a tu canal</div>
+            <div id="mEnlaces"></div>
+            <div class="peq">El botón naranja abre ntfy y te suscribe solo (Android). En iPhone, o si no se abre: en ntfy pulsa <b>+</b> y escribe el nombre del canal.</div>
+          </div></div>
+
+          <div class="aviso-txt">
+            🟡 <b>Amarillo</b>: notificación · 🟠 <b>Naranja</b>: alerta media · 🔴 <b>Rojo</b>: alerta máxima.<br>
+            Si el móvil está en silencio, no suena. RIV-Alert es un aviso <b>interno y no oficial</b> de Protección Civil Rivas: confirma siempre por los canales oficiales.
+          </div>
+          <p class="peq">No compartas estos enlaces fuera del grupo: quien tenga el nombre del canal puede leer las alertas.</p>
+          <button class="btn gris" id="mSalir">Salir</button>
         </div>
-        <p class="peq">No compartas el nombre del canal fuera del grupo: quien lo tenga puede leer las alertas.</p>
       </div>
     </div>
     <div class="card"><h2><i>📲</i>Instalar esta app</h2>
@@ -314,13 +334,33 @@ let CFG = null;
 async function cargarCfg(){
   try{
     CFG = await (await fetch('/api/accion', {cache:'no-store'})).json();
-    const vol = (CFG.grupos || {}).voluntarios || {};
-    $('canal').textContent = vol.canal || 'no disponible';
-    $('lnkWeb').href = 'https://ntfy.sh/' + encodeURIComponent(vol.canal || '');
-  }catch(e){ $('canal').textContent = 'no disponible'; }
+  }catch(e){}
 }
 cargarCfg();
-$('copiar').onclick = async () => { try { await navigator.clipboard.writeText($('canal').textContent); $('copiar').textContent = 'Copiado ✓'; } catch(e) {} };
+
+// ---------- miembros (Recibir alertas) ----------
+const NOMG = {jefes:'Jefes', voluntarios:'Voluntarios', coordinador:'Coordinador'};
+function pintarMiembro(j){
+  $('mGrupo').textContent = NOMG[j.grupo] || j.grupo;
+  $('mEnlaces').innerHTML = (j.canales || []).map(c => `
+    <div class="enlace">
+      <div class="peq"><b>${esc(c.nombre)}</b> · canal <code>${esc(c.canal)}</code></div>
+      <a class="btn naranja" href="ntfy://ntfy.sh/${encodeURIComponent(c.canal)}?display=${encodeURIComponent('RIV-Alert ' + c.nombre)}">🔔 Suscribirme en ntfy · ${esc(c.nombre)}</a>
+      <div class="fila"><a class="btn gris" style="flex:1" href="https://ntfy.sh/${encodeURIComponent(c.canal)}" target="_blank" rel="noopener">Abrir en el navegador (PC)</a>
+        <button class="btn gris" style="flex:1" data-canal="${esc(c.canal)}">Copiar canal</button></div>
+    </div>`).join('');
+  $('mEnlaces').querySelectorAll('[data-canal]').forEach(b => b.onclick = async () => {
+    try { await navigator.clipboard.writeText(b.dataset.canal); b.textContent = 'Copiado ✓'; setTimeout(() => b.textContent = 'Copiar canal', 2000); } catch(e) {}
+  });
+  $('mLogin').classList.add('oculto'); $('mPanel').classList.remove('oculto');
+}
+async function entrarMiembro(c, silencioso){
+  const r = await fetch('/api/accion', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({accion:'miembro', clave:c})});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { if (!silencioso) msg('mMsg', false, j.error || 'Error ' + r.status); try{ sessionStorage.removeItem('riv-miembro'); }catch(e){} return; }
+  try{ sessionStorage.setItem('riv-miembro', c); }catch(e){}
+  $('mClave').value = ''; $('mMsg').innerHTML = ''; pintarMiembro(j);
+}
 document.querySelectorAll('[data-copiar]').forEach(b => b.onclick = async () => {
   try { await navigator.clipboard.writeText($(b.dataset.copiar).textContent); b.textContent = 'Copiado ✓'; setTimeout(() => b.textContent = 'Copiar', 2000); } catch(e) {}
 });
@@ -401,6 +441,11 @@ $('guardar').onclick = async () => {
   catch(e){ msg('cfgMsg', false, e.message); }
   $('guardar').disabled = false;
 };
+
+$('mEntrar').onclick = async () => { $('mEntrar').disabled = true; try { await entrarMiembro($('mClave').value); } catch(e){ msg('mMsg', false, 'Sin conexión'); } $('mEntrar').disabled = false; };
+$('mClave').onkeydown = e => { if (e.key === 'Enter') $('mEntrar').click(); };
+$('mSalir').onclick = () => { try{ sessionStorage.removeItem('riv-miembro'); }catch(e){} $('mPanel').classList.add('oculto'); $('mLogin').classList.remove('oculto'); };
+try { const c = sessionStorage.getItem('riv-miembro'); if (c) entrarMiembro(c, true).catch(() => {}); } catch(e) {}
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 </script>

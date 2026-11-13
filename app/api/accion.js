@@ -3,6 +3,8 @@
 //   COORD_PASSWORD  contraseña de coordinador
 //   GITHUB_TOKEN    token fine-grained del repo alertas-rivas con Actions: Read and write y Contents: Read and write
 //   NTFY_TOPIC      (opcional) canal personal, para recibir también los comunicados
+//   PASS_JEFES      contraseña de miembros jefes (ven los enlaces de jefes y voluntarios)
+//   PASS_VOLUNTARIOS contraseña de miembros voluntarios (ven solo el enlace de voluntarios)
 import crypto from "node:crypto";
 
 const REPO = "guillemerinotes/alertas-rivas";
@@ -13,6 +15,13 @@ const NIVELES = { informativo: 0, amarillo: 1, naranja: 2, rojo: 3 };
 const PRIORIDAD = { 0: 3, 1: 3, 2: 4, 3: 5 };
 const EMOJI = { 0: "loudspeaker", 1: "yellow_circle", 2: "orange_circle", 3: "red_circle" };
 const NOMBRE = { 0: "info", 1: "amarillo", 2: "naranja", 3: "rojo" };
+
+function igual(dada, real) {
+  if (!real || typeof dada !== "string") return false;
+  const a = crypto.createHash("sha256").update(dada).digest();
+  const b = crypto.createHash("sha256").update(real).digest();
+  return crypto.timingSafeEqual(a, b);
+}
 
 function claveOk(dada) {
   const real = process.env.COORD_PASSWORD || "";
@@ -67,8 +76,8 @@ export default async function handler(req, res) {
     try {
       const r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/grupo.json?t=${Date.now()}`);
       const grupos = normalizar(await r.json());
-      // El canal de jefes no se publica: solo se ve tras entrar como coordinador
-      const pub = Object.fromEntries(Object.entries(grupos).map(([k, g]) => [k, k === "jefes" ? { ...g, canal: null } : g]));
+      // Los canales no se publican: solo se ven entrando como miembro o coordinador
+      const pub = Object.fromEntries(Object.entries(grupos).map(([k, g]) => [k, { ...g, canal: null }]));
       return res.status(200).json({ grupos: pub });
     } catch (e) {
       return res.status(500).json({ error: "No se pudo leer la configuración" });
@@ -77,6 +86,27 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Método no permitido" });
 
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
+
+  // Acceso de miembros: devuelve solo los canales de su grupo
+  if (body.accion === "miembro") {
+    let grupo = null;
+    if (igual(body.clave, process.env.PASS_JEFES)) grupo = "jefes";
+    else if (igual(body.clave, process.env.PASS_VOLUNTARIOS)) grupo = "voluntarios";
+    else if (claveOk(body.clave)) grupo = "coordinador";
+    if (!grupo) {
+      await espera(1500);
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+    try {
+      const r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/grupo.json?t=${Date.now()}`);
+      const grupos = normalizar(await r.json());
+      const ver = grupo === "voluntarios" ? ["voluntarios"] : ["jefes", "voluntarios"];
+      const canales = ver.filter((k) => grupos[k]?.canal).map((k) => ({ grupo: k, nombre: grupos[k].nombre || k, canal: grupos[k].canal }));
+      return res.status(200).json({ ok: true, grupo, canales });
+    } catch (e) {
+      return res.status(500).json({ error: "No se pudo leer la configuración" });
+    }
+  }
   if (!claveOk(body.clave)) {
     await espera(1500); // frena a quien pruebe contraseñas
     return res.status(401).json({ error: "Contraseña incorrecta" });
