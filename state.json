@@ -219,29 +219,29 @@
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
  "incendios": {
   "archivos": [
-   "down_20261112_peligro_c_D00.qml",
-   "down_20261112_peligro_c_D00.sld",
-   "down_20261112_peligro_c_D00.tif",
-   "down_20261112_peligro_c_D01.qml",
-   "down_20261112_peligro_c_D01.sld",
-   "down_20261112_peligro_c_D01.tif",
-   "down_20261112_peligro_c_D02.qml",
-   "down_20261112_peligro_c_D02.sld",
-   "down_20261112_peligro_c_D02.tif",
-   "down_20261112_peligro_c_D03.qml",
-   "down_20261112_peligro_c_D03.sld",
-   "down_20261112_peligro_c_D03.tif"
+   "down_20261113_peligro_c_D00.qml",
+   "down_20261113_peligro_c_D00.sld",
+   "down_20261113_peligro_c_D00.tif",
+   "down_20261113_peligro_c_D01.qml",
+   "down_20261113_peligro_c_D01.sld",
+   "down_20261113_peligro_c_D01.tif",
+   "down_20261113_peligro_c_D02.qml",
+   "down_20261113_peligro_c_D02.sld",
+   "down_20261113_peligro_c_D02.tif",
+   "down_20261113_peligro_c_D03.qml",
+   "down_20261113_peligro_c_D03.sld",
+   "down_20261113_peligro_c_D03.tif"
   ],
   "clase": 1,
   "dias": {
-   "2026-11-12": "bajo",
    "2026-11-13": "bajo",
    "2026-11-14": "bajo",
    "2026-11-15": "bajo",
    "2026-11-16": "bajo",
    "2026-11-17": "bajo",
    "2026-11-18": "bajo",
-   "2026-11-19": "bajo"
+   "2026-11-19": "bajo",
+   "2026-11-20": "bajo"
   },
   "fecha": "2026-11-13",
   "hoy": "bajo",
@@ -327,13 +327,13 @@
    "CBMiugFBVV95cUxPRjhqMVJIXzZQRzlwX0x5UzZMZ3BYRkE3by1DblQ1NWlYdUo4aVFpa2hxOGNBdmtidDZYZmJVU0VEeGlzSU1Qd19tQ2ctMkRZTTFVcEVPOUtCWkx1aEh4cXpxMU1xTVNqdGxaVmFwX0pQcnRLR1FyeDBldGh1Y1FlLVIxR1lsY2YxaDBqQm5IX25VcXJ2WWIyX2QtVDJqNXBJblpocXZsRkJDMjlaa29VbmVuVURhRWFPREHSAb8BQVVfeXFMTndFLUVUUXQzNkd2cjVMZkJrZEJfWDFaSTZxb3hfQ2RQV0dvV2x0TEVQWVJsX0tCZHRLZ3pNc1lCYk42TFRkSVhiTG9WT2ZMVy1WTjNLQXVXNWswWEFlUWstelNXa2l3TFdKZEREaEZUYlFlZlVidmozdVY1V0JNanRiN0dtWlpDN1RnbVVRTl9yNjdfbXd2dmZiaE5mcjZqeE94NzZYSWNJbklibVFTWVdndDNwSFRhaUxoNHMybkE": "2026-11-12T10:03:52+00:00"
   }
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 0 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
    "nivel": 0,
    "nombre": "HENARES EN ESPINILLO",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.3,
@@ -341,13 +341,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.509
+   "valor": 0.506
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -375,7 +375,7 @@
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -383,7 +383,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.647
+   "valor": 0.651
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -397,7 +397,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.801
+   "valor": 558.796
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -411,7 +411,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.28
+   "valor": 587.278
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -431,7 +431,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -453,7 +453,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.735
+   "valor": 0.742
   }
  },
  "rios_fallos": 0,
