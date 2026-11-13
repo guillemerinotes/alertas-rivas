@@ -153,13 +153,13 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.738
+   "valor": 0.737
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -181,7 +181,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.922
+   "valor": 558.916
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -195,7 +195,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.29
+   "valor": 587.289
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -223,13 +223,13 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.684
+   "valor": 0.681
   },
   "R061": {
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.71,
