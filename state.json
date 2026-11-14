@@ -218,6 +218,7 @@
  },
  "embalses_flags": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
+ "historial": [],
  "incendios": {
   "archivos": [
    "down_20261113_peligro_c_D00.qml",
@@ -403,7 +404,8 @@
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
   "Noticias": 0,
-  "SAIH Tajo": 0
+  "SAIH Tajo": 1,
+  "SAIH Tajo · último error": "RemoteDisconnected: Remote end closed connection without response"
  },
  "sismos": {},
  "version": 2
