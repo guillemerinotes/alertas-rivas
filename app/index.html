@@ -150,6 +150,11 @@
   .cuenta{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:3px 9px;margin:4px 4px 0 0}
   .cuenta.si{background:#16a46333;color:#5fe3a1} .cuenta.min{background:#F07D0033;color:#ffb366} .cuenta.no{background:#c41c2e33;color:#ff8a96}
   .hist-resp{padding:0 14px 12px} .hist-resp div{padding:6px 0;border-top:1px solid var(--linea);font-size:13.5px}
+  .leyenda{padding:4px 16px 2px}
+  .ley-t{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sub);margin-bottom:6px}
+  .ley-fila{display:flex;flex-wrap:wrap;align-items:center;gap:4px 3px;font-size:12px}
+  .ley-fila span{width:16px;height:12px;border-radius:3px;border:1px solid #ffffff22;display:inline-block}
+  .ley-fila b{font-weight:600;color:var(--txt);margin:0 10px 0 4px}
   .oculto{display:none!important}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -209,8 +214,19 @@
         <button class="btn gris" id="radarPlay" aria-label="Reproducir o pausar">❚❚</button>
         <input type="range" id="radarSlider" min="0" max="0" value="0" aria-label="Momento del radar">
       </div>
-      <div class="emb-pie oculto" id="radarNotaPrev">Previsión de lluvia del modelo europeo ECMWF a través de <a href="https://www.windy.com" target="_blank" rel="noopener">Windy</a>. Pulsa ▶ abajo a la izquierda del mapa para ver las próximas horas y días, o mueve la línea de tiempo. <b>Es una previsión de modelo, no un radar</b>: indica dónde se espera lluvia, no dónde está lloviendo ahora, y puede fallar en tormentas pequeñas. Para avisos, manda AEMET.</div>
-      <div class="emb-pie" id="radarNota">Últimas 2 horas, una imagen cada 10 minutos. El círculo marca 10 km alrededor de Rivas. Radar de <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a> (no oficial); el oficial es el de <a href="https://www.aemet.es/es/eltiempo/observacion/radar" target="_blank" rel="noopener">AEMET</a>.</div>
+      <div class="leyenda" id="radarLeyenda">
+        <div class="ley-t">Intensidad de la lluvia (aprox.)</div>
+        <div class="ley-fila">
+          <span style="background:#cec087"></span><b>Muy débil</b>
+          <span style="background:#88ddee"></span><span style="background:#00a3e0"></span><b>Débil &lt;1 mm/h</b>
+          <span style="background:#0077aa"></span><span style="background:#005588"></span><b>Moderada 1–3</b>
+          <span style="background:#ffee00"></span><span style="background:#ffaa00"></span><b>Fuerte 5–12</b>
+          <span style="background:#ff4400"></span><span style="background:#c10000"></span><b>Muy fuerte 25–50</b>
+          <span style="background:#ff77ff"></span><span style="background:#ffffff"></span><b>Torrencial &gt;100, posible granizo</b>
+        </div>
+      </div>
+      <div class="emb-pie oculto" id="radarNotaPrev">Previsión de lluvia del modelo europeo ECMWF a través de <a href="https://www.windy.com" target="_blank" rel="noopener">Windy</a>. Pulsa ▶ abajo a la izquierda del mapa para ver las próximas horas y días, o mueve la línea de tiempo. La leyenda de colores (mm/h) es la barra de abajo del propio mapa de Windy. <b>Es una previsión de modelo, no un radar</b>: indica dónde se espera lluvia, no dónde está lloviendo ahora, y puede fallar en tormentas pequeñas. Para avisos, manda AEMET.</div>
+      <div class="emb-pie" id="radarNota">Últimas 2 horas, una imagen cada 10 minutos. Los mm/h de la leyenda son aproximados: el radar mide la intensidad del eco (dBZ) y se convierte con la fórmula habitual (Marshall-Palmer). El círculo marca 10 km alrededor de Rivas. Radar de <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a> (no oficial); el oficial es el de <a href="https://www.aemet.es/es/eltiempo/observacion/radar" target="_blank" rel="noopener">AEMET</a>.</div>
     </div>
     <div class="rejilla">
       <div class="card"><h2><i>⛈️</i>Avisos AEMET · zona de Rivas</h2><div id="avisos"><div class="vacio">Cargando…</div></div></div>
@@ -844,7 +860,7 @@ const WINDY = 'https://embed.windy.com/embed2.html?lat=40.33&lon=-3.52&detailLat
 document.querySelectorAll('#segRadar button').forEach(b => b.onclick = () => {
   const prev = b.dataset.m === 'prev';
   document.querySelectorAll('#segRadar button').forEach(x => x.classList.toggle('on', x === b));
-  ['radarMapa','radarCtrl','radarNota'].forEach(id => $(id).classList.toggle('oculto', prev));
+  ['radarMapa','radarCtrl','radarNota','radarLeyenda'].forEach(id => $(id).classList.toggle('oculto', prev));
   ['radarPrev','radarNotaPrev'].forEach(id => $(id).classList.toggle('oculto', !prev));
   $('radarHora').style.visibility = prev ? 'hidden' : '';
   if (prev) { rPausar(); if (!$('radarPrev').firstChild) $('radarPrev').innerHTML = `<iframe src="${WINDY}" title="Previsión de lluvia (Windy)" loading="lazy" allowfullscreen></iframe>`; }
