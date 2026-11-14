@@ -142,6 +142,14 @@
   .ph .ll span{width:14px;border-radius:4px 4px 0 0;background:linear-gradient(#5fb0ff,#2f6fe0);min-height:2px}
   .ph.n1{border-color:var(--am)} .ph.n2{border-color:var(--na)} .ph.n3{border-color:var(--ro)}
   .ph .mm{color:#9cc0ff} .ph .rc{color:var(--sub)}
+  .resp-bot{display:flex;gap:8px;margin-top:10px} .resp-bot .btn{flex:1}
+  .com-txt{white-space:pre-wrap;background:rgba(5,9,20,.5);border:1px solid var(--linea);border-radius:12px;padding:12px 14px;margin:6px 0 4px}
+  .hist-com{border:1px solid var(--linea);border-radius:14px;margin:10px 0;overflow:hidden}
+  .hist-com summary{list-style:none;cursor:pointer;padding:12px 14px}
+  .hist-com summary::-webkit-details-marker{display:none}
+  .cuenta{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:3px 9px;margin:4px 4px 0 0}
+  .cuenta.si{background:#16a46333;color:#5fe3a1} .cuenta.min{background:#F07D0033;color:#ffb366} .cuenta.no{background:#c41c2e33;color:#ff8a96}
+  .hist-resp{padding:0 14px 12px} .hist-resp div{padding:6px 0;border-top:1px solid var(--linea);font-size:13.5px}
   .oculto{display:none!important}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -163,6 +171,27 @@
 </header>
 
 <main>
+  <div class="card oculto" id="resp"><h2><i class="nar">📢</i>Comunicado · responde tu disponibilidad</h2>
+    <div class="pad">
+      <div id="respCom"><div class="vacio" style="padding:0">Cargando comunicado…</div></div>
+      <label for="respNombre">Tu nombre (como te conocen en la agrupación)</label>
+      <input id="respNombre" maxlength="50" autocomplete="name" placeholder="Ej.: Ana Pérez">
+      <div class="resp-bot">
+        <button class="btn" style="background:linear-gradient(145deg,#2fd389,#16a463);color:#04210f" data-e="disponible">✅ Disponible</button>
+        <button class="btn" style="background:linear-gradient(145deg,#ff6b7a,#c41c2e);color:#fff" data-e="no">❌ No disponible</button>
+      </div>
+      <label>Disponible en…</label>
+      <div class="fila">
+        <button class="btn gris" style="flex:1" data-min="15">15 min</button>
+        <button class="btn gris" style="flex:1" data-min="30">30 min</button>
+        <button class="btn gris" style="flex:1" data-min="60">1 hora</button>
+        <input id="respMin" type="number" min="1" max="600" placeholder="otro" style="flex:1;min-width:80px">
+        <button class="btn azul" style="flex:1" id="respMinOk">Enviar</button>
+      </div>
+      <div id="respMsg"></div>
+      <button class="btn gris" id="respCerrar">Cerrar</button>
+    </div>
+  </div>
   <!-- ===================== SITUACIÓN ===================== -->
   <section class="vista on" id="v-situacion">
     <div class="antiguo oculto" id="antiguo"></div>
@@ -434,6 +463,14 @@
           <div id="cfgMsg"></div>
         </div>
       </div>
+      <div class="card"><h2><i>📋</i>Historial</h2>
+        <div class="pad">
+          <div class="seg" id="segHist"><button data-h="com" class="on">Comunicados y respuestas</button><button data-h="auto">Alertas automáticas</button></div>
+          <div id="histCom"><div class="vacio" style="padding:8px 0">Cargando…</div></div>
+          <div id="histAuto" class="oculto"></div>
+          <button class="btn gris" id="histRecargar">↻ Actualizar historial</button>
+        </div>
+      </div>
       <div class="card"><h2><i>👥</i>Canales de los grupos</h2>
         <div class="pad">
           <div class="canal"><div><div class="tit">Jefes</div><code id="canalJefes">…</code></div><button class="btn gris" data-copiar="canalJefes">Copiar</button></div>
@@ -462,6 +499,70 @@ document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
   try { localStorage.setItem('riv-vista', b.dataset.v); } catch(e) {}
 });
 try { const v = localStorage.getItem('riv-vista'); if (v) document.querySelector(`nav button[data-v="${v}"]`)?.click(); } catch(e) {}
+
+// ---------- responder a un comunicado (?r=id) ----------
+const RID = new URLSearchParams(location.search).get('r');
+const ESTADO_TXT = {disponible:'✅ Disponible', minutos:'⏱️ Disponible en', no:'❌ No disponible'};
+async function api(datos){
+  const r = await fetch('/api/accion', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(datos)});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Error ' + r.status);
+  return j;
+}
+async function abrirRespuesta(){
+  if (!RID) return;
+  $('resp').classList.remove('oculto');
+  try { $('respNombre').value = localStorage.getItem('riv-nombre') || ''; } catch(e) {}
+  try {
+    const {comunicado: c} = await api({accion:'ver_comunicado', id: RID});
+    $('respCom').innerHTML = `<div class="peq">${fmt(c.ts)} · para ${esc(c.destino)}${c.firma ? ' · firma ' + esc(c.firma) : ''} · <span class="chip ${({amarillo:'c1',naranja:'c2',rojo:'c3'})[c.nivel] || ''}">${esc((c.nivel || 'info').toUpperCase())}</span></div><div class="com-txt">${esc(c.texto)}</div>`;
+  } catch(e) { $('respCom').innerHTML = `<div class="err-txt">${esc(e.message)}</div>`; }
+  window.scrollTo(0, 0);
+}
+async function responder(estado, min){
+  const nombre = $('respNombre').value.trim();
+  if (nombre.length < 2) { msg('respMsg', false, 'Escribe tu nombre primero.'); $('respNombre').focus(); return; }
+  try { localStorage.setItem('riv-nombre', nombre); } catch(e) {}
+  try {
+    await api({accion:'responder', id: RID, nombre, estado, min});
+    msg('respMsg', true, `Enviado: ${ESTADO_TXT[estado]}${estado === 'minutos' ? ' ' + min + ' min' : ''}. Si cambia algo, puedes volver a responder.`);
+  } catch(e) { msg('respMsg', false, e.message); }
+}
+document.querySelectorAll('#resp [data-e]').forEach(b => b.onclick = () => responder(b.dataset.e));
+document.querySelectorAll('#resp [data-min]').forEach(b => b.onclick = () => responder('minutos', +b.dataset.min));
+$('respMinOk').onclick = () => { const m = parseInt($('respMin').value, 10); if (!m || m < 1) return msg('respMsg', false, 'Pon los minutos.'); responder('minutos', m); };
+$('respCerrar').onclick = () => { $('resp').classList.add('oculto'); history.replaceState(null, '', location.pathname); };
+
+// ---------- historial (coordinadores) ----------
+let HIST_AUTO = [];
+async function cargarHistorial(){
+  $('histCom').innerHTML = '<div class="vacio" style="padding:8px 0">Cargando…</div>';
+  try {
+    const j = await accion({accion:'historial'});
+    const cs = j.comunicados || [];
+    $('histCom').innerHTML = cs.length ? cs.map(c => {
+      const r = c.respuestas || [];
+      const si = r.filter(x => x.estado === 'disponible'), mi = r.filter(x => x.estado === 'minutos'), no = r.filter(x => x.estado === 'no');
+      return `<details class="hist-com"><summary>
+        <div class="peq">${fmt(c.ts)} · para ${esc(c.destino)}${c.firma ? ' · ' + esc(c.firma) : ''}</div>
+        <div class="tit"><span class="chip ${({amarillo:'c1',naranja:'c2',rojo:'c3'})[c.nivel] || ''}">${esc((c.nivel || 'info').toUpperCase())}</span>${esc(c.texto.split('\n')[0])}</div>
+        <span class="cuenta si">✅ ${si.length} disponibles</span><span class="cuenta min">⏱️ ${mi.length} en camino</span><span class="cuenta no">❌ ${no.length} no</span>
+      </summary>
+      <div class="hist-resp"><div class="com-txt">${esc(c.texto)}</div>
+        ${r.length ? r.map(x => `<div><b>${esc(x.nombre)}</b> · ${ESTADO_TXT[x.estado] || esc(x.estado)}${x.estado === 'minutos' ? ' ' + x.min + ' min' : ''} <span class="peq">· ${fmt(x.ts)}</span></div>`).join('') : '<div class="peq">Nadie ha respondido todavía.</div>'}
+      </div></details>`;
+    }).join('') : '<div class="vacio" style="padding:8px 0">Todavía no hay comunicados guardados.</div>';
+  } catch(e) { $('histCom').innerHTML = `<div class="err-txt">${esc(e.message)}</div>`; }
+  $('histAuto').innerHTML = HIST_AUTO.length ? HIST_AUTO.map(h => `<div class="item n${({amarillo:1,naranja:2,rojo:3})[h.nivel] || 0}"><div class="barra"></div><div>
+      <div class="tit">${esc(h.titulo.replace(/^RIV-Alert ?/, ''))}</div>
+      <div class="peq">${fmt(h.ts)} · ${h.para && h.para.length ? 'a ' + esc(h.para.join(' y ')) : 'solo a tu canal'}</div></div></div>`).join('')
+    : '<div class="vacio" style="padding:8px 0">Aún no hay alertas automáticas registradas (se guardan desde hoy).</div>';
+}
+document.querySelectorAll('#segHist button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#segHist button').forEach(x => x.classList.toggle('on', x === b));
+  $('histCom').classList.toggle('oculto', b.dataset.h !== 'com'); $('histAuto').classList.toggle('oculto', b.dataset.h !== 'auto');
+});
+$('histRecargar').onclick = cargarHistorial;
 
 // ---------- datos antiguos ----------
 function datosAntiguos(texto){
@@ -518,6 +619,7 @@ async function cargarDatos(){
     $('meta').textContent = `Datos de ${fmt(d.actualizado)} (hace ${mins} min)` + (mins > 40 ? ' ⚠️ antiguos' : '');
     datosAntiguos(mins > 40 ? `Los datos no se actualizan desde hace ${mins >= 120 ? Math.round(mins/60) + ' horas' : mins + ' minutos'} (${fmt(d.actualizado)}).` : null);
     pintarPrevision(d);
+    HIST_AUTO = d.historial || [];
     let peor = 0;
     const av = (d.avisos || []).sort((a,b) => NIV[b.nivel]-NIV[a.nivel]);
     av.forEach(a => peor = Math.max(peor, NIV[a.nivel] || 0));
@@ -646,7 +748,7 @@ async function accion(datos){
   if (!r.ok) throw new Error(j.error || 'Error ' + r.status);
   return j;
 }
-function mostrarPanel(si){ $('login').classList.toggle('oculto', si); $('panelCoord').classList.toggle('oculto', !si); }
+function mostrarPanel(si){ $('login').classList.toggle('oculto', si); $('panelCoord').classList.toggle('oculto', !si); if (si) cargarHistorial(); }
 function salir(){ clave = ''; try{ sessionStorage.removeItem('riv-clave'); }catch(e){} mostrarPanel(false); }
 $('salir').onclick = salir;
 $('entrar').onclick = async () => {
@@ -748,6 +850,8 @@ document.querySelectorAll('#segRadar button').forEach(b => b.onclick = () => {
   if (prev) { rPausar(); if (!$('radarPrev').firstChild) $('radarPrev').innerHTML = `<iframe src="${WINDY}" title="Previsión de lluvia (Windy)" loading="lazy" allowfullscreen></iframe>`; }
   else setTimeout(() => radar && radar.invalidateSize(), 60);
 });
+
+abrirRespuesta();
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 </script>

@@ -6,7 +6,39 @@
 //   PASS_JEFES      contraseña de miembros jefes (ven los enlaces de jefes y voluntarios)
 //   PASS_VOLUNTARIOS contraseña de miembros voluntarios (ven solo el enlace de voluntarios)
 //   CANAL_JEFES / CANAL_VOLUNTARIOS  nombres (secretos) de los canales ntfy de cada grupo
+//   BLOB_READ_WRITE_TOKEN  almacén privado (Vercel Blob) para comunicados y respuestas
 import crypto from "node:crypto";
+import { put, get, list } from "@vercel/blob";
+
+const APP = "https://riv-alert.vercel.app/";
+const ESTADOS = { disponible: "Disponible", minutos: "Disponible en X min", no: "No disponible" };
+
+// ---------- almacén privado ----------
+async function guardar(ruta, datos) {
+  await put(ruta, JSON.stringify(datos), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json" });
+}
+async function leer(ruta) {
+  const r = await get(ruta, { access: "private", useCache: false });
+  if (!r || r.statusCode !== 200 || !r.stream) return null;
+  return JSON.parse(await new Response(r.stream).text());
+}
+async function listar(prefijo) {
+  const out = [];
+  let cursor;
+  do {
+    const r = await list({ prefix: prefijo, cursor, limit: 1000 });
+    out.push(...r.blobs);
+    cursor = r.hasMore ? r.cursor : undefined;
+  } while (cursor);
+  return out;
+}
+const idValido = (id) => typeof id === "string" && /^[0-9]{13}-[a-f0-9]{8}$/.test(id);
+const slug = (s) => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+async function respuestasDe(id) {
+  const blobs = await listar(`respuestas/${id}/`);
+  const rs = (await Promise.all(blobs.map((b) => leer(b.pathname).catch(() => null)))).filter(Boolean);
+  return rs.sort((a, b) => a.ts.localeCompare(b.ts));
+}
 
 const REPO = "guillemerinotes/alertas-rivas";
 const WORKFLOW = "vigilante.yml";
@@ -92,6 +124,25 @@ export default async function handler(req, res) {
 
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
 
+  // Respuesta de disponibilidad a un comunicado (sin contraseña: el id del comunicado hace de llave)
+  if (body.accion === "ver_comunicado" || body.accion === "responder") {
+    if (!idValido(body.id)) return res.status(400).json({ error: "Comunicado no válido" });
+    let c;
+    try { c = await leer(`comunicados/${body.id}.json`); } catch (e) { c = null; }
+    if (!c) return res.status(404).json({ error: "No encuentro ese comunicado" });
+    if (body.accion === "ver_comunicado") {
+      return res.status(200).json({ ok: true, comunicado: { ts: c.ts, texto: c.texto, nivel: c.nivel, destino: c.destino, firma: c.firma } });
+    }
+    const nombre = String(body.nombre || "").trim().replace(/\s+/g, " ").slice(0, 50);
+    const estado = String(body.estado || "");
+    if (nombre.length < 2) return res.status(400).json({ error: "Escribe tu nombre" });
+    if (!ESTADOS[estado]) return res.status(400).json({ error: "Respuesta no válida" });
+    const min = estado === "minutos" ? Math.max(1, Math.min(600, parseInt(body.min, 10) || 0)) : null;
+    if (estado === "minutos" && !min) return res.status(400).json({ error: "Indica en cuántos minutos" });
+    await guardar(`respuestas/${body.id}/${slug(nombre) || "anonimo"}.json`, { nombre, estado, min, ts: new Date().toISOString() });
+    return res.status(200).json({ ok: true, mensaje: "Respuesta enviada. Gracias." });
+  }
+
   // Acceso de miembros: devuelve solo los canales de su grupo
   if (body.accion === "miembro") {
     let grupo = null;
@@ -136,6 +187,8 @@ export default async function handler(req, res) {
         if (!texto) return res.status(400).json({ error: "El comunicado está vacío" });
         const n = NIVELES[body.nivel] ?? 0;
         const firma = String(body.firma || "").trim().slice(0, 60);
+        const id = `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+        const enlace = `${APP}?r=${id}`;
         const hora = new Date().toLocaleString("es-ES", { timeZone: "Europe/Madrid", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
         const primera = texto.split(/\r?\n/)[0].slice(0, 80);
         const msg = {
@@ -143,16 +196,28 @@ export default async function handler(req, res) {
           message: `${texto}\n\n${firma ? "Firma: " + firma + "\n" : ""}Comunicado manual (${hora}) · RIV-Alert · Protección Civil Rivas (aviso interno, no oficial).`,
           priority: PRIORIDAD[n],
           tags: [EMOJI[n], `nivel-${NOMBRE[n]}`, "evento-comunicado"],
-          click: PANEL,
+          click: enlace,
+          actions: [{ action: "view", label: "Responder (disponibilidad)", url: enlace, clear: false }],
         };
         const grupos = normalizar((await leerGrupo()).cfg);
         const para = body.destino === "jefes" || body.destino === "voluntarios" ? [body.destino] : Object.keys(grupos);
         const nombres = para.filter((k) => grupos[k]?.canal);
         if (!nombres.length) return res.status(400).json({ error: "Ese grupo no tiene canal" });
         const destinos = [...new Set([...nombres.map((k) => grupos[k].canal), process.env.NTFY_TOPIC].filter(Boolean))];
-        for (const t of destinos) await ntfy(t, msg);
         const quien = nombres.map((k) => grupos[k].nombre || k).join(" y ");
-        return res.status(200).json({ ok: true, mensaje: `Comunicado enviado a: ${quien}.` });
+        let guardado = true;
+        try {
+          await guardar(`comunicados/${id}.json`, { id, ts: new Date().toISOString(), texto, nivel: NOMBRE[n], destino: quien, firma });
+        } catch (e) { guardado = false; }
+        for (const t of destinos) await ntfy(t, msg);
+        return res.status(200).json({ ok: true, id, mensaje: `Comunicado enviado a: ${quien}.` + (guardado ? "" : " (No se pudo guardar en el historial.)") });
+      }
+
+      case "historial": {
+        const blobs = (await listar("comunicados/")).sort((a, b) => b.pathname.localeCompare(a.pathname)).slice(0, 30);
+        const coms = (await Promise.all(blobs.map((b) => leer(b.pathname).catch(() => null)))).filter(Boolean);
+        const conRespuestas = await Promise.all(coms.map(async (c) => ({ ...c, respuestas: await respuestasDe(c.id).catch(() => []) })));
+        return res.status(200).json({ ok: true, comunicados: conRespuestas });
       }
 
       case "guardar_grupo": {

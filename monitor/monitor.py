@@ -549,6 +549,21 @@ def main() -> int:
             print(f"[error] ntfy: {e}", file=sys.stderr)
     mensajes = [(c, m) for _, c, m in envios]
 
+    # Historial de lo enviado automáticamente (una entrada por notificación, con los grupos que la recibieron)
+    hist = st.setdefault("historial", [])
+    por_titulo: dict[str, dict] = {}
+    for quien, _c, msg in envios:
+        if any(t in msg.get("tags", []) for t in ("evento-prueba",)):
+            continue
+        e = por_titulo.setdefault(msg["title"], {"ts": ahora.isoformat(), "titulo": msg["title"],
+                                                 "texto": msg.get("message", "").split("\n\nRIV-Alert ·")[0][:600],
+                                                 "nivel": next((t[6:] for t in msg.get("tags", []) if t.startswith("nivel-")), ""),
+                                                 "tipo": tipo_de(msg), "para": []})
+        if quien != "yo" and quien not in e["para"]:
+            e["para"].append(quien)
+    hist.extend(por_titulo.values())
+    st["historial"] = hist[-200:]
+
     hb = st.get("heartbeat") or ""
     if not hb or datetime.fromisoformat(hb) < ahora - timedelta(days=20):
         st["heartbeat"] = ahora.isoformat()
