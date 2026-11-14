@@ -141,10 +141,47 @@ def _num(s):
     return float(m.group().replace(",", ".")) if m else None
 
 
+PREV = {"fuente": None, "error": None}
+OPENMETEO = ("https://api.open-meteo.com/v1/forecast?latitude=40.3283&longitude=-3.5158"
+             "&hourly=temperature_2m,precipitation,snowfall,wind_gusts_10m,weather_code"
+             "&timezone=Europe%2FMadrid&forecast_days=3&wind_speed_unit=kmh")
+
+
+def prevision_openmeteo():
+    """Respaldo sin clave (modelos meteorológicos vía Open-Meteo) si la de AEMET falla."""
+    try:
+        d = json.loads(http_get(OPENMETEO))["hourly"]
+        out = []
+        for i, t in enumerate(d["time"]):
+            def v(k):
+                x = d.get(k, [None] * (i + 1))[i]
+                return float(x) if x is not None else None
+            wc = v("weather_code") or 0
+            out.append({"hora": datetime.fromisoformat(t).replace(tzinfo=TZ), "lluvia": v("precipitation"),
+                        "nieve": v("snowfall"), "temp": v("temperature_2m"), "racha": v("wind_gusts_10m"),
+                        "prob_tormenta": 100.0 if wc >= 95 else 0.0})
+        PREV["fuente"] = "Open-Meteo (modelos, no oficial)"
+        return out
+    except Exception as e:  # noqa: BLE001
+        PREV["error"] = (PREV["error"] or "") + f" · Open-Meteo: {e}"
+        return None
+
+
 def descargar_prevision_rivas(api_key: str):
+    r = _prevision_aemet(api_key) if api_key else None
+    if r:
+        PREV["fuente"] = "AEMET (oficial)"
+        return r
+    if not api_key:
+        PREV["error"] = "sin clave de AEMET"
+    return prevision_openmeteo()
+
+
+def _prevision_aemet(api_key: str):
     try:
         meta = json.loads(http_get(OPENDATA_HORARIA, headers={"api_key": api_key}))
         if not meta.get("datos"):
+            PREV["error"] = f"AEMET: {meta.get('descripcion') or meta.get('estado') or 'sin datos'}"
             return None
         raw = http_get(meta["datos"])
         try:
@@ -154,6 +191,7 @@ def descargar_prevision_rivas(api_key: str):
         return horas_desde_prevision(datos)
     except Exception as e:  # noqa: BLE001
         print(f"[aviso] previsión de Rivas: {e}", file=sys.stderr)
+        PREV["error"] = f"AEMET: {type(e).__name__}: {str(e)[:120]}"
         return None
 
 
@@ -425,7 +463,7 @@ def main() -> int:
 
     st = cargar_estado()
     key = os.environ.get("AEMET_API_KEY", "").strip()
-    horas = descargar_prevision_rivas(key) if key else None
+    horas = descargar_prevision_rivas(key)
     mensajes: list[dict] = []
     salud = st.setdefault("salud", {})
 
@@ -512,6 +550,7 @@ def main() -> int:
         st["heartbeat"] = ahora.isoformat()
     try:
         import panel
+        st["prevision_meta"] = dict(PREV)
         st["panel"] = panel.generar(st, horas, key, ahora, http_get)
     except Exception as e:  # noqa: BLE001
         st["panel"] = f"error: {e}"

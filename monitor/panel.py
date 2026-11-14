@@ -90,6 +90,8 @@ def generar(st: dict, horas, key: str, ahora: datetime, http_get) -> None:
         "noticias": st.get("noticias", {}).get("recientes", []),
         "salud": st.get("salud", {}),
         "prevision_rivas": _prevision(horas, ahora),
+        "prevision_fuente": st.get("prevision_meta", {}).get("fuente"),
+        "prevision_error": st.get("prevision_meta", {}).get("error"),
         "radar_aemet": radar,
         "radar_estado": estado_radar,
     }

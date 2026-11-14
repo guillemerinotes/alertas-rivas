@@ -131,6 +131,17 @@
   #radarPrev{height:420px} #radarPrev iframe{width:100%;height:100%;border:0;display:block}
   @media (max-width:720px){#radarPrev{height:380px}}
   .base-oscura{filter:invert(1) hue-rotate(200deg) brightness(.85) contrast(.9) saturate(.4)}
+  .antiguo{border-radius:16px;padding:14px 16px;margin-bottom:14px;font-weight:700;background:linear-gradient(135deg,#7a1020,#c41c2e);
+    border:1px solid #ff6b7a;box-shadow:0 10px 30px #0006;animation:pulso 1.6s infinite}
+  .antiguo .peq{color:#ffe1e4;font-weight:500}
+  .estado.dudoso{filter:grayscale(.85) brightness(.8)}
+  .prev-tira{display:flex;gap:6px;overflow-x:auto;padding:6px 16px 12px;scroll-snap-type:x proximity}
+  .ph{flex:none;width:62px;border-radius:12px;padding:8px 4px;text-align:center;background:rgba(5,9,20,.45);border:1px solid var(--linea);scroll-snap-align:start;font-size:12px}
+  .ph .h{font-weight:700;color:var(--sub)} .ph .t{font-size:16px;font-weight:800;margin:3px 0}
+  .ph .ll{height:34px;display:flex;align-items:flex-end;justify-content:center;margin:4px 0}
+  .ph .ll span{width:14px;border-radius:4px 4px 0 0;background:linear-gradient(#5fb0ff,#2f6fe0);min-height:2px}
+  .ph.n1{border-color:var(--am)} .ph.n2{border-color:var(--na)} .ph.n3{border-color:var(--ro)}
+  .ph .mm{color:#9cc0ff} .ph .rc{color:var(--sub)}
   .oculto{display:none!important}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -154,7 +165,13 @@
 <main>
   <!-- ===================== SITUACIÓN ===================== -->
   <section class="vista on" id="v-situacion">
+    <div class="antiguo oculto" id="antiguo"></div>
     <div class="estado" id="estado" data-sub="Rivas-Vaciamadrid">Cargando…</div>
+    <div class="card"><h2><i>🌦️</i>Previsión para Rivas · próximas 24 h</h2>
+      <div id="prevResumen" class="pad" style="padding-bottom:4px"><div class="vacio" style="padding:0">Cargando…</div></div>
+      <div class="prev-tira" id="prevTira"></div>
+      <div class="emb-pie" id="prevPie"></div>
+    </div>
     <div class="card"><h2><i>🛰️</i>Radar de lluvia <span class="peq" id="radarHora" style="margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600"></span></h2>
       <div class="pad" style="padding-bottom:0"><div class="seg" id="segRadar"><button data-m="ahora" class="on">Ahora · radar</button><button data-m="prev">Próximas horas · previsión</button></div></div>
       <div id="radarMapa"></div>
@@ -436,12 +453,61 @@ document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
 });
 try { const v = localStorage.getItem('riv-vista'); if (v) document.querySelector(`nav button[data-v="${v}"]`)?.click(); } catch(e) {}
 
+// ---------- datos antiguos ----------
+function datosAntiguos(texto){
+  $('antiguo').classList.toggle('oculto', !texto);
+  $('estado').classList.toggle('dudoso', !!texto);
+  if (texto) $('antiguo').innerHTML = `⚠️ ATENCIÓN: lo que ves puede no ser la situación actual<div class="peq">${esc(texto)} El vigilante puede estar parado. No te fíes del estado de abajo: consulta AEMET y SAIH Tajo directamente y avisa al coordinador.</div>`;
+}
+
+// ---------- previsión de Rivas ----------
+function pintarPrevision(d){
+  const ahora = Date.now() - 3600e3;
+  const hs = (d.prevision_rivas || []).filter(h => new Date(h.hora) >= ahora).slice(0, 24);
+  if (!hs.length) {
+    $('prevResumen').innerHTML = `<div class="vacio" style="padding:0">Previsión no disponible ahora mismo${d.prevision_error ? ' (' + esc(d.prevision_error) + ')' : ''}.</div>`;
+    $('prevTira').innerHTML = ''; $('prevPie').textContent = ''; return;
+  }
+  // Niveles orientativos con los umbrales AEMET de la zona (1 h de lluvia y rachas)
+  const nivel = h => Math.max(
+    h.lluvia >= 60 ? 3 : h.lluvia >= 30 ? 2 : h.lluvia >= 15 ? 1 : 0,
+    h.racha >= 130 ? 3 : h.racha >= 90 ? 2 : h.racha >= 70 ? 1 : 0,
+    h.temp != null ? (h.temp >= 42 || h.temp <= -12 ? 3 : h.temp >= 39 || h.temp <= -8 ? 2 : h.temp >= 36 || h.temp <= -4 ? 1 : 0) : 0);
+  const n = v => (v == null ? null : Number(v));
+  const total = hs.reduce((a,h) => a + (n(h.lluvia) || 0), 0);
+  const maxLl = hs.reduce((a,h) => (n(h.lluvia) || 0) > (n(a.lluvia) || 0) ? h : a, hs[0]);
+  const maxR = Math.max(...hs.map(h => n(h.racha) || 0));
+  const temps = hs.map(h => n(h.temp)).filter(x => x != null);
+  const torm = hs.filter(h => (n(h.tormenta) || 0) >= 30);
+  const hh = iso => new Date(iso).toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'});
+  const f1 = x => x.toFixed(1).replace('.', ',');
+  $('prevResumen').innerHTML = `<div class="peq" style="line-height:1.7">
+    🌡️ <b>${temps.length ? Math.round(Math.min(...temps)) + ' / ' + Math.round(Math.max(...temps)) + ' °C' : '—'}</b> ·
+    🌧️ <b>${f1(total)} mm</b> en 24 h${(n(maxLl.lluvia) || 0) > 0 ? ` (máx. ${f1(n(maxLl.lluvia))} mm/h a las ${hh(maxLl.hora)})` : ''} ·
+    💨 rachas hasta <b>${Math.round(maxR)} km/h</b>${torm.length ? ` · ⚡ <b>tormenta posible</b> desde las ${hh(torm[0].hora)}` : ''}</div>`;
+  const maxEsc = Math.max(5, ...hs.map(h => n(h.lluvia) || 0));
+  $('prevTira').innerHTML = hs.map(h => {
+    const ll = n(h.lluvia) || 0, nv = nivel({lluvia: ll, racha: n(h.racha) || 0, temp: n(h.temp)});
+    return `<div class="ph ${nv ? 'n' + nv : ''}" title="${hh(h.hora)}">
+      <div class="h">${new Date(h.hora).getHours()}h</div>
+      <div class="t">${h.temp != null ? Math.round(n(h.temp)) + '°' : '—'}</div>
+      <div class="ll"><span style="height:${Math.round(ll / maxEsc * 34)}px"></span></div>
+      <div class="mm">${ll ? f1(ll) : '0'} mm</div>
+      <div class="rc">${h.racha != null ? Math.round(n(h.racha)) : '—'} km/h</div>
+      ${(n(h.tormenta) || 0) >= 30 ? '<div>⚡</div>' : ''}${(n(h.nieve) || 0) > 0 ? '<div>❄️</div>' : ''}
+    </div>`;
+  }).join('');
+  $('prevPie').innerHTML = `Fuente: ${esc(d.prevision_fuente || 'AEMET')}. Cada columna es una hora: temperatura, lluvia (mm) y racha máxima (km/h). El borde de color marca horas que superarían un umbral de aviso de AEMET; es orientativo, <b>no es un aviso oficial</b>.`;
+}
+
 // ---------- situación ----------
 async function cargarDatos(){
   try{
     const d = await (await fetch(DATOS + '?t=' + Date.now(), {cache:'no-store'})).json();
     const mins = Math.round((Date.now() - new Date(d.actualizado)) / 60000);
     $('meta').textContent = `Datos de ${fmt(d.actualizado)} (hace ${mins} min)` + (mins > 40 ? ' ⚠️ antiguos' : '');
+    datosAntiguos(mins > 40 ? `Los datos no se actualizan desde hace ${mins >= 120 ? Math.round(mins/60) + ' horas' : mins + ' minutos'} (${fmt(d.actualizado)}).` : null);
+    pintarPrevision(d);
     let peor = 0;
     const av = (d.avisos || []).sort((a,b) => NIV[b.nivel]-NIV[a.nivel]);
     av.forEach(a => peor = Math.max(peor, NIV[a.nivel] || 0));
@@ -500,9 +566,9 @@ async function cargarDatos(){
         <div class="peq">Fuente: <b>${esc(n.medio)}</b> (${esc(dom)}) · ${fmt(n.fecha)}</div></div></div>`; }).join('')
       : '<div class="vacio">Sin noticias recientes sobre emergencias en Rivas.</div>';
 
-    const e = $('estado'); e.className = 'estado e' + peor;
+    const e = $('estado'); e.className = 'estado e' + peor + ($('antiguo').classList.contains('oculto') ? '' : ' dudoso');
     e.textContent = peor ? 'Alerta ' + NOM[peor].toUpperCase() : 'Sin alertas activas';
-  }catch(err){ $('meta').textContent = 'No se pudieron cargar los datos'; const e=$('estado'); if(e.textContent==='Cargando…'){ e.className='estado'; e.textContent='Sin conexión con los datos'; } }
+  }catch(err){ datosAntiguos('No se pueden cargar los datos ahora mismo (¿sin conexión?).'); $('meta').textContent = 'No se pudieron cargar los datos'; const e=$('estado'); if(e.textContent==='Cargando…'){ e.className='estado dudoso'; e.textContent='Sin conexión con los datos'; } }
 }
 cargarDatos(); setInterval(cargarDatos, 2*60*1000);
 
