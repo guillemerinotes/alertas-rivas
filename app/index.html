@@ -235,7 +235,6 @@
       <div class="card"><h2><i class="nar">🔥</i>Incendios forestales y terremotos</h2><div id="otros"><div class="vacio">Cargando…</div></div></div>
       <div class="card"><h2><i class="nar">📰</i>Noticias · NO oficiales</h2><div id="noticias"><div class="vacio">Cargando…</div></div></div>
     </div>
-    <a class="btn azul" href="https://guillemerinotes.github.io/alertas-rivas/" target="_blank" rel="noopener">Panel completo con radar y previsión ↗</a>
   </section>
 
   <!-- ===================== RECIBIR ALERTAS ===================== -->
@@ -868,6 +867,7 @@ document.querySelectorAll('#segRadar button').forEach(b => b.onclick = () => {
 });
 
 abrirRespuesta();
+{ const t = new URLSearchParams(location.search).get('tab'); const b = t && document.querySelector(`nav button[data-v="${t}"]`); if (b) b.click(); }
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 </script>

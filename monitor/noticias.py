@@ -84,6 +84,7 @@ def evaluar(xml: bytes, prev: dict, ahora) -> tuple[dict, list[dict]]:
                                           "Contrástalo con AEMET, SAIH, 112 o el Ayuntamiento.",
             "priority": 3,
             "tags": ["newspaper", "nivel-info", "evento-noticia"],
-            "click": nuevas[0]["link"] if len(nuevas) == 1 else PANEL_URL,
+            "click": PANEL_URL,
+            **({"actions": [{"action": "view", "label": "Leer la noticia", "url": nuevas[0]["link"]}]} if len(nuevas) == 1 else {}),
         })
     return estado, msgs

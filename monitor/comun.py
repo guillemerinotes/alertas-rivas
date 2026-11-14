@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Europe/Madrid")
 UA = {"User-Agent": "riv-alert/2.0 (+https://github.com/guillemerinotes/alertas-rivas)"}
-PANEL_URL = "https://guillemerinotes.github.io/alertas-rivas/"
+PANEL_URL = "https://riv-alert.vercel.app/"  # al pulsar una notificación se abre la app (pestaña Situación)
 MARCA = "RIV-Alert"
 
 # Color oficial -> número

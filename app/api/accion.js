@@ -43,7 +43,7 @@ async function respuestasDe(id) {
 const REPO = "guillemerinotes/alertas-rivas";
 const WORKFLOW = "vigilante.yml";
 const GH = "https://api.github.com";
-const PANEL = "https://guillemerinotes.github.io/alertas-rivas/";
+const PANEL = "https://riv-alert.vercel.app/";
 const NIVELES = { informativo: 0, amarillo: 1, naranja: 2, rojo: 3 };
 const PRIORIDAD = { 0: 3, 1: 3, 2: 4, 3: 5 };
 const EMOJI = { 0: "loudspeaker", 1: "yellow_circle", 2: "orange_circle", 3: "red_circle" };

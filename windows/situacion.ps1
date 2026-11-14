@@ -59,8 +59,8 @@ $tb.SetBounds(12, 12, 680, 420)
 $f.Controls.Add($tb)
 
 $b1 = New-Object System.Windows.Forms.Button
-$b1.Text = 'Abrir panel'; $b1.BackColor = 'White'; $b1.SetBounds(12, 445, 220, 50)
-$b1.Add_Click({ Start-Process $Panel })
+$b1.Text = 'Abrir RIV-Alert'; $b1.BackColor = 'White'; $b1.SetBounds(12, 445, 220, 50)
+$b1.Add_Click({ Start-Process 'https://riv-alert.vercel.app/' })
 $f.Controls.Add($b1)
 
 $b2 = New-Object System.Windows.Forms.Button

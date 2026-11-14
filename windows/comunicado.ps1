@@ -64,7 +64,7 @@ $btn.Add_Click({
         message  = "$texto`n`nComunicado manual enviado el $ahora desde RIV-Alert · Protección Civil Rivas (aviso interno, no oficial)."
         priority = $nv.p
         tags     = @($nv.tag, "nivel-$($nv.n)", 'evento-comunicado')
-        click    = 'https://guillemerinotes.github.io/alertas-rivas/'
+        click    = 'https://riv-alert.vercel.app/'
     }
     try {
         $body = [System.Text.Encoding]::UTF8.GetBytes(($msg | ConvertTo-Json -Compress))
