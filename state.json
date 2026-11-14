@@ -218,7 +218,18 @@
  },
  "embalses_flags": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
- "historial": [],
+ "historial": [
+  {
+   "nivel": "amarillo",
+   "para": [
+    "jefes"
+   ],
+   "texto": "Manzanares en Rivas-Vaciamadrid (EN RIVAS)\nNivel actual: 1.98 m, ascendente\nUmbrales oficiales CHT: amarillo 1.92 m · naranja 2.35 m · rojo 2.66 m\nEstación AR18 · SAIH Tajo (datos provisionales)",
+   "tipo": "rios",
+   "titulo": "RIV-Alert AMARILLO · Río · Manzanares en Rivas-Vaciamadrid (EN RIVAS) en umbral AMARILLO",
+   "ts": "2026-11-14T15:30:57.189265+00:00"
+  }
+ ],
  "incendios": {
   "archivos": [
    "down_20261113_peligro_c_D00.qml",
@@ -282,13 +293,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.623
+   "valor": 0.611
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -296,7 +307,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.632
+   "valor": 0.633
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -310,11 +321,11 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.963
+   "valor": 0.947
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
-   "nivel": 0,
+   "nivel": 1,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
    "tendencia": "Ascendente",
    "tramo": "rivas",
@@ -324,13 +335,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 1.869
+   "valor": 1.98
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -338,7 +349,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 559.149
+   "valor": 559.157
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -352,7 +363,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.316
+   "valor": 587.31
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -372,7 +383,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -386,7 +397,7 @@
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -394,7 +405,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.725
+   "valor": 0.724
   }
  },
  "rios_fallos": 0,
