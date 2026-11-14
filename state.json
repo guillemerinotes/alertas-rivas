@@ -16,9 +16,9 @@
    },
    {
     "capacidad": 91.0,
-    "desembalse": 0.64,
-    "desembalse_antes": 0.64,
-    "desembalse_fecha": "2026-11-14T09:30:00",
+    "desembalse": 0.65,
+    "desembalse_antes": 0.65,
+    "desembalse_fecha": "2026-11-14T10:30:00",
     "desembalse_tend": "estable",
     "nombre": "Santillana",
     "rio": "Manzanares",
@@ -26,17 +26,17 @@
     "semana_hm3": 47.0,
     "semana_pct": 51.65,
     "semana_var_hm3": -1.0,
-    "tr_fecha": "2026-11-14T09:45:00",
-    "tr_hm3": 52.24,
-    "tr_pct": 57.35,
+    "tr_fecha": "2026-11-14T11:00:00",
+    "tr_hm3": 52.28,
+    "tr_pct": 57.39,
     "tramo": "manzanares",
     "url": "https://www.embalses.net/pantano-1013-santillana.html"
    },
    {
     "capacidad": 43.0,
-    "desembalse": 0.89,
-    "desembalse_antes": 0.88,
-    "desembalse_fecha": "2026-11-14T09:30:00",
+    "desembalse": 0.88,
+    "desembalse_antes": 0.87,
+    "desembalse_fecha": "2026-11-14T10:30:00",
     "desembalse_tend": "estable",
     "nombre": "El Pardo",
     "rio": "Manzanares",
@@ -44,9 +44,9 @@
     "semana_hm3": 12.0,
     "semana_pct": 27.91,
     "semana_var_hm3": 0.0,
-    "tr_fecha": "2026-11-14T10:00:00",
-    "tr_hm3": 12.84,
-    "tr_pct": 29.87,
+    "tr_fecha": "2026-11-14T11:00:00",
+    "tr_hm3": 12.85,
+    "tr_pct": 29.89,
     "tramo": "manzanares",
     "url": "https://www.embalses.net/pantano-1045-el-pardo.html"
    },
@@ -54,7 +54,7 @@
     "capacidad": 56.0,
     "desembalse": 0.45,
     "desembalse_antes": 0.48,
-    "desembalse_fecha": "2026-11-14T09:45:00",
+    "desembalse_fecha": "2026-11-14T10:45:00",
     "desembalse_tend": "estable",
     "nombre": "El Vado",
     "rio": "Jarama",
@@ -62,9 +62,9 @@
     "semana_hm3": 11.0,
     "semana_pct": 19.64,
     "semana_var_hm3": -1.0,
-    "tr_fecha": "2026-11-14T09:30:00",
-    "tr_hm3": 13.1,
-    "tr_pct": 23.53,
+    "tr_fecha": "2026-11-14T11:00:00",
+    "tr_hm3": 13.14,
+    "tr_pct": 23.6,
     "tramo": "jarama",
     "url": "https://www.embalses.net/pantano-1203-el-vado.html"
    },
@@ -109,7 +109,7 @@
     "semana_hm3": 12.0,
     "semana_pct": 52.17,
     "semana_var_hm3": -1.0,
-    "tr_fecha": "2026-11-14T09:45:00",
+    "tr_fecha": "2026-11-14T11:15:00",
     "tr_hm3": 12.08,
     "tr_pct": 53.95,
     "tramo": "jarama",
@@ -123,9 +123,9 @@
     "semana_hm3": 271.0,
     "semana_pct": 63.62,
     "semana_var_hm3": -3.0,
-    "tr_fecha": "2026-11-14T09:45:00",
-    "tr_hm3": 272.14,
-    "tr_pct": 63.88,
+    "tr_fecha": "2026-11-14T10:45:00",
+    "tr_hm3": 272.16,
+    "tr_pct": 63.89,
     "tramo": "jarama",
     "url": "https://www.embalses.net/pantano-908-el-atazar.html"
    },
@@ -137,7 +137,7 @@
     "semana_hm3": 32.0,
     "semana_pct": 78.05,
     "semana_var_hm3": 0.0,
-    "tr_fecha": "2026-11-14T10:00:00",
+    "tr_fecha": "2026-11-14T11:00:00",
     "tr_hm3": 33.34,
     "tr_pct": 80.65,
     "tramo": "jarama",
@@ -146,8 +146,8 @@
    {
     "capacidad": 53.0,
     "desembalse": 0.97,
-    "desembalse_antes": 0.74,
-    "desembalse_fecha": "2026-11-14T09:15:00",
+    "desembalse_antes": 0.75,
+    "desembalse_fecha": "2026-11-14T10:15:00",
     "desembalse_tend": "estable",
     "nombre": "Beleña",
     "rio": "Sorbe → Henares",
@@ -155,17 +155,17 @@
     "semana_hm3": 16.0,
     "semana_pct": 30.19,
     "semana_var_hm3": -1.0,
-    "tr_fecha": "2026-11-14T09:45:00",
-    "tr_hm3": 16.84,
-    "tr_pct": 31.65,
+    "tr_fecha": "2026-11-14T10:45:00",
+    "tr_hm3": 16.87,
+    "tr_pct": 31.71,
     "tramo": "henares",
     "url": "https://www.embalses.net/pantano-920-belena.html"
    },
    {
     "capacidad": 1.0,
-    "desembalse": 9.26,
-    "desembalse_antes": 7.67,
-    "desembalse_fecha": "2026-11-14T09:45:00",
+    "desembalse": 9.49,
+    "desembalse_antes": 7.59,
+    "desembalse_fecha": "2026-11-14T10:45:00",
     "desembalse_tend": "sube",
     "nombre": "Pozo de los Ramos",
     "rio": "Sorbe → Henares",
@@ -180,7 +180,7 @@
     "capacidad": 180.0,
     "desembalse": 0.18,
     "desembalse_antes": 0.18,
-    "desembalse_fecha": "2026-11-14T09:15:00",
+    "desembalse_fecha": "2026-11-14T10:15:00",
     "desembalse_tend": "estable",
     "nombre": "Alcorlo",
     "rio": "Bornova → Henares",
@@ -188,9 +188,9 @@
     "semana_hm3": 96.0,
     "semana_pct": 53.33,
     "semana_var_hm3": 0.0,
-    "tr_fecha": "2026-11-14T09:30:00",
-    "tr_hm3": 97.18,
-    "tr_pct": 53.99,
+    "tr_fecha": "2026-11-14T10:30:00",
+    "tr_hm3": 97.2,
+    "tr_pct": 54.0,
     "tramo": "henares",
     "url": "https://www.embalses.net/pantano-887-alcorlo.html"
    },
@@ -198,7 +198,7 @@
     "capacidad": 31.0,
     "desembalse": 0.13,
     "desembalse_antes": 0.13,
-    "desembalse_fecha": "2026-11-14T09:30:00",
+    "desembalse_fecha": "2026-11-14T10:30:00",
     "desembalse_tend": "estable",
     "nombre": "Pálmaces",
     "rio": "Cañamares → Henares",
@@ -206,7 +206,7 @@
     "semana_hm3": 19.0,
     "semana_pct": 61.29,
     "semana_var_hm3": 0.0,
-    "tr_fecha": "2026-11-14T10:00:00",
+    "tr_fecha": "2026-11-14T11:00:00",
     "tr_hm3": 19.29,
     "tr_pct": 61.49,
     "tramo": "henares",
@@ -214,7 +214,7 @@
    }
   ],
   "fuente": "embalses.net",
-  "t": 1794647449.2530205
+  "t": 1794651651.8955705
  },
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
  "incendios": {
@@ -318,7 +318,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.474
+   "valor": 0.476
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -332,13 +332,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.677
+   "valor": 558.683
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -346,7 +346,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.267
+   "valor": 587.272
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -366,7 +366,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -388,7 +388,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.652
+   "valor": 0.665
   }
  },
  "rios_fallos": 0,
