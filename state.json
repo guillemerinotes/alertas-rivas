@@ -285,10 +285,10 @@
    "CBMiugFBVV95cUxPRjhqMVJIXzZQRzlwX0x5UzZMZ3BYRkE3by1DblQ1NWlYdUo4aVFpa2hxOGNBdmtidDZYZmJVU0VEeGlzSU1Qd19tQ2ctMkRZTTFVcEVPOUtCWkx1aEh4cXpxMU1xTVNqdGxaVmFwX0pQcnRLR1FyeDBldGh1Y1FlLVIxR1lsY2YxaDBqQm5IX25VcXJ2WWIyX2QtVDJqNXBJblpocXZsRkJDMjlaa29VbmVuVURhRWFPREHSAb8BQVVfeXFMTndFLUVUUXQzNkd2cjVMZkJrZEJfWDFaSTZxb3hfQ2RQV0dvV2x0TEVQWVJsX0tCZHRLZ3pNc1lCYk42TFRkSVhiTG9WT2ZMVy1WTjNLQXVXNWswWEFlUWstelNXa2l3TFdKZEREaEZUYlFlZlVidmozdVY1V0JNanRiN0dtWlpDN1RnbVVRTl9yNjdfbXd2dmZiaE5mcjZqeE94NzZYSWNJbklibVFTWVdndDNwSFRhaUxoNHMybkE": "2026-11-12T10:03:52+00:00"
   }
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 0 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests · Open-Meteo: HTTP Error 429: Too Many Requests",
-  "fuente": null
+  "error": "AEMET: HTTPError: HTTP Error 500: Internal Server Error",
+  "fuente": "Open-Meteo (modelos, no oficial)"
  },
  "rios": {
   "AR13": {
@@ -303,13 +303,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.586
+   "valor": 0.589
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -317,7 +317,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.672
+   "valor": 0.673
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -331,7 +331,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.645
+   "valor": 0.643
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -345,7 +345,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 1.282
+   "valor": 1.218
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -359,7 +359,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.788
+   "valor": 558.781
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -373,7 +373,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.385
+   "valor": 587.382
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -401,7 +401,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.622
+   "valor": 0.623
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -415,7 +415,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.685
+   "valor": 0.695
   }
  },
  "rios_fallos": 0,
