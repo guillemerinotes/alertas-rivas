@@ -266,8 +266,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
-  "fuente": "Open-Meteo (modelos, no oficial)"
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
@@ -282,13 +282,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.571
+   "valor": 0.577
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -296,7 +296,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.632
+   "valor": 0.63
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -310,7 +310,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.756
+   "valor": 0.781
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -324,7 +324,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.543
+   "valor": 0.596
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -338,7 +338,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 559.076
+   "valor": 559.281
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -352,7 +352,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.525
+   "valor": 587.624
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -380,7 +380,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.628
+   "valor": 0.625
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -394,7 +394,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.716
+   "valor": 0.72
   }
  },
  "rios_fallos": 0,
