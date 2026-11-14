@@ -296,7 +296,16 @@
 
     <div class="card"><h2><i>🏞️</i>Embalses aguas arriba</h2>
       <div class="pad">
-        <p>Embalses cuyas aguas pueden llegar a Rivas. Datos de <b>embalses.net</b>, que los recopila del Ministerio (boletín semanal) y del SAIH Tajo (tiempo real). <b>No es fuente oficial</b> y la propia web avisa de que el tiempo real no está homogeneizado ni confirmado. <b>Solo informativo: no genera alertas.</b> Se actualiza una vez por hora.</p>
+        <p>Embalses cuyas aguas pueden llegar a Rivas. Datos de <b>embalses.net</b>, que los recopila del Ministerio (boletín semanal) y del SAIH Tajo (tiempo real). <b>No es fuente oficial</b> y la propia web avisa de que el tiempo real no está homogeneizado ni confirmado. Se actualiza una vez por hora.</p>
+        <p><b>Avisos informativos</b> (sin color ni alarma; criterio propio de RIV-Alert, no oficial, sacado de las crecidas de marzo de 2025 y febrero de 2026). Por defecto los reciben los jefes:</p>
+        <table class="tabla-v">
+          <tr><th>Aviso</th><th>Cuándo</th></tr>
+          <tr><td>El Pardo (Manzanares)</td><td>Suelta más de <b>10 m³/s</b> (unas 10 veces lo normal) y otro aviso a partir de <b>30 m³/s</b> (en marzo de 2025, con 30 m³/s, Rivas se preparaba para desbordamientos).</td></tr>
+          <tr><td>Jarama</td><td>El Vado + El Atazar + Pedrezuela sueltan más de <b>50 m³/s</b> en total.</td></tr>
+          <tr><td>Henares</td><td>Beleña + Alcorlo + Pálmaces sueltan más de <b>30 m³/s</b> en total.</td></tr>
+          <tr><td>Llenado</td><td>Un embalse supera el <b>90 %</b> mientras AEMET tiene aviso por lluvia o tormenta en Rivas.</td></tr>
+        </table>
+        <p class="peq">Se avisa otra vez cuando vuelve a la normalidad (el caudal baja del 80 % del umbral o el llenado baja 2 puntos). El Atazar no publica cuánto suelta en embalses.net: en la suma del Jarama solo cuenta si hay dato.</p>
         <ul class="lista-v">
           <li><b>Manzanares:</b> Navacerrada, Santillana y <b>El Pardo</b>, el último antes de Madrid y el más directo para el Manzanares en Rivas.</li>
           <li><b>Jarama:</b> El Vado; los del Lozoya (Pinilla, Riosequillo, Puentes Viejas, El Villar y El Atazar) y Pedrezuela en el Guadalix.</li>
@@ -414,6 +423,7 @@
           <label>Tipos</label>
           <label class="check"><input type="checkbox" data-t="aemet"> Avisos de AEMET (zona de Rivas)</label>
           <label class="check"><input type="checkbox" data-t="rios"> Ríos (SAIH Tajo)</label>
+          <label class="check"><input type="checkbox" data-t="embalses"> Embalses: desembalses y llenado (informativo, no oficial)</label>
           <label class="check"><input type="checkbox" data-t="incendios"> Riesgo de incendio forestal</label>
           <label class="check"><input type="checkbox" data-t="sismos"> Terremotos (IGN)</label>
           <label class="check"><input type="checkbox" data-t="noticias"> Noticias de medios (no oficiales)</label>
@@ -701,6 +711,7 @@ function iniciarRadar(){
     attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · RainViewer'}).addTo(radar);
   L.circle(RIVAS, {radius:10000, color:'#F07D00', weight:2, fill:false}).addTo(radar);
   L.circleMarker(RIVAS, {radius:6, color:'#fff', weight:2, fillColor:'#F07D00', fillOpacity:1}).addTo(radar).bindTooltip('Rivas-Vaciamadrid');
+  try { new ResizeObserver(() => radar.invalidateSize()).observe($('radarMapa')); } catch(e) {}
   cargarRadar().then(() => { $('radarPlay').textContent = '❚❚'; rPaso(); });
   setInterval(cargarRadar, 10*60*1000);
 }

@@ -139,3 +139,76 @@ def descargar(http_get, previo: dict | None = None, ahora_ts: float | None = Non
     if errores == len(EMBALSES):
         raise RuntimeError("no se pudo leer ningún embalse")
     return {"t": ahora_ts, "embalses": lista, "fuente": "embalses.net", "cuenca_url": CUENCA_URL}
+
+
+# ---------------------------------------------------------------------------
+# Avisos informativos (criterio propio de RIV-Alert, NO oficial).
+# Umbrales sacados de las crecidas de marzo de 2025 y febrero de 2026.
+# Se avisa al pasar el umbral y otra vez cuando vuelve a bajar (con margen).
+# ---------------------------------------------------------------------------
+SUMAS = [
+    # clave, texto, embalses que suman, umbral m³/s
+    ("pardo10", "El Pardo (Manzanares)", ["El Pardo"], 10.0),
+    ("pardo30", "El Pardo (Manzanares)", ["El Pardo"], 30.0),
+    ("jarama50", "Jarama (El Vado + El Atazar + Pedrezuela)", ["El Vado", "El Atazar", "Pedrezuela"], 50.0),
+    ("henares30", "Henares (Beleña + Alcorlo + Pálmaces)", ["Beleña", "Alcorlo", "Pálmaces"], 30.0),
+]
+LLENO = 90.0
+MARGEN = 0.8   # para dar por terminado: bajar del 80 % del umbral (caudal) o 2 puntos (llenado)
+PIE = ("Criterio propio de RIV-Alert (no oficial), con datos de embalses.net. "
+       "Lo que manda es el nivel de los ríos y los avisos oficiales de AEMET y la Confederación.")
+
+
+def _f(x):
+    return f"{x:.1f}".replace(".", ",")
+
+
+def _msg(titulo: str, cuerpo: str, fin: bool) -> dict:
+    return {"title": f"RIV-Alert · EMBALSES · {titulo}",
+            "message": cuerpo + "\n\n" + PIE + "\n\nRIV-Alert · aviso interno PC Rivas (no oficial). Confirma por canales oficiales.",
+            "priority": 2 if fin else 3,
+            "tags": ["droplet", "nivel-info", "evento-embalse"]}
+
+
+def evaluar(datos: dict, flags: dict, aviso_lluvia: bool) -> tuple[dict, list[dict]]:
+    """Devuelve (flags nuevos, mensajes). flags guarda qué umbrales están superados."""
+    flags = dict(flags or {})
+    msgs: list[dict] = []
+    por_nombre = {e["nombre"]: e for e in (datos or {}).get("embalses", [])}
+    if not por_nombre:
+        return flags, msgs
+
+    for clave, texto, nombres, umbral in SUMAS:
+        vals = [por_nombre.get(n, {}).get("desembalse") for n in nombres]
+        if all(v is None for v in vals):
+            continue
+        total = sum(v for v in vals if v is not None)
+        detalle = ", ".join(f"{n} {_f(v)}" for n, v in zip(nombres, vals) if v is not None) if len(nombres) > 1 else ""
+        activo = flags.get(clave, False)
+        if not activo and total > umbral:
+            flags[clave] = True
+            msgs.append(_msg(f"{texto} suelta {_f(total)} m³/s",
+                             f"{texto}: caudal desembalsado {_f(total)} m³/s, por encima de {_f(umbral)} m³/s."
+                             + (f"\nDetalle (m³/s): {detalle}." if detalle else "")
+                             + "\nPuede subir el río aguas abajo hacia Rivas: vigila la tarjeta de Ríos.", False))
+        elif activo and total < umbral * MARGEN:
+            flags[clave] = False
+            msgs.append(_msg(f"{texto} baja a {_f(total)} m³/s",
+                             f"{texto}: el caudal desembalsado ha bajado a {_f(total)} m³/s (umbral {_f(umbral)} m³/s).", True))
+
+    for nombre, e in por_nombre.items():
+        pct = e.get("tr_pct") if e.get("tr_pct") is not None else e.get("semana_pct")
+        if pct is None:
+            continue
+        clave = "lleno:" + nombre
+        activo = flags.get(clave, False)
+        if not activo and pct >= LLENO and aviso_lluvia:
+            flags[clave] = True
+            msgs.append(_msg(f"{nombre} al {_f(pct)} % con aviso de lluvia",
+                             f"El embalse de {nombre} ({e.get('rio', '')}) está al {_f(pct)} % y AEMET tiene aviso por lluvia o tormenta "
+                             "en la zona de Rivas. Tiene poco margen para retener agua: puede tener que soltar más.", False))
+        elif activo and (pct < LLENO - 2 or not aviso_lluvia):
+            flags[clave] = False
+            msgs.append(_msg(f"{nombre} sin riesgo de llenado",
+                             f"{nombre}: {_f(pct)} %{' y ya no hay aviso de lluvia' if not aviso_lluvia else ''}.", True))
+    return flags, msgs

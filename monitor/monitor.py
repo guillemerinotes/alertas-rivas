@@ -360,7 +360,7 @@ def cargar_grupos() -> list:
 def tipo_de(m: dict) -> str:
     tags = set(m.get("tags", []))
     for t, clave in (("evento-comunicado", "comunicado"), ("evento-resumen", "resumen"), ("evento-noticia", "noticias"),
-                     ("evento-rio", "rios"), ("evento-sismo", "sismos"), ("evento-incendio", "incendios"),
+                     ("evento-rio", "rios"), ("evento-embalse", "embalses"), ("evento-sismo", "sismos"), ("evento-incendio", "incendios"),
                      ("evento-sistema", "sistema"), ("evento-prueba", "prueba")):
         if t in tags:
             return clave
@@ -374,7 +374,7 @@ def para_grupo(m: dict, cfg: dict) -> bool:
     if tipo in ("sistema", "prueba"):
         return False
     tipos = cfg.get("tipos", {})
-    if tipo in ("resumen", "noticias"):
+    if tipo in ("resumen", "noticias", "embalses"):
         return bool(tipos.get(tipo))
     if not tipos.get(tipo, True):
         return False
@@ -521,6 +521,10 @@ def main() -> int:
     def f_embalses():
         import embalses
         st["embalses"] = embalses.descargar(http_get, st.get("embalses"))
+        lluvia = any(re.search(r"lluvi|precip|tormenta", str(a.get("fenomeno", "")), re.I)
+                     for a in st.get("avisos", {}).values())
+        st["embalses_flags"], m_emb = embalses.evaluar(st["embalses"], st.get("embalses_flags", {}), lluvia)
+        mensajes.extend(m_emb)
 
     fuente("Embalses (embalses.net)", f_embalses)
 

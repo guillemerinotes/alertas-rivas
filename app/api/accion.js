@@ -70,7 +70,7 @@ function normalizar(d) {
   }
   return grupos;
 }
-const TIPOS = ["aemet", "rios", "incendios", "sismos", "noticias", "fin", "resumen"];
+const TIPOS = ["aemet", "rios", "embalses", "incendios", "sismos", "noticias", "fin", "resumen"];
 
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 

@@ -250,5 +250,36 @@ class TestEmbalses(unittest.TestCase):
         self.assertIs(r, previo)
         self.assertEqual(llamadas, [])
 
+
+class TestAvisosEmbalses(unittest.TestCase):
+    def test_umbral_y_fin(self):
+        import embalses
+        d = {"embalses": [{"nombre": "El Pardo", "rio": "Manzanares", "desembalse": 12.0, "tr_pct": 50},
+                          {"nombre": "El Vado", "desembalse": 30.0}, {"nombre": "Pedrezuela", "desembalse": 25.0}]}
+        f, m = embalses.evaluar(d, {}, False)
+        self.assertTrue(f["pardo10"] and f["jarama50"])
+        self.assertFalse(f.get("pardo30", False))
+        self.assertEqual(len(m), 2)
+        self.assertTrue(all("evento-embalse" in x["tags"] and "nivel-info" in x["tags"] for x in m))
+        f2, m2 = embalses.evaluar(d, f, False)          # sin cambios: no repite
+        self.assertEqual(m2, [])
+        d["embalses"][0]["desembalse"] = 7.0            # 7 < 8 (80 % de 10): fin
+        f3, m3 = embalses.evaluar(d, f2, False)
+        self.assertFalse(f3["pardo10"])
+        self.assertEqual(m3[0]["priority"], 2)
+
+    def test_lleno_solo_con_aviso_de_lluvia(self):
+        import embalses
+        d = {"embalses": [{"nombre": "Pedrezuela", "rio": "Guadalix", "tr_pct": 93.0}]}
+        self.assertEqual(embalses.evaluar(d, {}, False)[1], [])
+        f, m = embalses.evaluar(d, {}, True)
+        self.assertTrue(f["lleno:Pedrezuela"])
+        self.assertEqual(len(m), 1)
+
+    def test_grupo_embalses(self):
+        msg = {"title": "x", "tags": ["droplet", "nivel-info", "evento-embalse"]}
+        self.assertTrue(m.para_grupo(msg, {"tipos": {"embalses": True}}))
+        self.assertFalse(m.para_grupo(msg, {"tipos": {}}))
+
 if __name__ == "__main__":
     unittest.main()

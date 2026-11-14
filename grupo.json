@@ -14,7 +14,8 @@
         "sismos": true,
         "noticias": true,
         "fin": true,
-        "resumen": true
+        "resumen": true,
+        "embalses": true
       }
     },
     "voluntarios": {
@@ -31,7 +32,8 @@
         "sismos": true,
         "noticias": false,
         "fin": true,
-        "resumen": true
+        "resumen": true,
+        "embalses": false
       }
     }
   }
