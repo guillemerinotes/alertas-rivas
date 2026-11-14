@@ -262,7 +262,7 @@
    "CBMiugFBVV95cUxPRjhqMVJIXzZQRzlwX0x5UzZMZ3BYRkE3by1DblQ1NWlYdUo4aVFpa2hxOGNBdmtidDZYZmJVU0VEeGlzSU1Qd19tQ2ctMkRZTTFVcEVPOUtCWkx1aEh4cXpxMU1xTVNqdGxaVmFwX0pQcnRLR1FyeDBldGh1Y1FlLVIxR1lsY2YxaDBqQm5IX25VcXJ2WWIyX2QtVDJqNXBJblpocXZsRkJDMjlaa29VbmVuVURhRWFPREHSAb8BQVVfeXFMTndFLUVUUXQzNkd2cjVMZkJrZEJfWDFaSTZxb3hfQ2RQV0dvV2x0TEVQWVJsX0tCZHRLZ3pNc1lCYk42TFRkSVhiTG9WT2ZMVy1WTjNLQXVXNWswWEFlUWstelNXa2l3TFdKZEREaEZUYlFlZlVidmozdVY1V0JNanRiN0dtWlpDN1RnbVVRTl9yNjdfbXd2dmZiaE5mcjZqeE94NzZYSWNJbklibVFTWVdndDNwSFRhaUxoNHMybkE": "2026-11-12T10:03:52+00:00"
   }
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 0 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
@@ -282,7 +282,7 @@
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -290,13 +290,13 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.632
+   "valor": 0.633
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -304,7 +304,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.56
+   "valor": 0.55
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -318,7 +318,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.534
+   "valor": 0.53
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -332,13 +332,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.685
+   "valor": 558.683
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -366,7 +366,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -374,13 +374,13 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.621
+   "valor": 0.62
   },
   "R061": {
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -388,7 +388,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.676
+   "valor": 0.684
   }
  },
  "rios_fallos": 0,
