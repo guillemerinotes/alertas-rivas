@@ -28,12 +28,12 @@
       "tipos": {
         "aemet": false,
         "rios": false,
+        "embalses": false,
         "incendios": false,
-        "sismos": true,
+        "sismos": false,
         "noticias": false,
-        "fin": true,
-        "resumen": true,
-        "embalses": false
+        "fin": false,
+        "resumen": false
       }
     }
   }
