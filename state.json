@@ -286,7 +286,7 @@
    "desc": "Henares en Espinillo (Alcalá)",
    "nivel": 0,
    "nombre": "HENARES EN ESPINILLO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.3,
@@ -300,7 +300,7 @@
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -308,7 +308,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.582
+   "valor": 0.578
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -336,7 +336,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.626
+   "valor": 0.636
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -364,13 +364,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.27
+   "valor": 587.267
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -378,13 +378,13 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.25
+   "valor": 0.24
   },
   "R051": {
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -392,7 +392,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.596
+   "valor": 0.595
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -406,7 +406,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.636
+   "valor": 0.638
   }
  },
  "rios_fallos": 0,
