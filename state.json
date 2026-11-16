@@ -336,13 +336,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.581
+   "valor": 0.597
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     559.55,
