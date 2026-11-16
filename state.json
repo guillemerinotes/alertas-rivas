@@ -242,29 +242,29 @@
  ],
  "incendios": {
   "archivos": [
-   "down_20261116_peligro_c_D00.qml",
-   "down_20261116_peligro_c_D00.sld",
-   "down_20261116_peligro_c_D00.tif",
-   "down_20261116_peligro_c_D01.qml",
-   "down_20261116_peligro_c_D01.sld",
-   "down_20261116_peligro_c_D01.tif",
-   "down_20261116_peligro_c_D02.qml",
-   "down_20261116_peligro_c_D02.sld",
-   "down_20261116_peligro_c_D02.tif",
-   "down_20261116_peligro_c_D03.qml",
-   "down_20261116_peligro_c_D03.sld",
-   "down_20261116_peligro_c_D03.tif"
+   "down_20261115_peligro_c_D00.qml",
+   "down_20261115_peligro_c_D00.sld",
+   "down_20261115_peligro_c_D00.tif",
+   "down_20261115_peligro_c_D01.qml",
+   "down_20261115_peligro_c_D01.sld",
+   "down_20261115_peligro_c_D01.tif",
+   "down_20261115_peligro_c_D02.qml",
+   "down_20261115_peligro_c_D02.sld",
+   "down_20261115_peligro_c_D02.tif",
+   "down_20261115_peligro_c_D03.qml",
+   "down_20261115_peligro_c_D03.sld",
+   "down_20261115_peligro_c_D03.tif"
   ],
   "clase": 1,
   "dias": {
+   "2026-11-15": "bajo",
    "2026-11-16": "bajo",
    "2026-11-17": "bajo",
    "2026-11-18": "bajo",
    "2026-11-19": "bajo",
    "2026-11-20": "bajo",
    "2026-11-21": "bajo",
-   "2026-11-22": "bajo",
-   "2026-11-23": "bajo"
+   "2026-11-22": "bajo"
   },
   "fecha": "2026-11-16",
   "hoy": "bajo",
@@ -300,7 +300,7 @@
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -336,7 +336,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.63
+   "valor": 0.623
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -356,7 +356,7 @@
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -364,7 +364,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.275
+   "valor": 587.273
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -406,7 +406,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.649
+   "valor": 0.657
   }
  },
  "rios_fallos": 0,
