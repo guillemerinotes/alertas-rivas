@@ -294,10 +294,10 @@
   "recientes": [],
   "vistas": {}
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 35 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 0 h",
  "prevision_meta": {
-  "error": null,
-  "fuente": "AEMET (oficial)"
+  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests · Open-Meteo: <urlopen error _ssl.c:994: The handshake operation timed out>",
+  "fuente": null
  },
  "rios": {
   "AR13": {
