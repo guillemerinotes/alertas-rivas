@@ -4,20 +4,17 @@
   "cuenca_url": "https://www.embalses.net/cuenca-3-tajo.html",
   "embalses": [
    {
-    "capacidad": 11.0,
     "nombre": "Navacerrada",
     "rio": "Navacerrada → Manzanares",
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 4.0,
     "semana_pct": 36.36,
-    "semana_var_hm3": 0.0,
     "tramo": "manzanares",
     "url": "https://www.embalses.net/pantano-1026-navacerrada.html"
    },
    {
-    "capacidad": 91.0,
     "desembalse": 0.65,
-    "desembalse_antes": 0.65,
+    "desembalse_antes": 0.64,
     "desembalse_fecha": "2026-11-17T07:30:00",
     "desembalse_tend": "estable",
     "nombre": "Santillana",
@@ -25,7 +22,6 @@
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 47.0,
     "semana_pct": 51.65,
-    "semana_var_hm3": -1.0,
     "tr_fecha": "2026-11-17T07:45:00",
     "tr_hm3": 53.35,
     "tr_pct": 58.57,
@@ -33,9 +29,8 @@
     "url": "https://www.embalses.net/pantano-1013-santillana.html"
    },
    {
-    "capacidad": 43.0,
     "desembalse": 0.9,
-    "desembalse_antes": 0.98,
+    "desembalse_antes": 0.9,
     "desembalse_fecha": "2026-11-17T07:45:00",
     "desembalse_tend": "estable",
     "nombre": "El Pardo",
@@ -43,7 +38,6 @@
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 12.0,
     "semana_pct": 27.91,
-    "semana_var_hm3": 0.0,
     "tr_fecha": "2026-11-17T08:00:00",
     "tr_hm3": 12.96,
     "tr_pct": 30.15,
@@ -51,9 +45,8 @@
     "url": "https://www.embalses.net/pantano-1045-el-pardo.html"
    },
    {
-    "capacidad": 56.0,
     "desembalse": 0.46,
-    "desembalse_antes": 0.46,
+    "desembalse_antes": 0.45,
     "desembalse_fecha": "2026-11-17T07:45:00",
     "desembalse_tend": "estable",
     "nombre": "El Vado",
@@ -61,7 +54,6 @@
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 11.0,
     "semana_pct": 19.64,
-    "semana_var_hm3": -1.0,
     "tr_fecha": "2026-11-17T08:00:00",
     "tr_hm3": 13.93,
     "tr_pct": 25.02,
@@ -69,46 +61,38 @@
     "url": "https://www.embalses.net/pantano-1203-el-vado.html"
    },
    {
-    "capacidad": 38.0,
     "nombre": "Pinilla",
     "rio": "Lozoya → Jarama",
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 15.0,
     "semana_pct": 39.47,
-    "semana_var_hm3": 0.0,
     "tramo": "jarama",
     "url": "https://www.embalses.net/pantano-1057-pinilla.html"
    },
    {
-    "capacidad": 50.0,
     "nombre": "Riosequillo",
     "rio": "Lozoya → Jarama",
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 29.0,
     "semana_pct": 58.0,
-    "semana_var_hm3": -1.0,
     "tramo": "jarama",
     "url": "https://www.embalses.net/pantano-1072-riosequillo.html"
    },
    {
-    "capacidad": 53.0,
     "nombre": "Puentes Viejas",
     "rio": "Lozoya → Jarama",
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 32.0,
     "semana_pct": 60.38,
-    "semana_var_hm3": 1.0,
     "tramo": "jarama",
     "url": "https://www.embalses.net/pantano-1067-puentes-viejas.html"
    },
    {
-    "capacidad": 23.0,
     "nombre": "El Villar",
     "rio": "Lozoya → Jarama",
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 12.0,
     "semana_pct": 52.17,
-    "semana_var_hm3": -1.0,
     "tr_fecha": "2026-11-17T07:45:00",
     "tr_hm3": 11.97,
     "tr_pct": 53.46,
@@ -116,13 +100,11 @@
     "url": "https://www.embalses.net/pantano-1219-el-villar.html"
    },
    {
-    "capacidad": 426.0,
     "nombre": "El Atazar",
     "rio": "Lozoya → Jarama",
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 271.0,
     "semana_pct": 63.62,
-    "semana_var_hm3": -3.0,
     "tr_fecha": "2026-11-17T07:45:00",
     "tr_hm3": 271.7,
     "tr_pct": 63.78,
@@ -130,13 +112,11 @@
     "url": "https://www.embalses.net/pantano-908-el-atazar.html"
    },
    {
-    "capacidad": 41.0,
     "nombre": "Pedrezuela",
     "rio": "Guadalix → Jarama",
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 32.0,
     "semana_pct": 78.05,
-    "semana_var_hm3": 0.0,
     "tr_fecha": "2026-11-17T08:00:00",
     "tr_hm3": 33.78,
     "tr_pct": 81.71,
@@ -144,9 +124,8 @@
     "url": "https://www.embalses.net/pantano-1046-pedrezuela.html"
    },
    {
-    "capacidad": 53.0,
     "desembalse": 0.82,
-    "desembalse_antes": 0.49,
+    "desembalse_antes": 0.96,
     "desembalse_fecha": "2026-11-17T07:15:00",
     "desembalse_tend": "estable",
     "nombre": "Beleña",
@@ -154,7 +133,6 @@
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 16.0,
     "semana_pct": 30.19,
-    "semana_var_hm3": -1.0,
     "tr_fecha": "2026-11-17T07:45:00",
     "tr_hm3": 17.8,
     "tr_pct": 33.46,
@@ -162,22 +140,16 @@
     "url": "https://www.embalses.net/pantano-920-belena.html"
    },
    {
-    "capacidad": 1.0,
     "desembalse": 4.5,
-    "desembalse_antes": 5.82,
+    "desembalse_antes": 8.36,
     "desembalse_fecha": "2026-11-17T07:45:00",
     "desembalse_tend": "baja",
     "nombre": "Pozo de los Ramos",
     "rio": "Sorbe → Henares",
-    "semana_fecha": "2026-11-09T00:00:00",
-    "semana_hm3": 0.0,
-    "semana_pct": 0.0,
-    "semana_var_hm3": 0.0,
     "tramo": "henares",
     "url": "https://www.embalses.net/pantano-1065-pozo-de-los-ramos.html"
    },
    {
-    "capacidad": 180.0,
     "desembalse": 0.18,
     "desembalse_antes": 0.18,
     "desembalse_fecha": "2026-11-17T07:15:00",
@@ -187,7 +159,6 @@
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 96.0,
     "semana_pct": 53.33,
-    "semana_var_hm3": 0.0,
     "tr_fecha": "2026-11-17T07:30:00",
     "tr_hm3": 97.64,
     "tr_pct": 54.25,
@@ -195,7 +166,6 @@
     "url": "https://www.embalses.net/pantano-887-alcorlo.html"
    },
    {
-    "capacidad": 31.0,
     "desembalse": 0.13,
     "desembalse_antes": 0.13,
     "desembalse_fecha": "2026-11-17T07:45:00",
@@ -205,7 +175,6 @@
     "semana_fecha": "2026-11-09T00:00:00",
     "semana_hm3": 19.0,
     "semana_pct": 61.29,
-    "semana_var_hm3": 0.0,
     "tr_fecha": "2026-11-17T08:00:00",
     "tr_hm3": 18.91,
     "tr_pct": 60.28,
@@ -214,7 +183,7 @@
    }
   ],
   "fuente": "embalses.net",
-  "t": 1794916247.5084012
+  "t": 1794919847.6364005
  },
  "embalses_flags": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
@@ -308,8 +277,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
-  "fuente": "Open-Meteo (modelos, no oficial)"
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
@@ -324,7 +293,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.472
+   "valor": 0.469
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -366,7 +335,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.61
+   "valor": 0.619
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -380,7 +349,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.643
+   "valor": 558.645
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -394,7 +363,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.249
+   "valor": 587.251
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -436,7 +405,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.649
+   "valor": 0.651
   }
  },
  "rios_fallos": 0,
