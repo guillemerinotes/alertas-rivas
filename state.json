@@ -300,7 +300,7 @@
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -308,13 +308,13 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.577
+   "valor": 0.578
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -322,13 +322,13 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.513
+   "valor": 0.512
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -336,7 +336,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.647
+   "valor": 0.646
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -350,13 +350,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.632
+   "valor": 558.63
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -364,7 +364,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.263
+   "valor": 587.261
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -406,7 +406,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.68
+   "valor": 0.676
   }
  },
  "rios_fallos": 0,
