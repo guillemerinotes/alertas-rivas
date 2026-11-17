@@ -312,13 +312,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.472
+   "valor": 0.469
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -346,7 +346,7 @@
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -354,7 +354,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.598
+   "valor": 0.593
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -368,7 +368,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.602
+   "valor": 558.604
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -416,7 +416,7 @@
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -424,7 +424,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.691
+   "valor": 0.695
   }
  },
  "rios_fallos": 0,
@@ -433,7 +433,8 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 0,
+  "Noticias": 1,
+  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
   "SAIH Tajo": 0
  },
  "sismos": {},
