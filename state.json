@@ -375,13 +375,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.584
+   "valor": 0.558
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -389,7 +389,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.602
+   "valor": 558.606
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -423,7 +423,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -445,7 +445,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.684
+   "valor": 0.678
   }
  },
  "rios_fallos": 0,
@@ -454,7 +454,8 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 0,
+  "Noticias": 1,
+  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
   "SAIH Tajo": 0
  },
  "sismos": {},
