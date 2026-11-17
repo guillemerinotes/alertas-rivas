@@ -307,7 +307,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.564
+   "valor": 0.562
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -327,7 +327,7 @@
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -349,7 +349,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.632
+   "valor": 558.63
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -405,7 +405,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.677
+   "valor": 0.668
   }
  },
  "rios_fallos": 0,
