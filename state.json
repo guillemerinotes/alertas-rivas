@@ -246,6 +246,16 @@
    "tipo": "sistema",
    "titulo": "RIV-Alert · No puedo leer Noticias",
    "ts": "2026-11-17T05:01:10.356356+00:00"
+  },
+  {
+   "nivel": "normalidad",
+   "para": [
+    "jefes"
+   ],
+   "texto": "La fuente vuelve a funcionar.",
+   "tipo": "aemet",
+   "titulo": "RIV-Alert · Noticias vuelve a responder",
+   "ts": "2026-11-17T05:10:43.449842+00:00"
   }
  ],
  "incendios": {
@@ -423,8 +433,7 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 3,
-  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
+  "Noticias": 0,
   "SAIH Tajo": 0
  },
  "sismos": {},
