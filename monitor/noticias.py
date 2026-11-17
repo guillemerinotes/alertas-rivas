@@ -15,15 +15,30 @@ from email.utils import parsedate_to_datetime
 
 from comun import PANEL_URL
 
-CONSULTA = ('"Rivas" (inundación OR desbordamiento OR crecida OR aviso OR alerta OR AEMET OR Manzanares OR Jarama '
+CONSULTA = ('("Rivas-Vaciamadrid" OR "Rivas Vaciamadrid" OR "en Rivas" OR "de Rivas" OR "Ayuntamiento de Rivas") '
+            '(inundación OR desbordamiento OR crecida OR aviso OR alerta OR AEMET OR Manzanares OR Jarama '
             'OR incendio OR terremoto OR temporal OR borrasca OR tormenta OR nevada OR 112 OR desalojo OR emergencia)')
 URL = ("https://news.google.com/rss/search?q=" + urllib.parse.quote(CONSULTA + " when:2d")
        + "&hl=es&gl=ES&ceid=ES:es")
-# El titular debe hablar de Rivas Y de alguna emergencia (evita noticias que solo mencionan Rivas)
-RE_RIVAS = re.compile(r"\brivas\b", re.I)
-RE_EMERG = re.compile(r"inund|desbord|crecid|aviso|alerta|aemet|lluvi|tormenta|temporal|borrasca|nieve|nevad|granizo|"
-                      r"viento|racha|incendi|fuego|terremoto|se[ií]smo|sismo|manzanares|jarama|112|evacu|desaloj|"
-                      r"emergencia|protecci[oó]n civil|bomberos|corte|cortad", re.I)
+
+# --- Rivas como MUNICIPIO, no como apellido o nombre ---
+# Vale: "Rivas-Vaciamadrid", "Rivas Vaciamadrid", "en/de/a/hacia/desde Rivas", "Ayuntamiento de Rivas", "Rivas (Madrid)".
+RE_MUNICIPIO = re.compile(
+    r"rivas[\s\-]*vaciamadrid"
+    r"|\b(?:en|de|a|hacia|desde|por|entre|y|vecinos de|ayuntamiento de|alcalde(?:sa)? de)\s+rivas\b"
+    r"|\brivas\s*\(madrid\)", re.I)
+# Descarta: "Rivas" justo detrás de otro nombre propio ("José Luis Rivas") o delante de un apellido ("Rivas Pérez").
+RE_PERSONA = re.compile(r"\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\s+Rivas\b(?![\s\-]*Vaciamadrid)|\bRivas\s+(?!Vaciamadrid)[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,}")
+# Emergencia de verdad: "alerta" o "aviso" solo cuentan con color o con "por" ("alerta sobre..." no vale).
+RE_EMERG = re.compile(
+    r"inund|desbord|crecid|aemet|lluvi|tormenta|temporal|borrasca|nieve|nevad|granizo|riada|"
+    r"rachas?\b|vendaval|incendi|fuego|terremoto|se[ií]smo|sismo|r[ií]o manzanares|r[ií]o jarama|\bmanzanares\b|\bjarama\b|"
+    r"\b112\b|evacu|desaloj|emergencia|protecci[oó]n civil|bomberos|"
+    r"(?:aviso|alerta)s?\s+(?:amarill|naranja|roj|por\b|de (?:inundaci|desbord|crecid|lluvi|tormenta|nieve|viento|incendi))|"
+    r"cortad[ao]s?\s+(?:al tr[aá]fico|por)|corte de (?:la )?(?:carretera|tr[aá]fico|luz|agua|suministro)", re.I)
+MAX_HORAS = 36
+
+
 MAX_HORAS = 36
 
 
@@ -51,8 +66,19 @@ def parsear(xml: bytes) -> list[dict]:
     return out
 
 
+def es_municipio(texto: str) -> bool:
+    """True si 'Rivas' se refiere al municipio y no a una persona."""
+    if not RE_MUNICIPIO.search(texto):
+        return False
+    if re.search(r"rivas[\s\-]*vaciamadrid", texto, re.I):
+        return True
+    # Solo "en/de Rivas": vale si además no parece un apellido en el mismo titular
+    return not RE_PERSONA.search(texto)
+
+
 def relevante(n: dict) -> bool:
-    return bool(RE_RIVAS.search(n["titulo"]) and RE_EMERG.search(n["titulo"]))
+    t = n["titulo"]
+    return bool(es_municipio(t) and RE_EMERG.search(t))
 
 
 def evaluar(xml: bytes, prev: dict, ahora) -> tuple[dict, list[dict]]:

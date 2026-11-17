@@ -281,5 +281,23 @@ class TestAvisosEmbalses(unittest.TestCase):
         self.assertTrue(m.para_grupo(msg, {"tipos": {"embalses": True}}))
         self.assertFalse(m.para_grupo(msg, {"tipos": {}}))
 
+
+class TestNoticiasMunicipio(unittest.TestCase):
+    def test_rivas_municipio_y_no_persona(self):
+        import noticias
+        casos = {
+            "José Luis Rivas alerta sobre el empobrecimiento del lenguaje por las pantallas": False,
+            "Alerta roja por riesgo de desbordamiento del Manzanares en Rivas tras las últimas lluvias": True,
+            "Rivas-Vaciamadrid cierra accesos a la Laguna del Campillo por la crecida del Jarama": True,
+            "El Ayuntamiento de Rivas activa el plan de emergencias por la borrasca": True,
+            "Carlos Rivas, nuevo entrenador tras el temporal de lesiones": False,
+            "Rivas Pérez denuncia un incendio en su empresa": False,
+            "Incendio en una nave de Rivas Vaciamadrid": True,
+            "Los vecinos de Rivas alertan sobre el ruido": False,
+            "Entrevista a María de Rivas Gómez sobre el incendio": False,
+        }
+        for t, esperado in casos.items():
+            self.assertEqual(noticias.relevante({"titulo": t}), esperado, t)
+
 if __name__ == "__main__":
     unittest.main()
