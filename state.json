@@ -303,7 +303,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.472
+   "valor": 0.471
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -345,7 +345,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.568
+   "valor": 0.562
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -379,7 +379,7 @@
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -387,7 +387,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.24
+   "valor": 0.25
   },
   "R051": {
    "desc": "Jarama en Algete",
@@ -415,7 +415,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.625
+   "valor": 0.632
   }
  },
  "rios_fallos": 0,
