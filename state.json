@@ -277,8 +277,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": null,
-  "fuente": "AEMET (oficial)"
+  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
+  "fuente": "Open-Meteo (modelos, no oficial)"
  },
  "rios": {
   "AR13": {
@@ -335,7 +335,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.576
+   "valor": 0.568
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -355,7 +355,7 @@
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -363,13 +363,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.246
+   "valor": 587.249
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -383,7 +383,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -391,7 +391,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.571
+   "valor": 0.572
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -405,7 +405,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.637
+   "valor": 0.647
   }
  },
  "rios_fallos": 0,
