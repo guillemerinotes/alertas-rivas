@@ -249,29 +249,29 @@
  ],
  "incendios": {
   "archivos": [
-   "down_20261117_peligro_c_D00.qml",
-   "down_20261117_peligro_c_D00.sld",
-   "down_20261117_peligro_c_D00.tif",
-   "down_20261117_peligro_c_D01.qml",
-   "down_20261117_peligro_c_D01.sld",
-   "down_20261117_peligro_c_D01.tif",
-   "down_20261117_peligro_c_D02.qml",
-   "down_20261117_peligro_c_D02.sld",
-   "down_20261117_peligro_c_D02.tif",
-   "down_20261117_peligro_c_D03.qml",
-   "down_20261117_peligro_c_D03.sld",
-   "down_20261117_peligro_c_D03.tif"
+   "down_20261118_peligro_c_D00.qml",
+   "down_20261118_peligro_c_D00.sld",
+   "down_20261118_peligro_c_D00.tif",
+   "down_20261118_peligro_c_D01.qml",
+   "down_20261118_peligro_c_D01.sld",
+   "down_20261118_peligro_c_D01.tif",
+   "down_20261118_peligro_c_D02.qml",
+   "down_20261118_peligro_c_D02.sld",
+   "down_20261118_peligro_c_D02.tif",
+   "down_20261118_peligro_c_D03.qml",
+   "down_20261118_peligro_c_D03.sld",
+   "down_20261118_peligro_c_D03.tif"
   ],
   "clase": 1,
   "dias": {
-   "2026-11-17": "bajo",
    "2026-11-18": "bajo",
    "2026-11-19": "bajo",
    "2026-11-20": "bajo",
    "2026-11-21": "bajo",
    "2026-11-22": "bajo",
    "2026-11-23": "bajo",
-   "2026-11-24": "bajo"
+   "2026-11-24": "bajo",
+   "2026-11-25": "bajo"
   },
   "fecha": "2026-11-18",
   "hoy": "bajo",
@@ -303,13 +303,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.628
+   "valor": 0.635
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -317,7 +317,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.554
+   "valor": 0.556
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -331,7 +331,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.908
+   "valor": 0.867
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -345,13 +345,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.638
+   "valor": 0.671
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -359,7 +359,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 559.031
+   "valor": 559.044
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -373,13 +373,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.699
+   "valor": 587.585
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -401,13 +401,13 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.602
+   "valor": 0.6
   },
   "R061": {
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -415,7 +415,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.637
+   "valor": 0.64
   }
  },
  "rios_fallos": 0,
