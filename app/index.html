@@ -137,6 +137,8 @@
   .estado.dudoso{filter:grayscale(.85) brightness(.8)}
   .prev-tira{display:flex;gap:6px;overflow-x:auto;padding:6px 16px 12px;scroll-snap-type:x proximity}
   .ph{flex:none;width:62px;border-radius:12px;padding:8px 4px;text-align:center;background:rgba(5,9,20,.45);border:1px solid var(--linea);scroll-snap-align:start;font-size:12px}
+  .ph .d{font-size:10.5px;font-weight:700;color:var(--sub);opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ph.dia{border-left:3px solid var(--naranja)} .ph.dia .d{color:var(--naranja-cl);opacity:1}
   .ph .h{font-weight:700;color:var(--sub)} .ph .t{font-size:16px;font-weight:800;margin:3px 0}
   .ph .ll{height:34px;display:flex;align-items:flex-end;justify-content:center;margin:4px 0}
   .ph .ll span{width:14px;border-radius:4px 4px 0 0;background:linear-gradient(#5fb0ff,#2f6fe0);min-height:2px}
@@ -612,10 +614,16 @@ function pintarPrevision(d){
     🌧️ <b>${f1(total)} mm</b> en 24 h${(n(maxLl.lluvia) || 0) > 0 ? ` (máx. ${f1(n(maxLl.lluvia))} mm/h a las ${hh(maxLl.hora)})` : ''} ·
     💨 rachas hasta <b>${Math.round(maxR)} km/h</b>${torm.length ? ` · ⚡ <b>tormenta posible</b> desde las ${hh(torm[0].hora)}` : ''}</div>`;
   const maxEsc = Math.max(5, ...hs.map(h => n(h.lluvia) || 0));
-  $('prevTira').innerHTML = hs.map(h => {
+  const hoyStr = new Date().toDateString(), mananaStr = new Date(Date.now() + 864e5).toDateString();
+  const nomDia = dt => dt.toDateString() === hoyStr ? 'Hoy' : dt.toDateString() === mananaStr ? 'Mañana'
+    : dt.toLocaleDateString('es-ES', {weekday:'short'}).replace('.', '');
+  $('prevTira').innerHTML = hs.map((h, i) => {
     const ll = n(h.lluvia) || 0, nv = nivel({lluvia: ll, racha: n(h.racha) || 0, temp: n(h.temp)});
-    return `<div class="ph ${nv ? 'n' + nv : ''}" title="${hh(h.hora)}">
-      <div class="h">${new Date(h.hora).getHours()}h</div>
+    const dt = new Date(h.hora), nuevoDia = i === 0 || dt.getHours() === 0;
+    const fecha = dt.toLocaleDateString('es-ES', {day:'numeric', month:'numeric'});
+    return `<div class="ph ${nv ? 'n' + nv : ''} ${nuevoDia ? 'dia' : ''}" title="${esc(dt.toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'}))} · ${hh(h.hora)}">
+      <div class="d">${nomDia(dt)} ${fecha}</div>
+      <div class="h">${dt.getHours()}h</div>
       <div class="t">${h.temp != null ? Math.round(n(h.temp)) + '°' : '—'}</div>
       <div class="ll"><span style="height:${Math.round(ll / maxEsc * 34)}px"></span></div>
       <div class="mm">${ll ? f1(ll) : '0'} mm</div>
