@@ -299,7 +299,7 @@
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -307,7 +307,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.564
+   "valor": 0.562
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -335,7 +335,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.588
+   "valor": 0.576
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -349,7 +349,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.564
+   "valor": 558.561
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -369,7 +369,7 @@
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -377,7 +377,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.25
+   "valor": 0.24
   },
   "R051": {
    "desc": "Jarama en Algete",
@@ -397,7 +397,7 @@
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -405,7 +405,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.634
+   "valor": 0.637
   }
  },
  "rios_fallos": 0,
