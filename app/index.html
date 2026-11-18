@@ -567,8 +567,20 @@ async function cargarHistorial(){
       </summary>
       <div class="hist-resp"><div class="com-txt">${esc(c.texto)}</div>
         ${r.length ? r.map(x => `<div><b>${esc(x.nombre)}</b> · ${ESTADO_TXT[x.estado] || esc(x.estado)}${x.estado === 'minutos' ? ' ' + x.min + ' min' : ''} <span class="peq">· ${fmt(x.ts)}</span></div>`).join('') : '<div class="peq">Nadie ha respondido todavía.</div>'}
+        <button class="btn gris borrar-com" data-id="${esc(c.id)}">🗑 Borrar del historial</button>
       </div></details>`;
     }).join('') : '<div class="vacio" style="padding:8px 0">Todavía no hay comunicados guardados.</div>';
+    $('histCom').querySelectorAll('.borrar-com').forEach(b => b.onclick = async () => {
+      // Confirmación en la página: hay que pulsar dos veces
+      if (!b.dataset.armado) {
+        b.dataset.armado = '1'; b.textContent = 'Pulsa otra vez para BORRARLO (no se puede deshacer)'; b.classList.add('confirmar');
+        setTimeout(() => { if (b.isConnected && b.dataset.armado) { delete b.dataset.armado; b.textContent = '🗑 Borrar del historial'; b.classList.remove('confirmar'); } }, 6000);
+        return;
+      }
+      b.disabled = true; b.textContent = 'Borrando…';
+      try { await accion({accion:'borrar_comunicado', id: b.dataset.id}); b.closest('details').remove(); }
+      catch(e) { b.disabled = false; delete b.dataset.armado; b.classList.remove('confirmar'); b.textContent = 'Error: ' + e.message; }
+    });
   } catch(e) { $('histCom').innerHTML = `<div class="err-txt">${esc(e.message)}</div>`; }
   $('histAuto').innerHTML = HIST_AUTO.length ? HIST_AUTO.map(h => `<div class="item n${({amarillo:1,naranja:2,rojo:3})[h.nivel] || 0}"><div class="barra"></div><div>
       <div class="tit">${esc(h.titulo.replace(/^RIV-Alert ?/, ''))}</div>

@@ -8,7 +8,7 @@
 //   CANAL_JEFES / CANAL_VOLUNTARIOS  nombres (secretos) de los canales ntfy de cada grupo
 //   BLOB_READ_WRITE_TOKEN  almacén privado (Vercel Blob) para comunicados y respuestas
 import crypto from "node:crypto";
-import { put, get, list } from "@vercel/blob";
+import { put, get, list, del } from "@vercel/blob";
 
 const APP = "https://riv-alert.vercel.app/";
 const ESTADOS = { disponible: "Disponible", minutos: "Disponible en X min", no: "No disponible" };
@@ -218,6 +218,13 @@ export default async function handler(req, res) {
         const coms = (await Promise.all(blobs.map((b) => leer(b.pathname).catch(() => null)))).filter(Boolean);
         const conRespuestas = await Promise.all(coms.map(async (c) => ({ ...c, respuestas: await respuestasDe(c.id).catch(() => []) })));
         return res.status(200).json({ ok: true, comunicados: conRespuestas });
+      }
+
+      case "borrar_comunicado": {
+        if (!idValido(body.id)) return res.status(400).json({ error: "Comunicado no válido" });
+        const rutas = [`comunicados/${body.id}.json`, ...(await listar(`respuestas/${body.id}/`)).map((b) => b.pathname)];
+        await del(rutas);
+        return res.status(200).json({ ok: true, mensaje: "Comunicado borrado del historial (con sus respuestas)." });
       }
 
       case "guardar_grupo": {
