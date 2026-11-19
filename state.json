@@ -22,9 +22,9 @@
     "semana_fecha": "2026-11-16T00:00:00",
     "semana_hm3": 53.0,
     "semana_pct": 58.24,
-    "tr_fecha": "2026-11-18T23:30:00",
-    "tr_hm3": 53.93,
-    "tr_pct": 59.21,
+    "tr_fecha": "2026-11-19T00:00:00",
+    "tr_hm3": 53.9,
+    "tr_pct": 59.17,
     "tramo": "manzanares",
     "url": "https://www.embalses.net/pantano-1013-santillana.html"
    },
@@ -38,9 +38,9 @@
     "semana_fecha": "2026-11-16T00:00:00",
     "semana_hm3": 13.0,
     "semana_pct": 30.23,
-    "tr_fecha": "2026-11-18T23:30:00",
-    "tr_hm3": 13.07,
-    "tr_pct": 30.4,
+    "tr_fecha": "2026-11-19T00:00:00",
+    "tr_hm3": 13.06,
+    "tr_pct": 30.38,
     "tramo": "manzanares",
     "url": "https://www.embalses.net/pantano-1045-el-pardo.html"
    },
@@ -117,7 +117,7 @@
     "semana_fecha": "2026-11-16T00:00:00",
     "semana_hm3": 34.0,
     "semana_pct": 82.93,
-    "tr_fecha": "2026-11-18T23:30:00",
+    "tr_fecha": "2026-11-19T00:00:00",
     "tr_hm3": 34.0,
     "tr_pct": 82.24,
     "tramo": "jarama",
@@ -140,9 +140,9 @@
     "url": "https://www.embalses.net/pantano-920-belena.html"
    },
    {
-    "desembalse": 5.88,
-    "desembalse_antes": 5.94,
-    "desembalse_fecha": "2026-11-18T23:45:00",
+    "desembalse": 6.18,
+    "desembalse_antes": 5.82,
+    "desembalse_fecha": "2026-11-19T00:45:00",
     "desembalse_tend": "estable",
     "nombre": "Pozo de los Ramos",
     "rio": "Sorbe → Henares",
@@ -175,7 +175,7 @@
     "semana_fecha": "2026-11-16T00:00:00",
     "semana_hm3": 19.0,
     "semana_pct": 61.29,
-    "tr_fecha": "2026-11-18T23:30:00",
+    "tr_fecha": "2026-11-19T00:00:00",
     "tr_hm3": 18.96,
     "tr_pct": 60.44,
     "tramo": "henares",
@@ -183,7 +183,7 @@
    }
   ],
   "fuente": "embalses.net",
-  "t": 1795042882.9321709
+  "t": 1795047070.4078364
  },
  "embalses_flags": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
@@ -424,8 +424,7 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 1,
-  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
+  "Noticias": 0,
   "SAIH Tajo": 0
  },
  "sismos": {},
