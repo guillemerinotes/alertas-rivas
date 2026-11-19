@@ -424,8 +424,7 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 1,
-  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
+  "Noticias": 0,
   "SAIH Tajo": 0
  },
  "sismos": {},
