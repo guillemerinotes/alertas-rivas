@@ -285,7 +285,7 @@
    "CBMimgFBVV95cUxQMzNXWlJTN1pkSXZpOGF1MmRLZndsaXdTTS1kaTg3c2JVMllKczN6RFF0akxNLUdLT2RDc0Z1VG0xcWpWdWU5MjhranVKMEg0MVB1bUY1anlpaEZ5LVhFYlRZWU54QXprbjROQ1dLM01Jb2F6THFtb2xTdUNFcjhfdVRHQW9jYm1vMUFrM2lvc1VOd0s3TnFFbkVB0gGfAUFVX3lxTE9QSC1MbE1TVkxFb1pub3FBLXFGZVh5d0QteGVvQTFZbE8zUkVYMXNBN09OVXFuandrbVlzMDZQaE1zVnpqekd0WmhVYmlxQ2JaLXlpcXdBeF9uUHdEWk93V1dYODhNWDh5c1pmakZBUzhTVS01MUNGYTBMeklPWWNjNUx0ek93MXlnampvbExkVDNLYThkZEYwdUVvM1Q2Zw": "2026-11-17T08:05:00+00:00"
   }
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 35 h",
  "prevision_meta": {
   "error": null,
   "fuente": "AEMET (oficial)"
@@ -303,13 +303,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.795
+   "valor": 0.805
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -331,7 +331,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.737
+   "valor": 0.735
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -345,7 +345,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.773
+   "valor": 0.743
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -359,7 +359,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.899
+   "valor": 558.884
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -373,7 +373,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.418
+   "valor": 587.412
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -407,7 +407,7 @@
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -415,7 +415,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.701
+   "valor": 0.689
   }
  },
  "rios_fallos": 0,
