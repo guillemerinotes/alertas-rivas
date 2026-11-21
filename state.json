@@ -301,7 +301,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.492
+   "valor": 0.491
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -329,7 +329,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.49
+   "valor": 0.493
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.491
+   "valor": 0.529
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,7 +357,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.668
+   "valor": 558.677
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -371,13 +371,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.646
+   "valor": 587.827
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -399,7 +399,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.649
+   "valor": 0.661
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.691
+   "valor": 0.7
   }
  },
  "rios_fallos": 0,
@@ -421,8 +421,7 @@
   "AEMET avisos": 0,
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
-  "IGN terremotos": 1,
-  "IGN terremotos · último error": "HTTPError: HTTP Error 502: Bad Gateway",
+  "IGN terremotos": 0,
   "Noticias": 0,
   "SAIH Tajo": 0
  },
