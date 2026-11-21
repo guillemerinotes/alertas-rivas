@@ -283,7 +283,7 @@
   "recientes": [],
   "vistas": {}
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 35 h",
  "prevision_meta": {
   "error": null,
   "fuente": "AEMET (oficial)"
@@ -301,13 +301,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.515
+   "valor": 0.522
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -315,7 +315,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.578
+   "valor": 0.577
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -329,13 +329,13 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.646
+   "valor": 0.643
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.69
+   "valor": 0.689
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,13 +357,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.816
+   "valor": 558.813
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -371,7 +371,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.251
+   "valor": 587.255
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -399,13 +399,13 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.613
+   "valor": 0.612
   },
   "R061": {
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.689
+   "valor": 0.697
   }
  },
  "rios_fallos": 0,
@@ -421,9 +421,9 @@
   "AEMET avisos": 0,
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
-  "IGN terremotos": 1,
-  "IGN terremotos · último error": "HTTPError: HTTP Error 502: Bad Gateway",
-  "Noticias": 0,
+  "IGN terremotos": 0,
+  "Noticias": 1,
+  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
   "SAIH Tajo": 0
  },
  "sismos": {},
