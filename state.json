@@ -421,8 +421,7 @@
   "AEMET avisos": 0,
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
-  "IGN terremotos": 1,
-  "IGN terremotos · último error": "HTTPError: HTTP Error 502: Bad Gateway",
+  "IGN terremotos": 0,
   "Noticias": 0,
   "SAIH Tajo": 0
  },
