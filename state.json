@@ -249,29 +249,29 @@
  ],
  "incendios": {
   "archivos": [
-   "down_20261120_peligro_c_D00.qml",
-   "down_20261120_peligro_c_D00.sld",
-   "down_20261120_peligro_c_D00.tif",
-   "down_20261120_peligro_c_D01.qml",
-   "down_20261120_peligro_c_D01.sld",
-   "down_20261120_peligro_c_D01.tif",
-   "down_20261120_peligro_c_D02.qml",
-   "down_20261120_peligro_c_D02.sld",
-   "down_20261120_peligro_c_D02.tif",
-   "down_20261120_peligro_c_D03.qml",
-   "down_20261120_peligro_c_D03.sld",
-   "down_20261120_peligro_c_D03.tif"
+   "down_20261121_peligro_c_D00.qml",
+   "down_20261121_peligro_c_D00.sld",
+   "down_20261121_peligro_c_D00.tif",
+   "down_20261121_peligro_c_D01.qml",
+   "down_20261121_peligro_c_D01.sld",
+   "down_20261121_peligro_c_D01.tif",
+   "down_20261121_peligro_c_D02.qml",
+   "down_20261121_peligro_c_D02.sld",
+   "down_20261121_peligro_c_D02.tif",
+   "down_20261121_peligro_c_D03.qml",
+   "down_20261121_peligro_c_D03.sld",
+   "down_20261121_peligro_c_D03.tif"
   ],
   "clase": 1,
   "dias": {
-   "2026-11-20": "bajo",
    "2026-11-21": "bajo",
    "2026-11-22": "bajo",
    "2026-11-23": "bajo",
    "2026-11-24": "bajo",
    "2026-11-25": "bajo",
    "2026-11-26": "bajo",
-   "2026-11-27": "bajo"
+   "2026-11-27": "bajo",
+   "2026-11-28": "bajo"
   },
   "fecha": "2026-11-21",
   "hoy": "bajo",
@@ -301,13 +301,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.645
+   "valor": 0.655
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.668
+   "valor": 0.665
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,7 +357,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.777
+   "valor": 558.773
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -371,7 +371,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.338
+   "valor": 587.347
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -399,7 +399,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.609
+   "valor": 0.607
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.661
+   "valor": 0.654
   }
  },
  "rios_fallos": 0,
@@ -422,7 +422,8 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 0,
+  "Noticias": 1,
+  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
   "SAIH Tajo": 0
  },
  "sismos": {},
