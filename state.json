@@ -295,7 +295,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.595
+   "valor": 0.589
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -309,7 +309,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.578
+   "valor": 0.577
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -337,7 +337,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.673
+   "valor": 0.688
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -351,13 +351,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.779
+   "valor": 558.781
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -365,7 +365,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.357
+   "valor": 587.354
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -399,7 +399,7 @@
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -407,7 +407,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.697
+   "valor": 0.704
   }
  },
  "rios_fallos": 0,
@@ -416,7 +416,8 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 0,
+  "Noticias": 1,
+  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
   "SAIH Tajo": 0
  },
  "sismos": {},
