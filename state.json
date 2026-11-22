@@ -295,13 +295,13 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.615
+   "valor": 0.605
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -309,7 +309,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.578
+   "valor": 0.58
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -337,7 +337,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.631
+   "valor": 0.647
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -351,7 +351,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.775
+   "valor": 558.781
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -407,7 +407,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.707
+   "valor": 0.698
   }
  },
  "rios_fallos": 0,
