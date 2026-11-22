@@ -285,8 +285,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
-  "fuente": "Open-Meteo (modelos, no oficial)"
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
@@ -301,7 +301,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.626
+   "valor": 0.622
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -321,7 +321,7 @@
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -329,7 +329,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.603
+   "valor": 0.602
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.613
+   "valor": 0.625
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,7 +357,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.779
+   "valor": 558.773
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -405,7 +405,7 @@
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.721
+   "valor": 0.717
   }
  },
  "rios_fallos": 0,
