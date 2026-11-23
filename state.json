@@ -283,10 +283,10 @@
   "recientes": [],
   "vistas": {}
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 35 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
-  "fuente": "Open-Meteo (modelos, no oficial)"
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
@@ -321,7 +321,7 @@
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -329,7 +329,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.49
+   "valor": 0.483
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -343,13 +343,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.484
+   "valor": 0.474
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -357,13 +357,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.6
+   "valor": 558.602
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -371,7 +371,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.304
+   "valor": 587.302
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -391,7 +391,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -399,13 +399,13 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.598
+   "valor": 0.597
   },
   "R061": {
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.687
+   "valor": 0.693
   }
  },
  "rios_fallos": 0,
