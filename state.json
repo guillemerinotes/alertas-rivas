@@ -285,15 +285,15 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": null,
-  "fuente": "AEMET (oficial)"
+  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
+  "fuente": "Open-Meteo (modelos, no oficial)"
  },
  "rios": {
   "AR13": {
    "desc": "Henares en Espinillo (Alcalá)",
    "nivel": 0,
    "nombre": "HENARES EN ESPINILLO",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.3,
@@ -301,7 +301,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.488
+   "valor": 0.485
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -335,7 +335,7 @@
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -343,13 +343,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.501
+   "valor": 0.506
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -391,7 +391,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -399,7 +399,7 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.598
+   "valor": 0.597
   },
   "R061": {
    "desc": "Henares en Humanes",
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.684
+   "valor": 0.693
   }
  },
  "rios_fallos": 0,
