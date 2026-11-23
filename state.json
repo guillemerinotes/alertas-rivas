@@ -307,7 +307,7 @@
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -315,7 +315,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.578
+   "valor": 0.575
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -329,7 +329,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.494
+   "valor": 0.49
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -343,13 +343,13 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.538
+   "valor": 0.521
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -357,13 +357,13 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.606
+   "valor": 558.613
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -371,13 +371,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.305
+   "valor": 587.302
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -385,13 +385,13 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.26
+   "valor": 0.27
   },
   "R051": {
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -399,13 +399,13 @@
     2.15
    ],
    "unidad": "m",
-   "valor": 0.6
+   "valor": 0.599
   },
   "R061": {
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.71,
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.656
+   "valor": 0.658
   }
  },
  "rios_fallos": 0,
@@ -422,7 +422,8 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 0,
+  "Noticias": 1,
+  "Noticias · último error": "HTTPError: HTTP Error 429: Too Many Requests",
   "SAIH Tajo": 0
  },
  "sismos": {},
