@@ -283,10 +283,10 @@
   "recientes": [],
   "vistas": {}
  },
- "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 0 h",
+ "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests · Open-Meteo: <urlopen error _ssl.c:994: The handshake operation timed out>",
-  "fuente": null
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
@@ -307,7 +307,7 @@
    "desc": "Jarama en Valdepeñas de la Sierra",
    "nivel": 0,
    "nombre": "JARAMA EN VALDEPEÐAS",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     2.11,
@@ -315,7 +315,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.546
+   "valor": 0.545
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -335,7 +335,7 @@
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -349,7 +349,7 @@
    "desc": "Jarama en San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN SAN FERNANDO",
-   "tendencia": "Ascendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     559.55,
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.642
+   "valor": 0.646
   }
  },
  "rios_fallos": 0,
