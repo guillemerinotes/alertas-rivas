@@ -249,29 +249,29 @@
  ],
  "incendios": {
   "archivos": [
-   "down_20261123_peligro_c_D00.qml",
-   "down_20261123_peligro_c_D00.sld",
-   "down_20261123_peligro_c_D00.tif",
-   "down_20261123_peligro_c_D01.qml",
-   "down_20261123_peligro_c_D01.sld",
-   "down_20261123_peligro_c_D01.tif",
-   "down_20261123_peligro_c_D02.qml",
-   "down_20261123_peligro_c_D02.sld",
-   "down_20261123_peligro_c_D02.tif",
-   "down_20261123_peligro_c_D03.qml",
-   "down_20261123_peligro_c_D03.sld",
-   "down_20261123_peligro_c_D03.tif"
+   "down_20261124_peligro_c_D00.qml",
+   "down_20261124_peligro_c_D00.sld",
+   "down_20261124_peligro_c_D00.tif",
+   "down_20261124_peligro_c_D01.qml",
+   "down_20261124_peligro_c_D01.sld",
+   "down_20261124_peligro_c_D01.tif",
+   "down_20261124_peligro_c_D02.qml",
+   "down_20261124_peligro_c_D02.sld",
+   "down_20261124_peligro_c_D02.tif",
+   "down_20261124_peligro_c_D03.qml",
+   "down_20261124_peligro_c_D03.sld",
+   "down_20261124_peligro_c_D03.tif"
   ],
   "clase": 1,
   "dias": {
-   "2026-11-23": "bajo",
    "2026-11-24": "bajo",
    "2026-11-25": "bajo",
    "2026-11-26": "bajo",
    "2026-11-27": "bajo",
    "2026-11-28": "bajo",
    "2026-11-29": "bajo",
-   "2026-11-30": "bajo"
+   "2026-11-30": "bajo",
+   "2026-12-01": "bajo"
   },
   "fecha": "2026-11-24",
   "hoy": "bajo",
@@ -285,8 +285,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
-  "fuente": "Open-Meteo (modelos, no oficial)"
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
@@ -315,13 +315,13 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.545
+   "valor": 0.543
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Descendente",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -329,7 +329,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.473
+   "valor": 0.472
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.619
+   "valor": 0.614
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -363,7 +363,7 @@
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
    "nivel": 0,
    "nombre": "MANZANARES EN PTE. SAN FERNANDO",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     588.44,
@@ -371,13 +371,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.289
+   "valor": 587.292
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Ascendente",
+   "tendencia": "Descendente",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -385,7 +385,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.27
+   "valor": 0.26
   },
   "R051": {
    "desc": "Jarama en Algete",
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.649
+   "valor": 0.641
   }
  },
  "rios_fallos": 0,
