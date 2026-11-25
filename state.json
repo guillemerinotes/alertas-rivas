@@ -285,8 +285,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": null,
-  "fuente": "AEMET (oficial)"
+  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
+  "fuente": "Open-Meteo (modelos, no oficial)"
  },
  "rios": {
   "AR13": {
@@ -301,7 +301,7 @@
     2.3
    ],
    "unidad": "m",
-   "valor": 0.518
+   "valor": 0.509
   },
   "AR16": {
    "desc": "Jarama en Valdepeñas de la Sierra",
@@ -321,7 +321,7 @@
    "desc": "Jarama en Mejorada–San Fernando",
    "nivel": 0,
    "nombre": "JARAMA EN MEJORADA - S.FERNANDO",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "rivas",
    "umbrales": [
     1.27,
@@ -329,7 +329,7 @@
     1.75
    ],
    "unidad": "m",
-   "valor": 0.569
+   "valor": 0.571
   },
   "AR18": {
    "desc": "Manzanares en Rivas-Vaciamadrid",
@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.471
+   "valor": 0.533
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,7 +357,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.794
+   "valor": 558.799
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -371,13 +371,13 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.321
+   "valor": 587.319
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Estable",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -385,7 +385,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.26
+   "valor": 0.27
   },
   "R051": {
    "desc": "Jarama en Algete",
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.636
+   "valor": 0.646
   }
  },
  "rios_fallos": 0,
@@ -422,7 +422,8 @@
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
-  "Noticias": 0,
+  "Noticias": 1,
+  "Noticias · último error": "HTTPError: HTTP Error 503: Service Unavailable",
   "SAIH Tajo": 0
  },
  "sismos": {},
