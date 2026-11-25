@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.588
+   "valor": 0.587
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,7 +357,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.6
+   "valor": 558.593
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.638
+   "valor": 0.642
   }
  },
  "rios_fallos": 0,
