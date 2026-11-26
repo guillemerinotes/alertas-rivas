@@ -249,29 +249,29 @@
  ],
  "incendios": {
   "archivos": [
-   "down_20261125_peligro_c_D00.qml",
-   "down_20261125_peligro_c_D00.sld",
-   "down_20261125_peligro_c_D00.tif",
-   "down_20261125_peligro_c_D01.qml",
-   "down_20261125_peligro_c_D01.sld",
-   "down_20261125_peligro_c_D01.tif",
-   "down_20261125_peligro_c_D02.qml",
-   "down_20261125_peligro_c_D02.sld",
-   "down_20261125_peligro_c_D02.tif",
-   "down_20261125_peligro_c_D03.qml",
-   "down_20261125_peligro_c_D03.sld",
-   "down_20261125_peligro_c_D03.tif"
+   "down_20261126_peligro_c_D00.qml",
+   "down_20261126_peligro_c_D00.sld",
+   "down_20261126_peligro_c_D00.tif",
+   "down_20261126_peligro_c_D01.qml",
+   "down_20261126_peligro_c_D01.sld",
+   "down_20261126_peligro_c_D01.tif",
+   "down_20261126_peligro_c_D02.qml",
+   "down_20261126_peligro_c_D02.sld",
+   "down_20261126_peligro_c_D02.tif",
+   "down_20261126_peligro_c_D03.qml",
+   "down_20261126_peligro_c_D03.sld",
+   "down_20261126_peligro_c_D03.tif"
   ],
   "clase": 1,
   "dias": {
-   "2026-11-25": "bajo",
    "2026-11-26": "bajo",
    "2026-11-27": "bajo",
    "2026-11-28": "bajo",
    "2026-11-29": "bajo",
    "2026-11-30": "bajo",
    "2026-12-01": "bajo",
-   "2026-12-02": "bajo"
+   "2026-12-02": "bajo",
+   "2026-12-03": "bajo"
   },
   "fecha": "2026-11-26",
   "hoy": "bajo",
@@ -285,8 +285,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": null,
-  "fuente": "AEMET (oficial)"
+  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
+  "fuente": "Open-Meteo (modelos, no oficial)"
  },
  "rios": {
   "AR13": {
@@ -315,7 +315,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.535
+   "valor": 0.533
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -335,7 +335,7 @@
    "desc": "Manzanares en Rivas-Vaciamadrid",
    "nivel": 0,
    "nombre": "MANZANARES EN RIVAS - VACIAMADRID",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "rivas",
    "umbrales": [
     1.92,
@@ -377,7 +377,7 @@
    "desc": "Manzanares en Colmenar Viejo",
    "nivel": 0,
    "nombre": "MANZANARES EN COLMENAR VIEJO - PUENTE BATÁN",
-   "tendencia": "Descendente",
+   "tendencia": "Ascendente",
    "tramo": "arriba",
    "umbrales": [
     1.0,
@@ -385,13 +385,13 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.25
+   "valor": 0.26
   },
   "R051": {
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -405,7 +405,7 @@
    "desc": "Henares en Humanes",
    "nivel": 0,
    "nombre": "HENARES EN HUMANES",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.71,
