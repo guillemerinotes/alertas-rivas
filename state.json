@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.589
+   "valor": 0.592
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,7 +357,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.619
+   "valor": 558.617
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -391,7 +391,7 @@
    "desc": "Jarama en Algete",
    "nivel": 0,
    "nombre": "JARAMA EN ALGETE",
-   "tendencia": "Descendente",
+   "tendencia": "Estable",
    "tramo": "arriba",
    "umbrales": [
     1.45,
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.68
+   "valor": 0.676
   }
  },
  "rios_fallos": 0,
