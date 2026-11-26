@@ -285,8 +285,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: URLError: <urlopen error [Errno 104] Connection reset by peer>",
-  "fuente": "Open-Meteo (modelos, no oficial)"
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
@@ -418,8 +418,7 @@
  },
  "rios_fallos": 0,
  "salud": {
-  "AEMET avisos": 1,
-  "AEMET avisos · último error": "HTTPError: HTTP Error 504: Gateway Time-out",
+  "AEMET avisos": 0,
   "AEMET incendios": 0,
   "Embalses (embalses.net)": 0,
   "IGN terremotos": 0,
