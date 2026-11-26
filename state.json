@@ -315,7 +315,7 @@
     3.5
    ],
    "unidad": "m",
-   "valor": 0.535
+   "valor": 0.533
   },
   "AR17": {
    "desc": "Jarama en Mejorada–San Fernando",
@@ -343,7 +343,7 @@
     2.66
    ],
    "unidad": "m",
-   "valor": 0.508
+   "valor": 0.546
   },
   "MC02": {
    "desc": "Jarama en San Fernando",
@@ -357,7 +357,7 @@
     560.7
    ],
    "unidad": "m",
-   "valor": 558.623
+   "valor": 558.63
   },
   "MC03": {
    "desc": "Manzanares en Puente de San Fernando (Madrid)",
@@ -371,7 +371,7 @@
     589.24
    ],
    "unidad": "m",
-   "valor": 587.283
+   "valor": 587.284
   },
   "R018": {
    "desc": "Manzanares en Colmenar Viejo",
@@ -413,7 +413,7 @@
     2.23
    ],
    "unidad": "m",
-   "valor": 0.642
+   "valor": 0.641
   }
  },
  "rios_fallos": 0,
