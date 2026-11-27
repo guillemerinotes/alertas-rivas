@@ -249,29 +249,29 @@
  ],
  "incendios": {
   "archivos": [
-   "down_20261126_peligro_c_D00.qml",
-   "down_20261126_peligro_c_D00.sld",
-   "down_20261126_peligro_c_D00.tif",
-   "down_20261126_peligro_c_D01.qml",
-   "down_20261126_peligro_c_D01.sld",
-   "down_20261126_peligro_c_D01.tif",
-   "down_20261126_peligro_c_D02.qml",
-   "down_20261126_peligro_c_D02.sld",
-   "down_20261126_peligro_c_D02.tif",
-   "down_20261126_peligro_c_D03.qml",
-   "down_20261126_peligro_c_D03.sld",
-   "down_20261126_peligro_c_D03.tif"
+   "down_20261127_peligro_c_D00.qml",
+   "down_20261127_peligro_c_D00.sld",
+   "down_20261127_peligro_c_D00.tif",
+   "down_20261127_peligro_c_D01.qml",
+   "down_20261127_peligro_c_D01.sld",
+   "down_20261127_peligro_c_D01.tif",
+   "down_20261127_peligro_c_D02.qml",
+   "down_20261127_peligro_c_D02.sld",
+   "down_20261127_peligro_c_D02.tif",
+   "down_20261127_peligro_c_D03.qml",
+   "down_20261127_peligro_c_D03.sld",
+   "down_20261127_peligro_c_D03.tif"
   ],
   "clase": 1,
   "dias": {
-   "2026-11-26": "bajo",
    "2026-11-27": "bajo",
    "2026-11-28": "bajo",
    "2026-11-29": "bajo",
    "2026-11-30": "bajo",
    "2026-12-01": "bajo",
    "2026-12-02": "bajo",
-   "2026-12-03": "bajo"
+   "2026-12-03": "bajo",
+   "2026-12-04": "bajo"
   },
   "fecha": "2026-11-27",
   "hoy": "bajo",
@@ -285,8 +285,8 @@
  },
  "panel": "radar radar en la app (RainViewer); 12 imágenes; previsión 36 h",
  "prevision_meta": {
-  "error": "AEMET: HTTPError: HTTP Error 429: Too Many Requests",
-  "fuente": "Open-Meteo (modelos, no oficial)"
+  "error": null,
+  "fuente": "AEMET (oficial)"
  },
  "rios": {
   "AR13": {
