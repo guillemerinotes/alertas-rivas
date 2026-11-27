@@ -22,9 +22,9 @@
     "semana_fecha": "2026-11-23T00:00:00",
     "semana_hm3": 55.0,
     "semana_pct": 60.44,
-    "tr_fecha": "2026-11-27T15:30:00",
-    "tr_hm3": 55.93,
-    "tr_pct": 61.4,
+    "tr_fecha": "2026-11-27T16:00:00",
+    "tr_hm3": 55.96,
+    "tr_pct": 61.43,
     "tramo": "manzanares",
     "url": "https://www.embalses.net/pantano-1013-santillana.html"
    },
@@ -38,9 +38,9 @@
     "semana_fecha": "2026-11-23T00:00:00",
     "semana_hm3": 13.0,
     "semana_pct": 30.23,
-    "tr_fecha": "2026-11-27T15:30:00",
-    "tr_hm3": 13.69,
-    "tr_pct": 31.84,
+    "tr_fecha": "2026-11-27T16:00:00",
+    "tr_hm3": 13.7,
+    "tr_pct": 31.87,
     "tramo": "manzanares",
     "url": "https://www.embalses.net/pantano-1045-el-pardo.html"
    },
@@ -117,7 +117,7 @@
     "semana_fecha": "2026-11-23T00:00:00",
     "semana_hm3": 34.0,
     "semana_pct": 82.93,
-    "tr_fecha": "2026-11-27T15:30:00",
+    "tr_fecha": "2026-11-27T16:00:00",
     "tr_hm3": 34.85,
     "tr_pct": 84.3,
     "tramo": "jarama",
@@ -175,7 +175,7 @@
     "semana_fecha": "2026-11-23T00:00:00",
     "semana_hm3": 19.0,
     "semana_pct": 61.29,
-    "tr_fecha": "2026-11-27T15:30:00",
+    "tr_fecha": "2026-11-27T16:00:00",
     "tr_hm3": 19.14,
     "tr_pct": 61.01,
     "tramo": "henares",
@@ -183,7 +183,7 @@
    }
   ],
   "fuente": "embalses.net",
-  "t": 1795791684.5195866
+  "t": 1795795850.8741024
  },
  "embalses_flags": {},
  "heartbeat": "2026-11-11T12:01:41.087780+00:00",
